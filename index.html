@@ -14,16 +14,17 @@
         <link rel="stylesheet" href="css/united-bootstrap.min.css">
         <link rel="stylesheet" href="css/site.css">
 
-        <script src="js/vendor/modernizr-2.7.1.min.js"></script>
 </head>
 
 
-<body>
+<body onload="loader.style.display=none;">
     <!--////// Warning for IE 8  and below ////////////-->
     <!--[if lte IE 8]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <div id="loader" class="loader"><h1>Loading...</h1></div>
+    
     <!--///////////////// Main Body ////////////-->
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -251,7 +252,9 @@
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/modernizr-2.7.1.min.js"></script>
     <script src="js/main.js"></script>
+   
 </body>
 
 </html>
