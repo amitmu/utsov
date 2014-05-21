@@ -45,4 +45,18 @@ jQuery(document).ready(function () {
     var infowindow = new google.maps.InfoWindow({
         content: '<div class="info"><strong>Our Registered Office</strong><br/><br/>31 RICHARD ROAD,<br/> EDISON, NJ 08820.</div>'
     });
+
+    jQuery('#nav-main [href^=#]').click(function (e) {
+      e.preventDefault();
+      var div = jQuery(this).attr('href');
+      jQuery("html, body").animate({
+        scrollTop: $(div).position().top
+      }, "slow");
+    });
+
+
 });
+
+
+
+

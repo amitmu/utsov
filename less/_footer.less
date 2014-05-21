@@ -12,8 +12,8 @@ footer[role="contentinfo"] {
 	padding-top: 24px;
 	padding-bottom: 24px;
 	font-size: @font-size-small;
-	background-color: darken(@navbar-inverse-bg, 18%);
-	color: darken(@navbar-inverse-color, 18%);
+	background-color: darken(@link-color, 15%);
+	color: white;//darken(@navbar-inverse-color, 18%);
 	a {
 		color: @navbar-inverse-color;
 		&:focus,
@@ -43,7 +43,7 @@ footer[role="contentinfo"] {
 
 	ul.social {
 		margin: 0;
-		padding: 24px 0 0;
+		//padding: 24px 0 0;
 		width: 100%;
 		text-align: center;
 		> li {
@@ -54,13 +54,13 @@ footer[role="contentinfo"] {
 				line-height: 30px;
 				.square(30px);
 		    border-radius: 36px;
-				background-color: darken(@navbar-inverse-bg, 27%); // @gray-light;
-				color: darken(@navbar-inverse-color, 18%); // #fff; // edited
+				background-color: @brand-primary; //darken(@navbar-inverse-bg, 27%); // @gray-light;
+				color: darken(@brand-primary, 18%); // #fff; // edited
 				margin: 0 3px 3px 0;
 				&:hover {
 					text-decoration: none;
-					background-color: darken(@navbar-inverse-bg, 32%); // @link-hover-color;
-					color: @navbar-inverse-link-hover-color; // added
+					background-color: @navbar-inverse-bg; // @link-hover-color;
+					color: @brand-success;
 				}
 			}
 		}
