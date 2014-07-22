@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 var utsovAdminApp = angular.module('utsovAdminApp', []);
 
-utsovAdminApp.controller('AdminController', function ($scope) {
+utsovAdminApp.controller('VolunteerController', function ($scope) {
 
     $scope.contacts = [
         {
@@ -34,4 +34,12 @@ utsovAdminApp.controller('AdminController', function ($scope) {
             'ipaddress' : '127.0.0.1'
         }
     ];
+});
+
+utsovAdminApp.controller('UserListController', function ($scope, $http) {
+
+    $http.get('localhost/utsov/api/users.php').success(function(data) {
+        $scope.users = data["json"];
+    });
+
 });
