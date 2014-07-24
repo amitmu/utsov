@@ -14,7 +14,7 @@ jQuery(window).load(function () {
 jQuery(document).ready(function () {
 
     // create a LatLng object containing the coordinate for the center of the map
-    var latlng = new google.maps.LatLng(40.566373, -74.382668);
+    var latlng = new google.maps.LatLng(40.43288, -74.39765);
 
     // prepare the map properties
     var options = {
@@ -43,7 +43,7 @@ jQuery(document).ready(function () {
 
     // add information window
     var infowindow = new google.maps.InfoWindow({
-        content: '<div class="info"><strong>Our Registered Office</strong><br/><br/>31 RICHARD ROAD,<br/> EDISON, NJ 08820.</div>'
+        content: '<div class="info"><strong>Puja Location</strong><br/><br/>380 Cranbury Rd.,<br/> East Brunswick, NJ 08816.</div>'
     });
 
     jQuery('#nav-main [href^=#]').click(function (e) {
