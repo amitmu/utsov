@@ -9,8 +9,9 @@ class UtsovDB extends \SQLite3
         $dbPath = '';
         switch($dbname) { //Switch case for db name
             case "utsov": $dbpath = 'db/utsov.db'; break;
-            case "contacts":  $dbpath = 'db/capture.db'; break;
-            case "sponsor":  $dbpath = 'db/sponsor.db'; break;
+            case "contact":  $dbpath = 'db/capture.db'; break;
+            case "contest":  $dbpath = 'db/capture.db'; break;
+            case "sponsor":  $dbpath = 'db/capture.db'; break;
             default:  $dbpath = 'db/utsov.db';
         }
         

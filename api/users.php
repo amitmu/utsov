@@ -11,7 +11,7 @@ require(dirname(__FILE__).'/utils.php');
         $action = $_POST["action"];
             switch($action) { //Switch case for value of action
                 case "test": test_function(); break;
-                default: getUserList(); 
+                default: test_function();
             }
         }
     }
@@ -62,7 +62,9 @@ require(dirname(__FILE__).'/utils.php');
             $db->close();
         }
         
-        $return["json"] = json_encode($arr);
+        $return["data"] = json_encode($arr);
+        $return["err"] = '';
+        $return ["msg"] = 'SUCCESS';
         echo json_encode($return);
     }
 

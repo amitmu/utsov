@@ -6,40 +6,44 @@ $(document).ready(function () {
 
 var utsovAdminApp = angular.module('utsovAdminApp', []);
 
-utsovAdminApp.controller('VolunteerController', function ($scope) {
+utsovAdminApp.controller('VolunteerController', function ($scope, $http) {
 
-    $scope.contacts = [
-        {
-            'name' : 'Test Name',
-            'address1' : 'Test Street',
-            'address2' : 'Street 2',
-            'city' : 'Testville',
-            'state' : 'WA',
-            'zip' : '09876',
-            'phone' : '9876543210',
-            'email' : 'test@server.com',
-            'message' : 'testing it out right now',
-            'ipaddress' : '127.0.0.0'
-        },
-        {
-            'name' : 'Another Name',
-            'address1' : 'Test Street',
-            'address2' : 'Street 2',
-            'city' : 'Testville',
-            'state' : 'WA',
-            'zip' : '09876',
-            'phone' : '9876543210',
-            'email' : 'test@server.com',
-            'message' : 'testing it out right now 2',
-            'ipaddress' : '127.0.0.1'
-        }
-    ];
+    $scope.errors = [];
+    $scope.msgs = [];
+    $scope.GetVolunteers = function () {
+        //clearing errors and messages
+        $scope.errors.splice(0, $scope.errors.length);
+        $scope.msgs.splice(0, $scope.msgs.length);
+        $http.post('http://localhost/utsov/api/contacts.php', {'action' : 'list'}
+        ).success(function(data, status, headers, config) {
+            if(data.msg != ''){
+                $scope.contacts.push(data.data);
+                $scope.msgs.push(data.msg);
+            }
+            else{
+                $scope.errors.push(data.err);
+            }
+        }).error(function(data, status){
+            $scope.errors.push(status);
+        });
+        alert(count + " records");
+    }
+
+    /*$scope.GetVolunteers = function() {
+        //clearing errors and messages
+        $scope.errors.splice(0, $scope.errors.length);
+        $scope.msgs.splice(0, $scope.msgs.length);
+    }*/
+
+        //calling post
+
+
 });
 
 utsovAdminApp.controller('UserListController', function ($scope, $http) {
 
     $http.get('localhost/utsov/api/users.php').success(function(data) {
-        $scope.users = data["json"];
+        $scope.users = data.data;
     });
 
 });

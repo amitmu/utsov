@@ -47,7 +47,7 @@
                 <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
                     <ul class="nav">
                       <li class="active"><a href="#">Utsov</a></li>
-                      <li><a href="#">Contacts</a></li>
+                      <li><a href="#" data-ng-click='GetVolunteers()'>Contacts</a></li>
                       <li><a href="#">Sponsors</a></li>
                       <li>Test </li>
                       <li class="active"><a href="#">Table1</a></li>
@@ -56,39 +56,43 @@
                     </ul>
                 </div>
 
-                <!-- main area -->
+                <!-- contacts area -->
                 <div class="col-xs-12 col-sm-9">
-                  <h1>Data For Contacts</h1>
-                  <div class="table-responsive">
-                    <table class="table-condensed table-striped table-bordered table-hover">
-                        <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Address2</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Zip</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Message</th>
-                            <th>IP</th>
-                        </tr>
-                        <tr data-ng-repeat="contact in contacts">
-                            <td>{{contact.name}}</td>
-                            <td>{{contact.address1}}</td>
-                            <td>{{contact.address2}}</td>
-                            <td>{{contact.city}}</td>
-                            <td>{{contact.state}}</td>
-                            <td>{{contact.zip}}</td>
-                            <td>{{contact.phone}}</td>
-                            <td>{{contact.email}}</td>
-                            <td>{{contact.message}}</td>
-                            <td>{{contact.ipaddress}}</td>
-                        </tr>
-                    </table>
-                  </div>
-                    
-
+                    <h1>Data For Contacts</h1>
+                    <div class="table-responsive">
+                        <table class="table-condensed table-striped table-bordered table-hover">
+                            <tr>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Address2</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Zip</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Message</th>
+                                <th>IP</th>
+                            </tr>
+                            <tr data-ng-repeat="contact in contacts">
+                                <td>{{contact.name}}</td>
+                                <td>{{contact.address1}}</td>
+                                <td>{{contact.address2}}</td>
+                                <td>{{contact.city}}</td>
+                                <td>{{contact.state}}</td>
+                                <td>{{contact.zip}}</td>
+                                <td>{{contact.phone}}</td>
+                                <td>{{contact.email}}</td>
+                                <td>{{contact.message}}</td>
+                                <td>{{contact.ipaddress}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <ul>
+                        <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
+                    </ul>
+                    <ul>
+                        <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
+                    </ul>
                 </div><!-- /.col-xs-12 main -->
             </div><!--/.row-->
           </div><!--/.container-->

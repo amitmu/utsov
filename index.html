@@ -157,7 +157,7 @@
             </div>
             <div class="col-lg-3 col-sm-6 padded-section-small">
                 <img src="img/sponsors/ny_life.png" class="img-responsive" alt="New York Life">
-                <h5>The Company You Keep&reg;</h5>
+                <h4>The Company You Keep&reg;</h4>
                 <p>
                     Call me @ 732 692 4818 for a free consultation.
                 </p>
@@ -187,6 +187,11 @@
                         <span class="text-muted">Join us with your family.</span>
                     </h2>
                     <p class="lead">2014 Utsov Durga Puja will be held on Saturday, October 4th and Sunday, October 5th, 2014 at East Brunswick High School, 380 Cranbury Rd, East Brunswick, NJ 08816. See map at the end of the page for directions.</p>
+                    <div class="pull-right" >
+                            <a class="btn btn-info" href="#" role="button" data-toggle="modal" data-target="#mapModal">
+                                <span class="icon fa fa-map-marker"></span> Show Location Map
+                            </a>
+                    </div>
                 </div>
                 <div class="col-md-4 padded-section-small">
                     <img class="featurette-image img-responsive" src="img/puja.jpg" data-src="img/puja.jpg" alt="Generic placeholder image">
@@ -311,7 +316,7 @@
                     </ul>
                 </div>
                 <div class="padded-section">
-                    <p class="lead"> We welcome your business sponsorship in our efforts. If you are intersested, please leave your information so that we can contact you for more details.</p>
+                    <p class="lead"> We welcome your business sponsorship in our efforts. If you are interested, please leave your information so that we can contact you for more details.</p>
                     <a class="btn btn-success" href="#contact" role="button">Sponsor our Effort <span class="icon fa fa-arrow-circle-down"></span>
                     </a>
                 </div>
@@ -672,7 +677,7 @@
 
     <!--//////////////// Google Map ////////////////-->
 
-    <div id="map_canvas"></div>
+    <!--<div id="map_canvas"></div>-->
 
     <!--//////////////// Footer ////////////////-->
 
@@ -728,6 +733,30 @@
       </div>
     </div>
 
+     <!--/////////////////// Google Map Location //////////////////////-->
+    <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Google Map for Puja Location</h4>
+          </div>
+          <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                    <div id="map_canvas" class=""></div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--/////////////////// JavaScript //////////////////////-->
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
