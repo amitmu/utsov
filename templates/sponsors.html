@@ -1,0 +1,44 @@
+<h1>{{title}}</h1>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>Date</th>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Sponsor</th>
+            <th>Address</th>
+            <!--<th>Address2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>-->
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>IP</th>
+        </tr>
+        <tr data-ng-repeat="sponsor in sponsors">
+            <td>{{sponsor.date}}</td>
+            <td>{{sponsor.company}}</td>
+            <td>{{sponsor.contact}}</td>
+            <td>{{sponsor.sponsor_type}}</td>
+            <td>{{sponsor.address1}} {{sponsor.address2}}
+                {{sponsor.city}} {{sponsor.state}} {{sponsor.zip}}
+            </td>
+            <!--<td>{{sponsor.address1}}</td>
+            <td>{{sponsor.address2}}</td>
+            <td>{{sponsor.city}}</td>
+            <td>{{sponsor.state}}</td>
+            <td>{{sponsor.zip}}</td>-->
+            <td>{{sponsor.phone}}</td>
+            <td>{{sponsor.email}}</td>
+            <td>{{sponsor.message}}</td>
+            <td>{{sponsor.ipaddress}}</td>
+        </tr>
+    </table>
+</div>
+<ul>
+    <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
+</ul>
+<ul>
+    <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
+</ul>

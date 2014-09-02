@@ -14,8 +14,8 @@ require(dirname(__FILE__).'/utils.php');
     $action = $_post->action;
     switch($action) { //Switch case for value of action
         case "test": test_function($_post); break;
-        case "list" :  getSubmissionList($_post); break;
-        case "add" :  addSubmission($_post); break;
+        case "list" :  getDonationList($_post); break;
+        case "add" :  addDonation($_post); break;
         default:  getContestList($_post);
     }
 
@@ -37,14 +37,14 @@ require(dirname(__FILE__).'/utils.php');
 
     //Function to return  list of volunteers
 
-    function getSubmissionList($post){
+    function getDonationList($post){
         $return = '';
         $arr = array();
         try {
             /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("contest"));
+            $db = new PDO("sqlite:" . getDBPath("donation"));
 
-            $result = $db->query('SELECT * FROM tb_competition');
+            $result = $db->query('SELECT * FROM tb_donations');
             $num = 0;
             foreach($result as $row)
             {
@@ -68,12 +68,12 @@ require(dirname(__FILE__).'/utils.php');
 
     //Function to add volunteers
 
-    function addSubmission($post){
+    function addDonation($post){
         $return = '';
         $arr = array();
         try {
             /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("contest"));
+            $db = new PDO("sqlite:" . getDBPath("donation"));
 
             $stmtIns = $db->prepare("INSERT INTO tb_competition(date, competition, name, age, contact, phone, email, file_type, url, file_path, message, ipaddress)
                 VALUES(:date, :compt, :name, :age, :contact, :phone, :email, :f_type, :f_url, :f_path, :msg, :ipadd)");

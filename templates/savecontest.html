@@ -1,0 +1,49 @@
+<h1>New Contest Submission</h1>
+<form role="form" data-ng-submit="SubmitVol()">
+    <div class="form-group">
+        <label for="competition">Competition</label>
+        <input type="text" class="form-control" id="competition" placeholder="The competition you are submitting for" data-ng-model="formData.competition">
+    </div>
+    <div class="form-group">
+        <label for="compname">Competitior's Name</label>
+        <input type="text" class="form-control" id="compname" placeholder="Your name" data-ng-model="formData.compname">
+    </div>
+    <div class="form-group">
+        <label for="compage">Competitor's Age</label>
+        <input type="text" class="form-control" id="compage" placeholder="Your age" data-ng-model="formData.compage">
+    </div>
+    <div class="form-group">
+        <label for="compcontact">Secondary Contact</label>
+        <input type="text" class="form-control" id="compcontact" placeholder="If you are under 18, your parent's name" data-ng-model="formData.compcontact">
+    </div>
+    <div class="form-group">
+        <label for="compphone">Contact Phone</label>
+        <input type="text" class="form-control" id="compphone" placeholder="Your phone number" data-ng-model="formData.compphone">
+    </div>
+    <div class="form-group">
+        <label for="compemail">Email</label>
+        <input type="text" class="form-control" id="compemail" placeholder="Your email address" data-ng-model="formData.compemail">
+    </div>
+    <div class="form-group">
+        <label for="compfileurl">File Url</label>
+        <input type="text" class="form-control" id="compfileurl" placeholder="The url to your submission if not uploaded" data-ng-model="formData.compfileurl">
+    </div>
+    <div class="form-group">
+        <label for="compfilepath">Add File</label>
+        <input type="email" class="form-control" id="compfilepath" placeholder="Your email" data-ng-model="formData.compfilepath">
+    </div>
+    <div class="form-group">
+        <label for="compmsg">Anything special instructions for us</label>
+        <textarea class="form-control" rows="3" id="compmsg" data-ng-model="formData.compmsg"></textarea>
+    </div>
+    <button type="submit" class="btn btn-default">Save Submission</button>
+</form>
+<div>
+Status:
+    <ul>
+        <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
+    </ul>
+    <ul>
+        <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
+    </ul>
+</div>

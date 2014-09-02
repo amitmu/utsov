@@ -6,7 +6,7 @@ class UtsovDB extends \SQLite3
 {
     function __construct($dbname)
     {
-        $dbPath = '';
+        $dbpath = '';
         switch($dbname) { //Switch case for db name
             case "utsov": $dbpath = 'db/utsov.db'; break;
             case "contact":  $dbpath = 'db/capture.db'; break;
@@ -18,7 +18,47 @@ class UtsovDB extends \SQLite3
         $this->open($dbpath);
 
     }
+
+
 }
 
+function getDBPath($dbname)
+{
+    $dbpath = '';
+    switch($dbname) { //Switch case for db name
+        case "utsov": $dbpath = realpath('.') . '/db/utsov.db'; break;
+        case "volunteer":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        case "contest":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        case "sponsor":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        case "donation":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        default:  $dbpath = realpath('.') . '/db/utsov.db';
+    }
+    return $dbpath;
+}
+
+//Function to check if the request is an AJAX request
+function is_ajax() {
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+}
+
+// Function to get the client IP address
+function get_client_ip() {
+    $ipaddress = 'UNDEFINED';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+       $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
 
 ?>

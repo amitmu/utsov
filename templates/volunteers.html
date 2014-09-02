@@ -1,0 +1,42 @@
+<h1>{{title}}</h1>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Address2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>IP</th>
+        </tr>
+        <tr data-ng-repeat="vol in volunteers">
+            <td>{{vol.id}}</td>
+            <td>{{vol.date}}</td>
+            <td>{{vol.name}}</td>
+            <td>{{vol.address1}}</td>
+            <td>{{vol.address2}}</td>
+            <td>{{vol.city}}</td>
+            <td>{{vol.state}}</td>
+            <td>{{vol.zip}}</td>
+            <td>{{vol.phone}}</td>
+            <td>{{vol.email}}</td>
+            <td>{{vol.message}}</td>
+            <td>{{vol.ipaddress}}</td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a href="#/AddVolunteer">Add New Volunteer</a>
+</div>
+<ul>
+    <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
+</ul>
+<ul>
+    <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
+</ul>
