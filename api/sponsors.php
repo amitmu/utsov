@@ -30,38 +30,42 @@ require(dirname(__FILE__).'/utils.php');
 ////// End Main Section //////
 
     function test_function($post){
-        $return["post"] = json_encode($post);
+        $return["err"] = '';
+        $return["msg"] = "Test";
+        $return["post"] = $post;
         echo json_encode($return);
     }
 
 
-    //Function to return  list of volunteers
+    //Function to return  list of sponsors
 
     function getSponList($post){
-        $return = '';
+        $return["err"] = '';
+        $return["msg"] = '';
         $arr = array();
         try {
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("sponsor"));
 
-            $result = $db->query('SELECT * FROM tb_sponsors');
+            $result = $db->query('SELECT * FROM tb_sponsor');
             $num = 0;
             foreach($result as $row)
             {
                 $arr[$num] = $row;
                 $num++;
             }
+            $return["data"] = $arr;
+            $return ["msg"] = $num . " rows returned";
+
             //closing DB
             $db = NULL;
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return ["msg"] = $num . " rows returned";
-        $return["post"] = $post;
         echo json_encode($return);
     }
 
@@ -69,19 +73,19 @@ require(dirname(__FILE__).'/utils.php');
     //Function to add volunteers
 
     function addSponsor($post){
-        $return = '';
-        $arr = array();
+        $return["err"] = '';
+        $return["msg"] = '';
         try {
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("sponsor"));
 
-            $stmtIns = $db->prepare("INSERT INTO tb_sponsors(date, company, contact, sponsor_type, address1, address2, city, state, zip, phone, email, message, ipaddress)
+            $stmtIns = $db->prepare("INSERT INTO tb_sponsor(date, company, contact, sponsor_type, address1, address2, city, state, zip, phone, email, message, ipaddress)
                 VALUES(:date, :company, :name, :s_type, :add1, :add2, :city, :state, :zip, :phone, :email, :msg, :ipadd)");
 
             $bindVar = $stmtIns->bindParam(':date', $date);
             $bindVar = $stmtIns->bindParam(':company', $company);
-            $bindVar = $stmtIns->bindParam(':contact', $contact);
-            $bindVar = $stmtIns->bindParam(':sponsor_type', $type);
+            $bindVar = $stmtIns->bindParam(':name', $contact);
+            $bindVar = $stmtIns->bindParam(':s_type', $type);
             $bindVar = $stmtIns->bindParam(':add1', $address1);
             $bindVar = $stmtIns->bindParam(':add2', $address2);
             $bindVar = $stmtIns->bindParam(':city', $city);
@@ -104,7 +108,7 @@ require(dirname(__FILE__).'/utils.php');
             $zip = $post->sponzip;
             $phone = $post->sponphone;
             $email = $post->sponemail;
-            $message = $post->volmsg;
+            $message = $post->sponmsg;
             $ipaddress = get_client_ip();
 
             if($bindVar)
@@ -121,6 +125,7 @@ require(dirname(__FILE__).'/utils.php');
             }
             else{
                 $return["err"] = "DB: Bind Failed";
+                $return["msg"] = $stmtIns->errorInfo();
             }
 
             //closing DB
@@ -128,17 +133,12 @@ require(dirname(__FILE__).'/utils.php');
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return["post"] = $post;
         echo json_encode($return);
 
-
      }
-
-
-
 
 ?>

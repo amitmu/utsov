@@ -30,15 +30,17 @@ require(dirname(__FILE__).'/utils.php');
 ////// End Main Section //////
 
     function test_function($post){
-        $return["post"] = json_encode($post);
+        $return["err"] = '';
+        $return["msg"] = "Test";
+        $return["post"] = $post;
         echo json_encode($return);
     }
-
 
     //Function to return  list of volunteers
 
     function getVolList($post){
-        $return = '';
+        $return["err"] = '';
+        $return["msg"] = '';
         $arr = array();
         try {
             /*** connect to SQLite database ***/
@@ -51,17 +53,18 @@ require(dirname(__FILE__).'/utils.php');
                 $arr[$num] = $row;
                 $num++;
             }
+
+            $return["data"] = $arr;
+            $return ["msg"] = $num . " rows returned";
             //closing DB
             $db = NULL;
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return ["msg"] = $num . " rows returned";
-        $return["post"] = $post;
         echo json_encode($return);
     }
 
@@ -69,8 +72,8 @@ require(dirname(__FILE__).'/utils.php');
     //Function to add volunteers
 
     function addVol($post){
-        $return = '';
-        $arr = array();
+        $return["err"] = '';
+        $return["msg"] = '';
         try {
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("volunteer"));
@@ -117,6 +120,7 @@ require(dirname(__FILE__).'/utils.php');
             }
             else{
                 $return["err"] = "DB: Bind Failed";
+                $return["msg"] = $stmtIns->errorInfo();
             }
 
             //closing DB
@@ -124,13 +128,11 @@ require(dirname(__FILE__).'/utils.php');
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return["post"] = $post;
         echo json_encode($return);
-
 
      }
 

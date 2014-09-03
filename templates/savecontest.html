@@ -1,49 +1,97 @@
-<h1>New Contest Submission</h1>
-<form role="form" data-ng-submit="SubmitVol()">
-    <div class="form-group">
-        <label for="competition">Competition</label>
-        <input type="text" class="form-control" id="competition" placeholder="The competition you are submitting for" data-ng-model="formData.competition">
-    </div>
-    <div class="form-group">
-        <label for="compname">Competitior's Name</label>
-        <input type="text" class="form-control" id="compname" placeholder="Your name" data-ng-model="formData.compname">
-    </div>
-    <div class="form-group">
-        <label for="compage">Competitor's Age</label>
-        <input type="text" class="form-control" id="compage" placeholder="Your age" data-ng-model="formData.compage">
-    </div>
-    <div class="form-group">
-        <label for="compcontact">Secondary Contact</label>
-        <input type="text" class="form-control" id="compcontact" placeholder="If you are under 18, your parent's name" data-ng-model="formData.compcontact">
-    </div>
-    <div class="form-group">
-        <label for="compphone">Contact Phone</label>
-        <input type="text" class="form-control" id="compphone" placeholder="Your phone number" data-ng-model="formData.compphone">
-    </div>
-    <div class="form-group">
-        <label for="compemail">Email</label>
-        <input type="text" class="form-control" id="compemail" placeholder="Your email address" data-ng-model="formData.compemail">
-    </div>
-    <div class="form-group">
-        <label for="compfileurl">File Url</label>
-        <input type="text" class="form-control" id="compfileurl" placeholder="The url to your submission if not uploaded" data-ng-model="formData.compfileurl">
-    </div>
-    <div class="form-group">
-        <label for="compfilepath">Add File</label>
-        <input type="email" class="form-control" id="compfilepath" placeholder="Your email" data-ng-model="formData.compfilepath">
-    </div>
-    <div class="form-group">
-        <label for="compmsg">Anything special instructions for us</label>
-        <textarea class="form-control" rows="3" id="compmsg" data-ng-model="formData.compmsg"></textarea>
-    </div>
-    <button type="submit" class="btn btn-default">Save Submission</button>
-</form>
-<div>
-Status:
-    <ul>
-        <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
-    </ul>
-    <ul>
-        <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
-    </ul>
+<div class="container-fluid" >
+    <h1>New Contest Submission</h1>
+    <form role="form" name="frmAddContest" class="form-horizontal" novalidate data-ng-submit="SubmitCon()">
+        <div class="form-group">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.concontest.$invalid }">
+                <label for="concontest">Contest Entry</label>
+                <select class="form-control" name="concontest" required data-ng-model="formData.concontest">
+                    <option selected disabled value="">-- Please Select --</option>
+                    <option value="ESSAY">Childrens Essay Competition</option>
+                    <option value="ART">Childrens Art Competition</option>
+                    <option value="TALENT">Childrens Talent Show</option>
+                    <option value="GAYL">Childrens Go As You Like</option>
+                    <option value="PHOTO">Open Photography Contest</option>
+                    <option value="CONCH">Open Conch Shell Contest</option>
+                </select>
+                <span class="help-block" data-ng-show="frmAddContest.concontest.$error.required">Required</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.conname.$invalid }">
+                <label for="conname">Contestant Name</label>
+                <input type="text" class="form-control" name="conname" placeholder="Full Name" required data-ng-model="formData.conname" data-ng-minlength="3" data-ng-maxlength="100">
+                <span class="help-block" data-ng-show="frmAddContest.conname.$error.required">Required</span>
+                <span class="help-block" data-ng-show="frmAddContest.conname.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block" data-ng-show="frmAddContest.conname.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.conage.$invalid }">
+                <label for="conage">Contestant's Age <span class="text-muted">(as of December 31, 2014)</span></label>
+                <input type="number" class="form-control" name="conage" placeholder="1 -100" required data-ng-model="formData.conage" min="1" max="100">
+                <span class="help-block" data-ng-show="frmAddContest.conage.$error.required">Required</span>
+                <span class="help-block" data-ng-show="frmAddContest.conage.$error.number">Invalid Age. Please enter a value between 1 and 100 (inclusive).</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.concontact.$invalid }">
+                <label for="concontact">Contact Name <span class="text-muted">(for contestants under 18 years)</span></label>
+                <input type="text" class="form-control" name="concontact" placeholder="Full Name" data-ng-model="formData.concontact" data-ng-minlength="3" data-ng-maxlength="100">
+                <span class="help-block" data-ng-show="frmAddContest.concontact.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block" data-ng-show="frmAddContest.concontact.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.conphone.$invalid }">
+                <label for="conphone">Phone</label>
+                <input type="text" class="form-control" name="conphone" placeholder="Primary Phone" required data-ng-model="formData.conphone" data-ng-pattern="phoneNumPattern">
+                <span class="help-block" data-ng-show="frmAddContest.conphone.$error.required">Required</span>
+                <span class="help-block" data-ng-show="frmAddContest.conphone.$error.pattern">Please enter a valid 10 digit US phone number.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.conemail.$invalid }">
+                <label for="conemail">Email address</label>
+                <input type="email" class="form-control" name="conemail" placeholder="Primary email" required data-ng-model="formData.conemail">
+                <span class="help-block" data-ng-show="frmAddContest.conemail.$error.required">Required</span>
+                <span class="help-block" data-ng-show="frmAddContest.conemail.$error.email">Please enter a valid email address.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4" >
+                <label for="confiletype">Submission Type</label>
+                <select class="form-control" name="confiletype"  data-ng-model="formData.confiletype">
+                    <option selected disabled value="">-- Please Select --</option>
+                    <option value="TEXT">Document for Essay Competition</option>$
+                    <option value="IMAGE">Image for Art/Photography Competition</option>
+                </select>
+            </div>
+            <div class="col-sm-8 alert alert-warning">
+                <label><span class="fa fa-lg fa-info-circle"></span> Please Note</label>
+                <p>By submitting your text or image to Utsov Inc., you are explicitly granting us the right to use them on the website or otherwise.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label for="confileurl">Submission URL <span class="text-muted">(for self-hosted files)</span></label>
+                <input type="url" class="form-control" name="confileurl" placeholder="File Url - (starting with 'http://')" required data-ng-model="formData.confileurl">
+                <span class="help-block" data-ng-show="frmAddContest.confileurl.$error.url">Please enter a valid URL</span>
+            </div>
+            <div class="col-sm-6">
+                <label for="confilename">Upload Submission <span class="text-muted">(coming soon)</span></label>
+                <input name="confilename" type="file" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <label for="conmsg">Any special note for us</label>
+                <textarea class="form-control" rows="3" name="conmsg" data-ng-model="formData.conmsg" data-ng-maxlength="300"></textarea>
+                <span class="help-block" data-ng-show="frmAddContest.conmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" data-ng-hide="success !== 0">
+                <button type="submit" class="btn btn-primary" data-ng-disabled="frmAddContest.$invalid">Submit Contest Entry</button>
+                <span class="text-danger" data-ng-show="frmAddContest.$invalid">[This button is disabled until all 'Required' fields are filled in]</span>
+            </div>
+            <div class="col-sm-12 alert alert-success" data-ng-show="success == 1">
+                <p><span class="fa fa-lg fa-check-circle-o"></span> Your entry was successfully submitted. Please check events section for contest timings. We will contact you as needed.</p>
+            </div>
+            <div class="col-sm-12 alert alert-danger" data-ng-show="success == 2">
+                <p><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
+            </div>
+        </div>
+    </form>
 </div>

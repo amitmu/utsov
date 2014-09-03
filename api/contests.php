@@ -16,7 +16,7 @@ require(dirname(__FILE__).'/utils.php');
         case "test": test_function($_post); break;
         case "list" :  getSubmissionList($_post); break;
         case "add" :  addSubmission($_post); break;
-        default:  getContestList($_post);
+        default:  getSubmissionList($_post);
     }
 
     //}
@@ -30,7 +30,9 @@ require(dirname(__FILE__).'/utils.php');
 ////// End Main Section //////
 
     function test_function($post){
-        $return["post"] = json_encode($post);
+        $return["err"] = '';
+        $return["msg"] = "Test";
+        $return["post"] = $post;
         echo json_encode($return);
     }
 
@@ -38,7 +40,8 @@ require(dirname(__FILE__).'/utils.php');
     //Function to return  list of volunteers
 
     function getSubmissionList($post){
-        $return = '';
+        $return["err"] = '';
+        $return["msg"] = '';
         $arr = array();
         try {
             /*** connect to SQLite database ***/
@@ -51,17 +54,19 @@ require(dirname(__FILE__).'/utils.php');
                 $arr[$num] = $row;
                 $num++;
             }
+
+            $return["data"] = $arr;
+            $return ["msg"] = $num . " rows returned";
+
             //closing DB
             $db = NULL;
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return ["msg"] = $num . " rows returned";
-        $return["post"] = $post;
         echo json_encode($return);
     }
 
@@ -69,8 +74,8 @@ require(dirname(__FILE__).'/utils.php');
     //Function to add volunteers
 
     function addSubmission($post){
-        $return = '';
-        $arr = array();
+        $return["err"] = '';
+        $return["msg"] = '';
         try {
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("contest"));
@@ -93,16 +98,16 @@ require(dirname(__FILE__).'/utils.php');
 
             // inserting row
             $date = date("Ymd:His");
-            $competition = $post->competition;
-            $name = $post->compname;
-            $age = $post->compage;
-            $contact = $post->compcontact;
-            $phone = $post->compphone;
-            $email = $post->compemail;
-            $file = $post->compfiletype;
-            $url = $post->compfileurl;
-            $path = $post->compfilepath;
-            $message = $post->compmsg;
+            $competition = $post->concontest;
+            $name = $post->conname;
+            $age = $post->conage;
+            $contact = $post->concontact;
+            $phone = $post->conphone;
+            $email = $post->conemail;
+            $file = $post->confiletype;
+            $url = $post->confileurl;
+            $path = '';
+            $message = $post->conmsg;
             $ipaddress = get_client_ip();
 
             if($bindVar)
@@ -119,6 +124,7 @@ require(dirname(__FILE__).'/utils.php');
             }
             else{
                 $return["err"] = "DB: Bind Failed";
+                $return["msg"] = $stmtIns->errorInfo();
             }
 
             //closing DB
@@ -126,11 +132,10 @@ require(dirname(__FILE__).'/utils.php');
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return["post"] = $post;
         echo json_encode($return);
 
 

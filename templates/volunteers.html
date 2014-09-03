@@ -32,11 +32,10 @@
     </table>
 </div>
 <div>
+    <span class="text-success">{{ msgs}}</span><span class="text-danger">{{ errors}}</span>
+</div>
+
+<div>
     <a href="#/AddVolunteer">Add New Volunteer</a>
 </div>
-<ul>
-    <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
-</ul>
-<ul>
-    <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
-</ul>
+
