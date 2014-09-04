@@ -283,7 +283,7 @@
                 </div>
                 <div class="col-md-12 padded-section-small">
                     ** If you are interested in sponsoring Bhog for the Utsov Durga Puja 2014, please let us know.
-                    <a class="btn btn-info btn-sm" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Register To Sponsor Bhog
+                    <a class="btn btn-info btn-sm" href="#/BhogSponsor" role="button" data-toggle="modal" data-target="#eventModal">Register To Sponsor Bhog
                                 <span class="icon fa fa-external-link"></span>
                     </a>
                 </div>
@@ -317,7 +317,7 @@
                             </li>
                         </ul>
                         <div class="padded-section-small pull-right" >
-                            <a class="btn btn-info" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Register
+                            <a class="btn btn-info" href="#/EventRegistration" role="button" data-toggle="modal" data-target="#eventModal">Register
                                 <span class="icon fa fa-external-link"></span>
                             </a>
                         </div>
@@ -342,7 +342,7 @@
                             </li>
                         </ul>
                         <div class="padded-section-small pull-right">
-                            <a class="btn btn-info" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Register
+                            <a class="btn btn-info" href="#/EventRegistration" role="button" data-toggle="modal" data-target="#eventModal">Register
                             <span class="icon fa fa-external-link"></span>
                             </a>
                         </div>
@@ -378,11 +378,11 @@
                                 Khichuri, Beguni (Eggplant Pakora), Labra (Mixed Vegetables), Tomato Chutney, Darbesh.
                             </li>
                         </ul>
-                        <div class="padded-section-small pull-right">
-                            <a class="btn btn-info" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Register
+                        <!--<div class="padded-section-small pull-right">
+                            <a class="btn btn-info" href="#/EventRegistration" role="button" data-toggle="modal" data-target="#eventModal">Register
                             <span class="icon fa fa-external-link"></span>
                             </a>
-                        </div>
+                        </div>-->
                     </p>
                 </div>
 
@@ -391,6 +391,16 @@
 
         </div>
         <!-- /.container -->
+
+
+        <!--/////////////// Modal Windows //////////////-->
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="modalHeaderLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content" data-ng-view>
+
+            </div>
+          </div>
+        </div>
     </div>
 
     <!--//////////////////// Sponsors /////////////////////////-->
@@ -786,27 +796,37 @@
                 </div>
                 <div class="row padded-section-small" >
                     <div class="col-lg-3">
-                        <a class="btn btn-success" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Become a Sponsor
+                        <a class="btn btn-success" href="#/AddSponsor" role="button" data-toggle="modal" data-target="#contactModal">Become a Sponsor
                             <span class="icon fa fa-star-o"></span>
                             </a>
                     </div>
                     <div class="col-lg-3">
-                        <a class="btn btn-success" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Donate with Paypal
+                        <a class="btn btn-success" href="#/AddDonation" role="button" data-toggle="modal" data-target="#contactModal">Donate with Paypal
                             <span class="icon fa fa-money"></span>
                             </a>
                     </div>
                     <div class="col-lg-3">
-                        <a class="btn btn-success" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Volunteer To Help
+                        <a class="btn btn-success" href="#/AddVolunteer" role="button" data-toggle="modal" data-target="#contactModal">Volunteer To Help
                             <span class="icon fa fa-user"></span>
                             </a>
                     </div>
                     <div class="col-lg-3">
-                        <a class="btn btn-success" href="#" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">Contest Submissions
+                        <a class="btn btn-success" href="#/AddSubmission" role="button" data-toggle="modal" data-target="#contactModal">Contest Submissions
                             <span class="icon fa fa-cloud-upload"></span>
                             </a>
                     </div>
                 </div>
             </div>
+
+            <!--/////////////// Modal Windows //////////////-->
+            <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="modalHeaderLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content" data-ng-view>
+
+                </div>
+              </div>
+            </div>
+
         </div>
 
 
@@ -850,15 +870,15 @@
     </footer>
 
     <!--/////////////////// Modal window //////////////////////-->
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <!--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Contact Submission</h4>
+            <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
           </div>
-          <div class="modal-body">
-            Coming soon. Please bear with us.
+          <div data-ng-view class="modal-body">
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -866,7 +886,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
+
+
 
      <!--/////////////////// Google Map Location //////////////////////-->
     <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -899,9 +921,12 @@
     </script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/angular-route.min.js"></script>
     <script src="js/vendor/modernizr-2.7.1.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="js/main.js"></script>
+    <script src="js/controllers.js"></script>
+
 
 </body>
 

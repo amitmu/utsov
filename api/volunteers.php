@@ -16,7 +16,7 @@ require(dirname(__FILE__).'/utils.php');
         case "test": test_function($_post); break;
         case "list" :  getVolList($_post); break;
         case "add" :  addVol($_post); break;
-        default:  getVolList($_post);
+        default:  testFunction($_post);
     }
 
     //}
@@ -29,7 +29,7 @@ require(dirname(__FILE__).'/utils.php');
 
 ////// End Main Section //////
 
-    function test_function($post){
+    function testFunction($post){
         $return["err"] = '';
         $return["msg"] = "Test";
         $return["post"] = $post;

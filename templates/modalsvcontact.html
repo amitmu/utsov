@@ -1,7 +1,11 @@
 
-<div class="container-fluid" >
-    <h1>{{title}}</h1>
-    <form role="form" name="frmAddVol" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-user"></span> {{ title}}</h4>
+    </div>
+<form role="form" name="frmAddVol" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+    <div class="modal-body">
+
         <div class="form-group" data-ng-class="{ 'has-error': frmAddVol.volname.$invalid }">
             <label class="col-sm-2" for="volname">Name</label>
             <div class="col-sm-10">
@@ -13,31 +17,31 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2" for="voladd1">Mailing Address <span class="text-muted">(optional)</span></label>
-            <div class="col-sm-5">
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmAddVol.voladd1.$invalid }">
                 <input type="text" class="form-control" name="voladd1" placeholder="Street address line 1" data-ng-model="formData.voladd1" data-ng-minlength="3" data-ng-maxlength="100">
                 <span class="help-block text-danger" data-ng-show="frmAddVol.voladd1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddVol.voladd1.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmAddVol.voladd2.$invalid }">
                 <input type="text" class="form-control" name="voladd2" placeholder="Street address line 2" data-ng-model="formData.voladd2" data-ng-minlength="3" data-ng-maxlength="100">
                 <span class="help-block text-danger" data-ng-show="frmAddVol.voladd2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddVol.voladd2.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volcity.$invalid }">
                 <label for="volcity">City</label>
                 <input type="text" class="form-control" name="volcity" placeholder="Mailing address City" data-ng-model="formData.volcity" data-ng-minlength="3" data-ng-maxlength="50">
                 <span class="help-block text-danger" data-ng-show="frmAddVol.volcity.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddVol.volcity.$error.maxlength">Too long. Please limit to 50 characters.</span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volstate.$invalid }">
                 <label for="volstate">State</label>
                 <input type="text" class="form-control" name="volstate" placeholder="Mailing address State" data-ng-model="formData.volstate" data-ng-minlength="2" data-ng-maxlength="20">
                 <span class="help-block text-danger" data-ng-show="frmAddVol.volstate.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddVol.volstate.$error.maxlength">Too long. Please limit to 20 characters.</span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volzip.$invalid }">
                 <label for="volzip">Zip</label>
                 <input type="text" class="form-control" name="volzip" placeholder="Mailing address Zip" data-ng-model="formData.volzip" data-ng-pattern="zipCodePattern">
                 <span class="help-block text-danger" data-ng-show="frmAddVol.volzip.$error.pattern">Please enter a valid US ZIP code.</span>
@@ -58,23 +62,32 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-12">
+            <div class="col-sm-12" data-ng-class="{ 'has-error': frmAddVol.volmsg.$invalid }">
                 <label for="volmsg">Any special note for us</label>
                 <textarea class="form-control" rows="3" name="volmsg" data-ng-model="formData.volmsg" data-ng-maxlength="300"></textarea>
                 <span class="help-block text-danger" data-ng-show="frmAddVol.volmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-sm-12" data-ng-hide="success !== 0">
-                <button type="submit" class="btn btn-primary" data-ng-disabled="frmAddVol.$invalid">Save Your Information</button>
-                <span class="text-danger" data-ng-show="frmAddVol.$invalid">[This button is disabled until all 'Required' fields are filled in and all data errors are corrected]</span>
+    </div>
+    <div class="modal-footer">
+         <div class="form-group">
+            <div class="col-sm-9 text-danger">
+                <p data-ng-show="frmAddVol.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
             </div>
-            <div class="col-sm-12 alert alert-success" data-ng-show="success == 1">
-                <p><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks for the offer to help. We will contact you as needed.</p>
+            <div class="col-sm-9 col-xs-12 alert alert-success" data-ng-show="success == 1">
+                <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks for the offer to help. We will contact you as needed.</p>
             </div>
-            <div class="col-sm-12 alert alert-danger" data-ng-show="success == 2">
-                <p><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
+            <div class="col-sm-9 col-xs-12 alert alert-danger" data-ng-show="success == 2">
+                <p class="pull-left"><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmAddVol.$invalid">Save Your Information</button>
+            </div>
+            <div class="col-sm-1 col-xs-12">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
+

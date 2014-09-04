@@ -16,7 +16,7 @@ require(dirname(__FILE__).'/utils.php');
         case "test": test_function($_post); break;
         case "list" :  getDonationList($_post); break;
         case "add" :  addDonation($_post); break;
-        default:  getContestList($_post);
+        default:  testFunction($_post);
     }
 
     //}
@@ -29,7 +29,7 @@ require(dirname(__FILE__).'/utils.php');
 
 ////// End Main Section //////
 
-    function test_function($post){
+    function testFunction($post){
         $return["post"] = json_encode($post);
         echo json_encode($return);
     }
@@ -38,7 +38,8 @@ require(dirname(__FILE__).'/utils.php');
     //Function to return  list of volunteers
 
     function getDonationList($post){
-        $return = '';
+        $return["err"] = '';
+        $return["msg"] = '';
         $arr = array();
         try {
             /*** connect to SQLite database ***/
@@ -51,17 +52,18 @@ require(dirname(__FILE__).'/utils.php');
                 $arr[$num] = $row;
                 $num++;
             }
+            $return["data"] = $arr;
+            $return ["msg"] = $num . " rows returned";
+
             //closing DB
             $db = NULL;
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB:" . $e->getMessage();
+            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
         }
 
-        $return["data"] = $arr;
-        $return ["msg"] = $num . " rows returned";
-        $return["post"] = $post;
         echo json_encode($return);
     }
 

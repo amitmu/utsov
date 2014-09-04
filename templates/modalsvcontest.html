@@ -1,6 +1,10 @@
-<div class="container-fluid" >
-    <h1>{{title}}</h1>
-    <form role="form" name="frmAddContest" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-cloud-upload"></span> {{ title}}</h4>
+    </div>
+<form role="form" name="frmAddContest" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+    <div class="modal-body">
+
         <div class="form-group">
             <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.concontest.$invalid }">
                 <label for="concontest">Contest Entry</label>
@@ -23,7 +27,7 @@
                 <span class="help-block" data-ng-show="frmAddContest.conname.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
             <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.conage.$invalid }">
-                <label for="conage">Contestant's Age <span class="text-muted">(as of December 31, 2014)</span></label>
+                <label for="conage">Contestant's Age <span class="text-muted">(on October 5, 2014)</span></label>
                 <input type="number" class="form-control" name="conage" placeholder="1 -100" required data-ng-model="formData.conage" min="1" max="100">
                 <span class="help-block" data-ng-show="frmAddContest.conage.$error.required">Required</span>
                 <span class="help-block" data-ng-show="frmAddContest.conage.$error.number">Invalid Age. Please enter a value between 1 and 100 (inclusive).</span>
@@ -81,17 +85,24 @@
                 <span class="help-block text-danger" data-ng-show="frmAddContest.conmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-sm-12" data-ng-hide="success !== 0">
-                <button type="submit" class="btn btn-primary" data-ng-disabled="frmAddContest.$invalid">Submit Contest Entry</button>
-                <span class="text-danger" data-ng-show="frmAddContest.$invalid">[This button is disabled until all 'Required' fields are filled in and all data errors are corrected]</span>
+    </div>
+    <div class="modal-footer">
+         <div class="form-group">
+            <div class="col-sm-9 text-danger">
+                <p data-ng-show="frmAddContest.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
             </div>
-            <div class="col-sm-12 alert alert-success" data-ng-show="success == 1">
-                <p><span class="fa fa-lg fa-check-circle-o"></span> Your entry was successfully submitted. Please check events section for contest timings. We will contact you as needed.</p>
+            <div class="col-sm-9 col-xs-12 alert alert-success" data-ng-show="success == 1">
+                <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your entry was successfully submitted. Please check events section for contest timings. We will contact you as needed.</p>
             </div>
-            <div class="col-sm-12 alert alert-danger" data-ng-show="success == 2">
-                <p><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
+            <div class="col-sm-9 col-xs-12 alert alert-danger" data-ng-show="success == 2">
+                <p class="pull-left"><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmAddContest.$invalid">Save Contest Entry</button>
+            </div>
+            <div class="col-sm-1 col-xs-12">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>

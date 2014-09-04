@@ -16,7 +16,7 @@ require(dirname(__FILE__).'/utils.php');
         case "test": test_function($_post); break;
         case "list" :  getSubmissionList($_post); break;
         case "add" :  addSubmission($_post); break;
-        default:  getSubmissionList($_post);
+        default:  testFunction($_post);
     }
 
     //}
@@ -29,7 +29,7 @@ require(dirname(__FILE__).'/utils.php');
 
 ////// End Main Section //////
 
-    function test_function($post){
+    function testFunction($post){
         $return["err"] = '';
         $return["msg"] = "Test";
         $return["post"] = $post;
@@ -81,7 +81,7 @@ require(dirname(__FILE__).'/utils.php');
             $db = new PDO("sqlite:" . getDBPath("contest"));
 
             $stmtIns = $db->prepare("INSERT INTO tb_competition(date, competition, name, age, contact, phone, email, file_type, url, file_path, message, ipaddress)
-                VALUES(:date, :compt, :name, :age, :contact, :phone, :email, :f_type, :f_url, :f_path, :msg, :ipadd)");
+                VALUES(:date, :compt, :name, :age, :contact, :phone, :email, :ftype, :furl, :fpath, :msg, :ipadd)");
 
             $bindVar = $stmtIns->bindParam(':date', $date);
             $bindVar = $stmtIns->bindParam(':compt', $competition);
@@ -90,9 +90,9 @@ require(dirname(__FILE__).'/utils.php');
             $bindVar = $stmtIns->bindParam(':contact', $contact);
             $bindVar = $stmtIns->bindParam(':phone', $phone);
             $bindVar = $stmtIns->bindParam(':email', $email);
-            $bindVar = $stmtIns->bindParam(':f_type', $file);
-            $bindVar = $stmtIns->bindParam(':f_url', $url);
-            $bindVar = $stmtIns->bindParam(':f_path', $path);
+            $bindVar = $stmtIns->bindParam(':ftype', $ftype);
+            $bindVar = $stmtIns->bindParam(':furl', $furl);
+            $bindVar = $stmtIns->bindParam(':fpath', $fpath);
             $bindVar = $stmtIns->bindParam(':msg', $message);
             $bindVar = $stmtIns->bindParam(':ipadd', $ipaddress);
 
@@ -105,8 +105,8 @@ require(dirname(__FILE__).'/utils.php');
             $phone = $post->conphone;
             $email = $post->conemail;
             $file = $post->confiletype;
-            $url = $post->confileurl;
-            $path = '';
+            $furl = $post->confileurl;
+            $fpath = '';
             $message = $post->conmsg;
             $ipaddress = get_client_ip();
 

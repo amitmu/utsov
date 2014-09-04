@@ -1,6 +1,10 @@
-<div class="container-fluid" >
-    <h1>{{title}}</h1>
-    <form role="form" name="frmAddSpon" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-star-o"></span> {{ title}}</h4>
+    </div>
+<form role="form" name="frmAddSpon" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+    <div class="modal-body">
+
         <div class="form-group" data-ng-class="{ 'has-error': frmAddSpon.spontype.$invalid }">
             <label class="col-sm-2" for="spontype">Sponsorship Type</label>
             <div class="col-sm-10">
@@ -13,50 +17,53 @@
                 <span class="help-block" data-ng-show="frmAddSpon.spontype.$error.required">Required</span>
             </div>
         </div>
-        <div class="form-group" data-ng-class="{ 'has-error': frmAddSpon.sponcompany.$invalid }">
-            <label class="col-sm-2" for="sponcompany">Company</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="sponcompany" placeholder="Your Company" data-ng-model="formData.sponcompany" data-ng-minlength="3" data-ng-maxlength="100">
-                <span class="help-block text-danger" data-ng-show="frmAddSpon.sponcompany.$error.minlength">Too Short. Please enter at least 3 characters.</span>
-                <span class="help-block text-danger" data-ng-show="frmAddSpon.sponcompany.$error.maxlength">Too long. Please limit to 100 characters.</span>
-            </div>
+        <div class="form-group" >
+
+
         </div>
-        <div class="form-group" data-ng-class="{ 'has-error': frmAddSpon.sponcontact.$invalid }">
-            <label class="col-sm-2" for="sponcontact">Name</label>
-            <div class="col-sm-10">
+        <div class="form-group" >
+
+            <div class="col-sm-6" data-ng-class="{ 'has-error': frmAddSpon.sponcontact.$invalid }">
+                <label for="sponcontact">Name</label>
                 <input type="text" class="form-control" name="sponcontact" placeholder="Your Full Name" required data-ng-model="formData.sponcontact" data-ng-minlength="3" data-ng-maxlength="100">
                 <span class="help-block" data-ng-show="frmAddSpon.sponcontact.$error.required">Required</span>
                 <span class="help-block" data-ng-show="frmAddSpon.sponcontact.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block" data-ng-show="frmAddSpon.sponcontact.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
+            <div class="col-sm-6" data-ng-class="{ 'has-error': frmAddSpon.sponcompany.$invalid }">
+                <label for="sponcompany">Company</label>
+                <input type="text" class="form-control" name="sponcompany" placeholder="Your Company" data-ng-model="formData.sponcompany" data-ng-minlength="3" data-ng-maxlength="100">
+                <span class="help-block text-danger" data-ng-show="frmAddSpon.sponcompany.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block text-danger" data-ng-show="frmAddSpon.sponcompany.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2" for="sponadd1">Mailing Address <span class="text-muted">(optional)</span></label>
-            <div class="col-sm-5">
+            <div class="col-sm-5"  data-ng-class="{ 'has-error': frmAddSpon.sponadd1.$invalid }">
                 <input type="text" class="form-control" name="sponadd1" placeholder="Street address line 1" data-ng-model="formData.sponadd1" data-ng-minlength="3" data-ng-maxlength="100">
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponadd1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponadd1.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5"  data-ng-class="{ 'has-error': frmAddSpon.sponadd2.$invalid }">
                 <input type="text" class="form-control" name="sponadd2" placeholder="Street address line 2" data-ng-model="formData.sponadd2" data-ng-minlength="3" data-ng-maxlength="100">
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponadd2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponadd2.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddSpon.sponcity.$invalid }">
                 <label for="sponcity">City</label>
                 <input type="text" class="form-control" name="sponcity" placeholder="Mailing address City" data-ng-model="formData.sponcity" data-ng-minlength="3" data-ng-maxlength="50">
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponcity.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponcity.$error.maxlength">Too long. Please limit to 50 characters.</span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddSpon.sponstate.$invalid }">
                 <label for="sponstate">State</label>
                 <input type="text" class="form-control" name="sponstate" placeholder="Mailing address State" data-ng-model="formData.sponstate" data-ng-minlength="2" data-ng-maxlength="20">
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponstate.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponstate.$error.maxlength">Too long. Please limit to 20 characters.</span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddSpon.sponzip.$invalid }">
                 <label for="sponzip">Zip</label>
                 <input type="text" class="form-control" name="sponzip" placeholder="Mailing address Zip" data-ng-model="formData.sponzip" data-ng-pattern="zipCodePattern">
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponzip.$error.pattern">Please enter a valid US ZIP code.</span>
@@ -77,26 +84,30 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-12">
+            <div class="col-sm-12" data-ng-class="{ 'has-error': frmAddSpon.sponmsg.$invalid }">
                 <label for="sponmsg">Any special note for us</label>
                 <textarea class="form-control" rows="3" name="sponmsg" data-ng-model="formData.sponmsg" data-ng-maxlength="300"></textarea>
                 <span class="help-block text-danger" data-ng-show="frmAddSpon.sponmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-sm-12" data-ng-hide="success !== 0">
-                <button type="submit" class="btn btn-primary" data-ng-disabled="frmAddSpon.$invalid">Save Your Information</button>
-                <span class="text-danger" data-ng-show="frmAddSpon.$invalid">[This button is disabled until all 'Required' fields are filled in and all data errors are corrected]</span>
+    </div>
+    <div class="modal-footer">
+         <div class="form-group">
+            <div class="col-sm-9 text-danger">
+                <p data-ng-show="frmAddSpon.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
             </div>
-            <div class="col-sm-12 alert alert-success" data-ng-show="success == 1">
-                <p><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks for the offer to help in our mission. We will contact you as soon as possible.</p>
+            <div class="col-sm-9 col-xs-12 alert alert-success" data-ng-show="success == 1">
+                <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks for the offer to help in our mission. We will contact you as soon as possible.</p>
             </div>
-            <div class="col-sm-12 alert alert-danger" data-ng-show="success == 2">
-                <p><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us directly.</p>
+            <div class="col-sm-9 col-xs-12 alert alert-danger" data-ng-show="success == 2">
+                <p class="pull-left"><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
             </div>
-            <div >
-                <p>{{ formData}}</p>
+            <div class="col-sm-2 col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmAddSpon.$invalid">Save Your Information</button>
+            </div>
+            <div class="col-sm-1 col-xs-12">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>

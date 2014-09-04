@@ -10,26 +10,21 @@
             <th>Email</th>
             <th>Identifier</th>
         </tr>
-        <tr data-ng-repeat="sub in contestents">
-            <td>{{sub.id}}</td>
-            <td>{{sub.date}}</td>
-            <td>{{sub.competition}}</td>
-            <td>{{sub.name}}</td>
-            <td>{{sub.age}}</td>
-            <td>{{sub.contact}}</td>
-            <td>{{sub.phone}}</td>
-            <td>{{sub.email}}</td>
-            <td>{{sub.file_type}}</td>
-            <td>{{sub.url}}</td>
-            <td>{{sub.file_path}}</td>
-            <td>{{sub.message}}</td>
-            <td>{{sub.ipaddress}}</td>
+        <tr data-ng-repeat="donation in resultset">
+            <td>{{donation.id}}</td>
+            <td>{{donation.name}}</td>
+            <td>{{donation.payment}}</td>
+            <td>{{donation.amount}}</td>
+            <td>{{donation.date}}</td>
+            <td>{{donation.email}}</td>
+            <td>{{donation.identifier}}</td>
         </tr>
     </table>
 </div>
-<ul>
-    <li class="text-danger" ng-repeat="error in errors">{{ error}}</li>
-</ul>
-<ul>
-    <li class="text-info" ng-repeat="message in msgs">{{ message}}</li>
-</ul>
+<div>
+    <span class="text-success">{{ msgs}}</span><span class="text-danger">{{ errors}}</span>
+</div>
+
+<div>
+    <a href="#/AddDonation">Add Donation</a>
+</div>
