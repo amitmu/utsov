@@ -1,2 +1,6 @@
 # Include your project-specific ignores in this file
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+/less/bootstrap/media.css
+/less/bootstrap/bootstrap.css
+/less/bootstrap/variables.css
+/less/bootstrap/
