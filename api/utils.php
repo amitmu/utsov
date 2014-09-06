@@ -22,6 +22,11 @@ class UtsovDB extends \SQLite3
 
 }
 
+ /*$log_data = json_encode($_post);
+    openlog("UtsovLog", LOG_PID, LOG_USER);
+    syslog(LOG_INFO, "Volunteer - Post Data: $log_data");
+    closelog();*/
+
 function getDBPath($dbname)
 {
     $dbpath = '';
