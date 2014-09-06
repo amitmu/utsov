@@ -1,1 +1,50 @@
-<h1>{{title}}</h1>
+<div class="container-fluid">
+    <h1>{{title}}</h1>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h1><span class="icon fa fa-money"></span> Donations</h1>
+                </div>
+                <div class="panel-body"><h2><p class="text-success">Total Count - {{counts.doncount}}</p></h2></div>
+                <div class="panel-footer">
+                    <a href="#/ListDonations">View Details <span class="icon fa fa-arrow-circle-o-right pull-right"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h1><span class="icon fa fa-star-o"></span> Sponsors</h1>
+                </div>
+                <div class="panel-body"><h2><p class="text-success">Total Count - {{counts.sponcount}}</p></h2></div>
+                <div class="panel-footer">
+                    <a href="#/ListSponsors">View Details <span class="icon fa fa-arrow-circle-o-right pull-right"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h1><span class="icon fa fa-users"></span> Volunteers</h1>
+                </div>
+                <div class="panel-body"><h2><p class="text-success">Total Count - {{counts.volcount}}</p></h2></div>
+                <div class="panel-footer">
+                    <a href="#/ListVolunteers">View Details <span class="icon fa fa-arrow-circle-o-right pull-right"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h1><span class="icon fa fa-camera-retro"></span> Contestants</h1>
+                </div>
+                <div class="panel-body"><h2><p class="text-success">Total Count - {{counts.comcount}}</p></h2></div>
+                <div class="panel-footer">
+                    <a href="#/ListSubmissions">View Details <span class="icon fa fa-arrow-circle-o-right pull-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

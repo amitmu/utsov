@@ -63,8 +63,35 @@ utsovAdminApp.config(['$routeProvider',
 }]);
 
 utsovAdminApp.controller('FrontpageController', function ($scope, $http) {
+
+    $scope.errors = '';
+    $scope.msgs = '';
+
     $scope.title = "Utsov Admin Page";
-    console.log($scope.title);
+    $scope.service = 'api/status.php';
+
+    console.log("Action:" + $scope.action);
+    console.log("Service:" + $scope.service);
+    console.log("Title:" + $scope.title);
+
+    $http.post($scope.service, {"action" : "list"}
+    ).success(function(output, status, headers, config) {
+        if (output.err == ''){
+            $scope.counts = output.data[0];
+            //$scope.counts = $scope.resultset[0];
+            $scope.msgs = "Server: " + output.msg;
+            //console.log($scope.msgs);
+        }
+        else{
+            $scope.errors = "Error: " + output.err;
+            $scope.msgs = output.msg;
+            //console.log($scope.errors);
+        }
+    }).error(function(output, status){
+        $scope.errors = "Status: " + status;
+        //console.log($scope.errors);
+    });
+
 });
 
 utsovAdminApp.controller('UserController', function ($scope, $http) {
