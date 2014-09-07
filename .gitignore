@@ -1,2 +1,14 @@
 # Include your project-specific ignores in this file
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+/undefined
+/img/carousel/bollywood.jpg
+/img/carousel/background1.jpg
+/img/carousel/goldCoin1.jpg
+/img/carousel/goldCoin.png
+/img/carousel/goldCoin2.jpg
+/img/carousel/goldCoin3.jpg
+/img/carousel/keys.jpg
+/img/carousel/sitar.jpg
+/img/carousel/tabla.jpg
+/img/carousel/flute.jpg
+/img/sponsors/lion_mrtg.png
