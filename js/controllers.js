@@ -24,7 +24,7 @@ utsovContactApp.config(['$routeProvider',
         action: 'CON'
       }).
       when('/AddDonation', {
-        templateUrl: 'templates/savedonation.html',
+        templateUrl: 'templates/modalsvdonate.html',
         controller: 'ContactController',
         action: 'DON'
       });
