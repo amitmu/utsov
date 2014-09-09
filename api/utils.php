@@ -22,6 +22,8 @@ class UtsovDB extends \SQLite3
 
 }
 
+class UtsovException extends \Exception { }
+
  /*$log_data = json_encode($_post);
     openlog("UtsovLog", LOG_PID, LOG_USER);
     syslog(LOG_INFO, "Volunteer - Post Data: $log_data");

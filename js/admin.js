@@ -66,31 +66,64 @@ utsovAdminApp.controller('FrontpageController', function ($scope, $http) {
 
     $scope.errors = '';
     $scope.msgs = '';
-
+    $scope.user = {};
     $scope.title = "Utsov Admin Page";
     $scope.service = 'api/status.php';
+    $scope.user.IsLoggedIn = false;
+
 
     console.log("Action:" + $scope.action);
     console.log("Service:" + $scope.service);
     console.log("Title:" + $scope.title);
 
-    $http.post($scope.service, {"action" : "list"}
-    ).success(function(output, status, headers, config) {
-        if (output.err == ''){
-            $scope.counts = output.data[0];
-            //$scope.counts = $scope.resultset[0];
-            $scope.msgs = "Server: " + output.msg;
-            //console.log($scope.msgs);
-        }
-        else{
-            $scope.errors = "Error: " + output.err;
-            $scope.msgs = output.msg;
+     //The login function
+    $scope.LoginUser = function () {
+        $scope.errors = '';
+        $scope.msgs = '';
+        $scope.success = 0;
+        $scope.formData.action = "login";
+        $http.post($scope.service,  $scope.formData
+        ).success(function(output, status, headers, config) {
+            if (output.err == ''){
+                $scope.msgs = "Server: " + output.msg;
+                $scope.success = 1;
+                $scope.user = output.data[0];
+                $scope.user.IsLoggedIn = true;
+                GetStatus();
+                //console.log($scope.msgs);
+            }
+            else{
+                $scope.errors = "Error: " + output.err;
+                $scope.msgs = output.msg;
+                $scope.success = 2;
+                //console.log($scope.errors);
+            }
+        }).error(function(output, status){
+            $scope.errors = "Status: " + status;
+            $scope.success = 2;
             //console.log($scope.errors);
-        }
-    }).error(function(output, status){
-        $scope.errors = "Status: " + status;
-        //console.log($scope.errors);
-    });
+        });
+    }
+
+    $scope.GetStatus = function () {
+        $http.post($scope.service, {"action" : "list"}
+        ).success(function(output, status, headers, config) {
+            if (output.err == ''){
+                $scope.counts = output.data[0];
+                //$scope.counts = $scope.resultset[0];
+                $scope.msgs = "Server: " + output.msg;
+                //console.log($scope.msgs);
+            }
+            else{
+                $scope.errors = "Error: " + output.err;
+                $scope.msgs = output.msg;
+                //console.log($scope.errors);
+            }
+        }).error(function(output, status){
+            $scope.errors = "Status: " + status;
+            //console.log($scope.errors);
+        });
+    }
 
 });
 
