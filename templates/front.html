@@ -1,5 +1,7 @@
-<div class="container-fluid">
-    <h1>{{title}}</h1>
+<div class="container">
+    <div class="row" data-ng-show="user.IsLoggedIn">
+        <h1>{{title}}</h1>
+    </div>
     <div class="row" data-ng-show="user.IsLoggedIn">
         <div class="col-sm-3">
             <div class="panel panel-success">
@@ -47,38 +49,49 @@
         </div>
     </div>
     <div class="row" data-ng-hide="user.IsLoggedIn">
-        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 text-centered panel-body">
-            <form role="form" name="frmLogin" class="form-horizontal" novalidate data-ng-submit="LoginUser()">
-                <div class="form-group" data-ng-class="{ 'has-error': frmLogin.username.$invalid }">
-                    <div class="input-group">
-                        <div class="input-group-addon">Login Id</div>
-                        <input type="text" class="form-control" name="username" placeholder="Your Login ID" required data-ng-model="formData.username" data-ng-minlength="5" data-ng-maxlength="25">
-                    </div>
-                    <span class="help-block" data-ng-show="frmLogin.username.$error.required">Required</span>
-                    <span class="help-block text-danger" data-ng-show="frmLogin.username.$error.minlength">Too Short. Please enter at least 5 characters.</span>
-                    <span class="help-block text-danger" data-ng-show="frmLogin.username.$error.maxlength">Too long. Please limit to 25 characters.</span>
+        <div class="col-md-6 col-md-offset-1 col-sm-8 col-sm-offset-1 text-centered panel-body">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="icon fa fa-user"></span> Please sign in to continue</h3>
                 </div>
-                <div class="form-group" data-ng-class="{ 'has-error': frmLogin.userpwd.$invalid }">
-                    <div class="input-group">
-                        <div class="input-group-addon">Login Password</div>
-                        <input type="text" class="form-control" name="userpwd" placeholder="Your Login Password" required data-ng-model="formData.userpwd" data-ng-minlength="10" data-ng-maxlength="25">
+                <div class="panel-body">
+                    <div class="padded-section-small">
+                    <form role="form" name="frmLogin" class="form-horizontal" novalidate data-ng-submit="LoginUser()">
+                        <div class="form-group" data-ng-class="{ 'has-error': frmLogin.username.$invalid }">
+                            <div class="input-group">
+                                <div class="input-group-addon">Login Id</div>
+                                <input type="text" class="form-control" name="username" placeholder="Your Login ID" required data-ng-model="formData.username" data-ng-minlength="5" data-ng-maxlength="25">
+                            </div>
+                            <span class="help-block" data-ng-show="frmLogin.username.$error.required">Required</span>
+                            <span class="help-block text-danger" data-ng-show="frmLogin.username.$error.minlength">Too Short. Please enter at least 5 characters.</span>
+                            <span class="help-block text-danger" data-ng-show="frmLogin.username.$error.maxlength">Too long. Please limit to 25 characters.</span>
+                        </div>
+                        <div class="form-group" data-ng-class="{ 'has-error': frmLogin.userpwd.$invalid }">
+                            <div class="input-group">
+                                <div class="input-group-addon">Password</div>
+                                <input type="password" class="form-control" name="userpwd" placeholder="Your Login Password" required data-ng-model="formData.userpwd" data-ng-minlength="10" data-ng-maxlength="25">
+                            </div>
+                            <span class="help-block" data-ng-show="frmLogin.userpwd.$error.required">Required</span>
+                            <span class="help-block text-danger" data-ng-show="frmLogin.userpwd.$error.minlength">Too Short. Please enter at least 10 characters.</span>
+                            <span class="help-block text-danger" data-ng-show="frmLogin.userpwd.$error.maxlength">Too long. Please limit to 25 characters.</span>
+                        </div>
+                        <div class="form-group">
+                            <div data-ng-hide="success == 1">
+                                <button type="submit" class="btn btn-primary pull-right" data-ng-disabled="frmLogin.$invalid">Log in for admin screen</button>
+                            </div>
+                            <div data-ng-hide="success == 1">
+                                <span class="text-danger" data-ng-show="frmLogin.$invalid">[The login button is disabled until all required fields are filled in.]</span>
+                                <span class="text-danger" data-ng-show="success == 2"> We could not validate your login information. Please try again.</span>
+                            </div>
+                            <div class="alert alert-success" data-ng-show="success == 1">
+                                <p><span class="fa fa-lg fa-check-circle-o"></span> Login successful. Redirecting to admin</p>
+                            </div>
+                        </div>
+                    </form>
                     </div>
-                    <span class="help-block text-danger" data-ng-show="frmLogin.userpwd.$error.minlength">Too Short. Please enter at least 10 characters.</span>
-                    <span class="help-block text-danger" data-ng-show="frmLogin.userpwd.$error.maxlength">Too long. Please limit to 25 characters.</span>
                 </div>
-                <div class="form-group">
-                    <div data-ng-hide="success == 1">
-                        <button type="submit" class="btn btn-primary" data-ng-disabled="frmLogin.$invalid">Log in for admin screen</button>
-                    </div>
-                    <div data-ng-hide="success == 1">
-                        <span class="text-danger" data-ng-show="frmLogin.$invalid">[This button is disabled until all 'Required' fields are filled in and all data errors are corrected]</span>
-                        <span class="text-danger" data-ng-show="success == 2"> We could not validate your login information. Please try again.</span>
-                    </div>
-                    <div class="alert alert-success" data-ng-show="success == 1">
-                        <p><span class="fa fa-lg fa-check-circle-o"></span> Login successful. Redirecting to admin</p>
-                    </div>
-                </div>
-            </form>
+            </div>
+
         </div>
     </div>
     <!--<div class="row">
