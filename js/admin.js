@@ -8,13 +8,19 @@ $(document).ready(function () {
 
 var utsovAdminApp = angular.module('utsovAdminApp', ['ngRoute']);
 
+utsovAdminApp.run(function($rootScope) {
+
+    $rootScope.IsLoggedIn = false;
+    console.log("Initializing Login Status:" + $rootScope.IsLoggedIn);
+})
 
 utsovAdminApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/ListUsers', {
         templateUrl: 'templates/users.html',
-        controller: 'UserController'
+        controller: 'ListController',
+        action: 'USER'
     }).
       when('/ListSponsors', {
         templateUrl: 'templates/sponsors.html',
@@ -62,15 +68,15 @@ utsovAdminApp.config(['$routeProvider',
       });
 }]);
 
-utsovAdminApp.controller('FrontpageController', function ($scope, $http) {
+utsovAdminApp.controller('FrontpageController', function ($scope, $http, $rootScope) {
 
     $scope.errors = '';
     $scope.msgs = '';
     $scope.user = {};
-    $scope.title = "Utsov Admin Page";
+    $scope.title = "Utsov Dashboard";
     $scope.service = 'api/status.php';
-    $scope.user.IsLoggedIn = false;
 
+    //$scope.user.IsLoggedIn = $rootScope.IsLoggedIn;
 
     console.log("Action:" + $scope.action);
     console.log("Service:" + $scope.service);
@@ -88,8 +94,9 @@ utsovAdminApp.controller('FrontpageController', function ($scope, $http) {
                 $scope.msgs = "Server: " + output.msg;
                 $scope.success = 1;
                 $scope.user = output.data[0];
-                $scope.user.IsLoggedIn = true;
-                GetStatus();
+                $rootScope.IsLoggedIn = true;
+                console.log("Setting Login Status:" + $rootScope.IsLoggedIn);
+                $scope.GetStatus();
                 //console.log($scope.msgs);
             }
             else{
@@ -132,90 +139,117 @@ utsovAdminApp.controller('UserController', function ($scope, $http) {
     console.log($scope.title);
 });
 
-utsovAdminApp.controller('ListController', function ($scope, $route, $http) {
-    //initializing....
-    $scope.errors = '';
-    $scope.msgs = '';
+utsovAdminApp.controller('ListController', function ($scope, $route, $http, $rootScope, $location) {
 
-    $scope.action = $route.current.action;
-    switch ($route.current.action)
+    console.log("Checking Login Status:" + $rootScope.IsLoggedIn);
+    if(!$rootScope.IsLoggedIn)
     {
-        case 'VOL':
-            $scope.title = "Registered Volunteers";
-            $scope.service = 'api/volunteers.php';
-            break;
-        case 'SPON':
-            $scope.title = "Contacts for Sponsorship";
-            $scope.service = 'api/sponsors.php';
-            break;
-        case 'CON':
-            $scope.title = "Contest Submissions";
-            $scope.service = 'api/contests.php';
-            break;
-        case 'DON':
-            $scope.title = "Paypal Donations";
-            $scope.service = 'api/donations.php';
-            break;
+        console.log("Redirecting based on Login Status check");
+        $location.path("templates/front.html");
     }
+    else
+    {
+        //initializing....
+        $scope.errors = '';
+        $scope.msgs = '';
 
-    console.log("Action:" + $scope.action);
-    console.log("Service:" + $scope.service);
-    console.log("Title:" + $scope.title);
 
-    $http.post($scope.service, {"action" : "list"}
-    ).success(function(output, status, headers, config) {
-        if (output.err == ''){
-            $scope.resultset = output.data;
-            $scope.msgs = "Server: " + output.msg;
-            //console.log($scope.msgs);
+        $scope.action = $route.current.action;
+        switch ($route.current.action)
+        {
+            case 'VOL':
+                $scope.title = "Registered Volunteers";
+                $scope.service = 'api/volunteers.php';
+                break;
+            case 'SPON':
+                $scope.title = "Contacts for Sponsorship";
+                $scope.service = 'api/sponsors.php';
+                break;
+            case 'CON':
+                $scope.title = "Contest Submissions";
+                $scope.service = 'api/contests.php';
+                break;
+            case 'DON':
+                $scope.title = "Paypal Donations";
+                $scope.service = 'api/donations.php';
+                break;
+            case 'USER':
+                $scope.title = "Admin Users";
+                $scope.service = 'api/users.php';
+                break;
         }
-        else{
-            $scope.errors = "Error: " + output.err;
-            $scope.msgs = output.msg;
-            //console.log($scope.errors);
-        }
-    }).error(function(output, status){
-        $scope.errors = "Status: " + status;
-        //console.log($scope.errors);
-    });
+
+        console.log("Action:" + $scope.action);
+        console.log("Service:" + $scope.service);
+        console.log("Title:" + $scope.title);
+
+        $http.post($scope.service, {"action" : "list"}
+        ).success(function(output, status, headers, config) {
+            if (output.err == ''){
+                $scope.resultset = output.data;
+                $scope.msgs = "Server: " + output.msg;
+                console.log($scope.msgs);
+            }
+            else{
+                $scope.errors = "Error: " + output.err;
+                $scope.msgs = output.msg;
+                console.log($scope.errors);
+            }
+        }).error(function(output, status){
+            $scope.errors = "Status: " + status;
+            console.log($scope.errors);
+        });
+    }
 
 });
 
 
-utsovAdminApp.controller('AddController', function ($scope, $route, $http) {
+utsovAdminApp.controller('AddController', function ($scope, $route, $http, $rootScope, $location) {
 
-    //initializing....
-    $scope.errors = '';
-    $scope.msgs = '';
-    $scope.formData = {};
-    $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
-    $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
-    $scope.success = 0;
 
-    $scope.action = $route.current.action;
-    switch ($route.current.action)
+    if(!$rootScope.IsLoggedIn)
     {
-        case 'VOL':
-            $scope.title = "Register To Volunteer";
-            $scope.service = 'api/volunteers.php';
-            break;
-        case 'SPON':
-            $scope.title = "Register For Sponsorship";
-            $scope.service = 'api/sponsors.php';
-            break;
-        case 'CON':
-            $scope.title = "Register For Contest";
-            $scope.service = 'api/contests.php';
-            break;
-         case 'DON':
-            $scope.title = "Donate with Paypal";
-            $scope.service = 'api/donations.php';
-            break;
+        console.log("Redirecting based on Login Status check");
+        $location.path("templates/front.html");
     }
 
-    console.log("Action:" + $scope.action);
-    console.log("Service:" + $scope.service);
-    console.log("Title:" + $scope.title);
+    else
+    {
+        //initializing....
+        $scope.errors = '';
+        $scope.msgs = '';
+        $scope.formData = {};
+        $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
+        $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
+        $scope.success = 0;
+
+        $scope.action = $route.current.action;
+        switch ($route.current.action)
+        {
+            case 'VOL':
+                $scope.title = "Register To Volunteer";
+                $scope.service = 'api/volunteers.php';
+                break;
+            case 'SPON':
+                $scope.title = "Register For Sponsorship";
+                $scope.service = 'api/sponsors.php';
+                break;
+            case 'CON':
+                $scope.title = "Register For Contest";
+                $scope.service = 'api/contests.php';
+                break;
+             case 'DON':
+                $scope.title = "Donate with Paypal";
+                $scope.service = 'api/donations.php';
+                break;
+        }
+
+        console.log("Action:" + $scope.action);
+        console.log("Service:" + $scope.service);
+        console.log("Title:" + $scope.title);
+
+    }
+
 
     //The actual add function
     $scope.SubmitFormData = function () {

@@ -1,8 +1,8 @@
-<div class="container">
-    <div class="row" data-ng-show="user.IsLoggedIn">
+<div class="container-fluid">
+    <div class="row" data-ng-show="IsLoggedIn">
         <h1>{{title}}</h1>
     </div>
-    <div class="row" data-ng-show="user.IsLoggedIn">
+    <div class="row" data-ng-show="IsLoggedIn">
         <div class="col-sm-3">
             <div class="panel panel-success">
                 <div class="panel-heading">
@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    <div class="row" data-ng-hide="user.IsLoggedIn">
+    <div class="row" data-ng-hide="IsLoggedIn">
         <div class="col-md-6 col-md-offset-1 col-sm-8 col-sm-offset-1 text-centered panel-body">
             <div class="panel panel-danger">
                 <div class="panel-heading">
