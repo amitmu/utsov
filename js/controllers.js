@@ -43,6 +43,11 @@ utsovEventApp.config(['$routeProvider',
         templateUrl: 'templates/modalsvcontest.html',
         controller: 'EventController',
         action: 'CON'
+      }).
+      when('/ChildrensEssay', {
+        templateUrl: 'templates/modalevtessay.html',
+        controller: 'EventController',
+        action: 'ESSAY'
       });
 }]);
 
@@ -130,6 +135,10 @@ utsovEventApp.controller('EventController', function ($scope, $route, $http) {
         case 'CON':
             $scope.title = "Register For Contest";
             $scope.service = 'api/contests.php';
+            break;
+         case 'ESSAY':
+            $scope.title = "Details of the Childrens Essay Contest";
+            $scope.service = 'api/donations.php';
             break;
     }
 
