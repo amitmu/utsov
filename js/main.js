@@ -32,7 +32,8 @@ jQuery(document).ready(function () {
 function initPujoMap(){
 
     // create a LatLng object containing the coordinate for the center of the map
-    var latlng = new google.maps.LatLng(40.43288, -74.39765);
+    //var latlng = new google.maps.LatLng(40.43288, -74.39765);
+    var latlng = new google.maps.LatLng(40.419851, -74.39574479999999);
 
     // prepare the map properties
     var options = {
