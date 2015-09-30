@@ -12,6 +12,8 @@ class UtsovDB extends \SQLite3
             case "contact":  $dbpath = 'db/capture.db'; break;
             case "contest":  $dbpath = 'db/capture.db'; break;
             case "sponsor":  $dbpath = 'db/capture.db'; break;
+            case "patron":  $dbpath = 'db/capture.db'; break;
+            case "register":  $dbpath = 'db/capture.db'; break;
             default:  $dbpath = 'db/utsov.db';
         }
         
@@ -38,6 +40,8 @@ function getDBPath($dbname)
         case "contest":  $dbpath = realpath('.') . '/db/capture.db'; break;
         case "sponsor":  $dbpath = realpath('.') . '/db/capture.db'; break;
         case "donation":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        case "patron":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        case "register":  $dbpath = realpath('.') . '/db/capture.db'; break;
         default:  $dbpath = realpath('.') . '/db/utsov.db';
     }
     return $dbpath;
