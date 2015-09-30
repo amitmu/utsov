@@ -9,9 +9,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+   
     <style>
       
       .navbar {
@@ -20,92 +18,176 @@
       }
     </style>
 </head>
-<body ng-app="carousel" style="background-color: #DD4814;">
+<body ng-app="utsovPOS" style="background-color: #DD4814;">
 
-<div ng-controller="folderCtrl">
- 
-  <!-- Fixed navbar -->
-  <nav class="navbar transparent navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#pos-navbar-collapse" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#"><img src="img/logo_nav1.png" /></a>
-      </div>
+  <div ng-controller="carouselCtrl">
   
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="pos-navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Year<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a ng-href="#2012" ng-click="selectFolder('2012')">2012</a></li>
-              <li class="disabled"><a ng-href="#2013" ng-click="selectFolder(2013)">2013</a></li>
-              <li><a ng-href="#2014" ng-click="selectFolder('2014')">2014</a></li>
-            </ul>
-          </li>
-        </ul>
-        <form class="navbar-form navbar-right" role="search">
-          <!--<div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-          </div>-->
-          <button type="button" class="btn btn-default">Register here</button>
-        </form>
-      </div><!-- /.navbar-collapse -->
-        
-    </div><!-- /.container-fluid -->
-  </nav>
+    <!-- Fixed navbar -->
+    <nav class="navbar transparent navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#pos-navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="img/logo_nav1.png" /></a>
+        </div>
     
-  <div class="container-fluid"  style="padding:0px; height:100%">
-    <!-- Carousel================================================== -->
-    <div id="myCarousel" class="carousel slide" style="width: {{w}}px; height:{{h}}px; margin: 0 auto" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" ng-repeat="img in images" class="{active : (img === 0)}" data-slide-to="{{img}}"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div ng-class="{item: true, active : (img === 0)}" ng-repeat="img in images"> <img ng-src="img/{{currentFolder}}/{{img}}.jpg" alt="Slide numder {{img}}">
-          <div class="container">
-            <div class="carousel-caption">Test Caption {{img}}</div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="pos-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Year<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a ng-href="#2012" ng-click="selectFolder('2012')">2012</a></li>
+                <li class="disabled"><a ng-href="#2013" ng-click="selectFolder(2013)">2013</a></li>
+                <li><a ng-href="#2014" ng-click="selectFolder('2014')">2014</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-right" role="search">
+            <!--<div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>-->
+            <a class="btn btn-success" href="#" role="button" data-toggle="modal" data-target="#registerModal">
+              Register Here<span class="icon icon-camera"></span>
+            </a>
+            <!--<button type="button" class="btn btn-default">Register here</button>-->
+          </form>
+        </div><!-- /.navbar-collapse -->
+          
+      </div><!-- /.container-fluid -->
+    </nav>
+      
+    <div class="container-fluid"  style="padding:0px; height:100%">
+      <!-- Carousel================================================== -->
+      <div id="myCarousel" class="carousel slide" style="width: {{w}}px; height:{{h}}px; margin: 0 auto" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#myCarousel" ng-repeat="img in images" class="{active : (img === 0)}" data-slide-to="{{img}}"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div ng-class="{item: true, active : (img === 0)}" ng-repeat="img in images"> <img ng-src="img/{{currentFolder}}/{{img}}.jpg" alt="Slide numder {{img}}">
+            <div class="container">
+              <div class="carousel-caption">Test Caption {{img}}</div>
+            </div>
           </div>
         </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a> 
       </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a> 
+      <!-- /.carousel -->
     </div>
-    <!-- /.carousel -->
+    
   </div>
   
-</div>
-
-
+  
+  <!--////////// Registration Modal Window ///////////////-->
+  <div ng-controller="registerCtrl" class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="modalHeaderLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-user text-danger"></span> {{ title}}</h4>
+            </div>
+        <form role="form" name="frmRegister" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+            <div class="modal-body">
+        
+                <div class="form-group" data-ng-class="{ 'has-error': frmAddVol.volname.$invalid }">
+                    <label class="col-sm-2" for="volname">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="volname" placeholder="Your Full Name" required data-ng-model="formData.volname" data-ng-minlength="3" data-ng-maxlength="100">
+                        <span class="help-block" data-ng-show="frmAddVol.volname.$error.required">Required</span>
+                        <span class="help-block" data-ng-show="frmAddVol.volname.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block" data-ng-show="frmAddVol.volname.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2" for="voladd1">Mailing Address <span class="text-muted">(optional)</span></label>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmAddVol.voladd1.$invalid }">
+                        <input type="text" class="form-control" name="voladd1" placeholder="Street address line 1" data-ng-model="formData.voladd1" data-ng-minlength="3" data-ng-maxlength="100">
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd1.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    </div>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmAddVol.voladd2.$invalid }">
+                        <input type="text" class="form-control" name="voladd2" placeholder="Street address line 2" data-ng-model="formData.voladd2" data-ng-minlength="3" data-ng-maxlength="100">
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd2.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volcity.$invalid }">
+                        <label for="volcity">City</label>
+                        <input type="text" class="form-control" name="volcity" placeholder="Mailing address City" data-ng-model="formData.volcity" data-ng-minlength="3" data-ng-maxlength="50">
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.volcity.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.volcity.$error.maxlength">Too long. Please limit to 50 characters.</span>
+                    </div>
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volstate.$invalid }">
+                        <label for="volstate">State</label>
+                        <input type="text" class="form-control" name="volstate" placeholder="Mailing address State" data-ng-model="formData.volstate" data-ng-minlength="2" data-ng-maxlength="20">
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.volstate.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.volstate.$error.maxlength">Too long. Please limit to 20 characters.</span>
+                    </div>
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volzip.$invalid }">
+                        <label for="volzip">Zip</label>
+                        <input type="text" class="form-control" name="volzip" placeholder="Mailing address Zip" data-ng-model="formData.volzip" data-ng-pattern="zipCodePattern">
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.volzip.$error.pattern">Please enter a valid US ZIP code.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6" data-ng-class="{ 'has-error': frmAddVol.volphone.$invalid }">
+                        <label for="volphone">Phone</label>
+                        <input type="text" class="form-control" name="volphone" placeholder="Primary Phone" required data-ng-model="formData.volphone" data-ng-pattern="phoneNumPattern">
+                        <span class="help-block" data-ng-show="frmAddVol.volphone.$error.required">Required</span>
+                        <span class="help-block" data-ng-show="frmAddVol.volphone.$error.pattern">Please enter a valid 10 digit US phone number.</span>
+                    </div>
+                    <div class="col-sm-6" data-ng-class="{ 'has-error': frmAddVol.volemail.$invalid }">
+                        <label for="volemail">Email address</label>
+                        <input type="email" class="form-control" name="volemail" placeholder="Primary email" required data-ng-model="formData.volemail">
+                        <span class="help-block" data-ng-show="frmAddVol.volemail.$error.required">Required</span>
+                        <span class="help-block" data-ng-show="frmAddVol.volemail.$error.email">Please enter a valid email address.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12" data-ng-class="{ 'has-error': frmAddVol.volmsg.$invalid }">
+                        <label for="volmsg">Any special note for us</label>
+                        <textarea class="form-control" rows="3" name="volmsg" data-ng-model="formData.volmsg" data-ng-maxlength="300"></textarea>
+                        <span class="help-block text-danger" data-ng-show="frmAddVol.volmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <div class="col-sm-9 text-danger">
+                        <p data-ng-show="frmAddVol.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
+                    </div>
+                    <div class="col-sm-9 col-xs-12 alert alert-success" data-ng-show="success == 1">
+                        <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks for the offer to help. We will contact you as needed.</p>
+                    </div>
+                    <div class="col-sm-9 col-xs-12 alert alert-danger" data-ng-show="success == 2">
+                        <p class="pull-left"><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
+                    </div>
+                    <div class="col-sm-2 col-xs-12">
+                        <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmAddVol.$invalid">Save Your Information</button>
+                    </div>
+                    <div class="col-sm-1 col-xs-12">
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
 <!--////// Adding scripts to bottom of document //////-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+<script src="js/pos.js"></script>
 
-<script>
-    var app = angular.module('carousel', []);
-    app.controller('folderCtrl', function ($scope, $http) {
-        $scope.w = window.innerWidth;
-        $scope.h = window.innerHeight;
-        //$scope.uri = "http://lorempixel.com";
-        $scope.folders = [
-            '2012',
-            '2013',
-            '2014',
-        ];
-        $scope.images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        $scope.currentFolder = $scope.folders[0];
-        $scope.selectFolder = function (folder) {
-            $scope.currentFolder = folder;
-        };
-        $scope.activeFolder = function (folder) {
-            return (folder === $scope.currentFolder) ? 'active' : '';
-        };
-    });
-</script>
 </body>
 </html>
