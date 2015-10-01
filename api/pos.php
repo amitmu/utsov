@@ -13,8 +13,8 @@ require(dirname(__FILE__).'/patrons.php');
     $action = $_post->action;
     switch($action) { //Switch case for value of action
         case "test": test_function($_post); break;
-        case "list" :  getPatronList($_post); break;
-        case "add" :  addPatron($_post); break;
+        case "register" :  register($_post); break;
+        case "search" :  registerpatron($_post); break;
         default:  testFunction($_post);
     }
 
@@ -28,117 +28,130 @@ require(dirname(__FILE__).'/patrons.php');
         $return["post"] = $post;
         echo json_encode($return);
     }
-
-    //Function to return  list of patrons
-
-    function getPatronList($post){
+    
+    //Function to search patron
+    function searchpatron($post){
         $return["err"] = '';
         $return["msg"] = '';
         $arr = array();
-        try {
-            /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("patron"));
-
-            $result = $db->query('SELECT * FROM tb_patrons');
-            $num = 0;
-            foreach($result as $row)
-            {
-                $arr[$num] = $row;
-                $num++;
-            }
-
-            $return["data"] = $arr;
-            $return ["msg"] = $num . " rows returned";
-            //closing DB
-            $db = NULL;
-        }
-        catch(PDOException $e)
+        try
         {
-            $return["err"] = "DB: Unhandled PDO Exception";
+            $find = $post->find;
+            $return = findPatron($find);
+        }
+        catch(Exception $e)
+        {
+            $return["err"] = "Unhandled Registration Exception";
             $return["msg"] = $e->getMessage();
         }
-
+        
         echo json_encode($return);
     }
-
-
-    //Function to add patrons
-
-    function addPatron($post){
+    
+    
+    //Function to add registration
+    
+    function register($post){
         $return["err"] = '';
         $return["msg"] = '';
         try {
+            
             /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("patron"));
-           
-            $stmtIns = $db->prepare("INSERT INTO tb_patrons(date, name1, name2, email1, email2, phone1, phone2, address1, address2, city, state, zip, ipaddress)
-                VALUES(:date, :name1, :name2, :email1, :email2, :phone1, :phone2, :add1, :add2, :city, :state, :zip, :ipadd)");
-
-            $bindVar = $stmtIns->bindParam(':date', $date);
-            $bindVar = $stmtIns->bindParam(':name1', $name1);
-            $bindVar = $stmtIns->bindParam(':name2', $name1);
-            $bindVar = $stmtIns->bindParam(':email1', $name1);
-            $bindVar = $stmtIns->bindParam(':email2', $name1);
-            $bindVar = $stmtIns->bindParam(':phone1', $name1);
-            $bindVar = $stmtIns->bindParam(':phone2', $name1);
-            $bindVar = $stmtIns->bindParam(':add1', $address1);
-            $bindVar = $stmtIns->bindParam(':add2', $address2);
-            $bindVar = $stmtIns->bindParam(':city', $city);
-            $bindVar = $stmtIns->bindParam(':state', $state);
-            $bindVar = $stmtIns->bindParam(':zip', $zip);
-            $bindVar = $stmtIns->bindParam(':ipadd', $ipaddress);
-
-            // inserting row
-            $date = date("Ymd:His");
-            $name1 = $post->patname1;
-            $name2 = $post->patname2;
-            $email1 = $post->patemail1;
-            $email2 = $post->patemail2;
-            $phone1 = $post->patphone1;
-            $phone2 = $post->patphone2;
-            $address1 = $post->patadd1;
-            $address2 = $post->patadd2;
-            $city = $post->patcity;
-            $state = $post->patstate;
-            $zip = $post->patzip;
+            $db = new PDO("sqlite:" . getDBPath("register"));
+            
+            $patronid = $post->patronid;
             $ipaddress = get_client_ip();
-
-            if($bindVar)
+            
+            if(empty($patronid))
             {
-                $exec = $stmtIns->execute();
-
-                if($exec){
+                //adding new patron record
+                $name1 = $post->name1;
+                $name2 = $post->name2;
+                $email1 = $post->email1;
+                $email2 = $post->email2;
+                $phone1 = $post->phone1;
+                $phone2 = $post->phone2;
+                $address1 = $post->address1;
+                $address2 = $post->address2;
+                $city = $post->city;
+                $state = $post->state;
+                $zip = $post->zip;
+                //ipaddress filled above
+                
+                //calling insert on patron.php
+                $return = addPatron($name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress);
+                //storing the returned id for the new record 
+                $patronid = $return["data"];
+            }
+            
+           
+            if(empty($return["err"])){
+                
+                //adding registration record
+                
+                /*** connect to SQLite database ***/
+                $db = new PDO("sqlite:" . getDBPath("register"));
+                
+                $stmtIns = $db->prepare("INSERT INTO tb_registration(patronid, year, date, donation, headcount, message, ipaddress)
+                    VALUES(:patronid, :date, :year, :date, :donation, :headcount, :msg, :ipadd)");
+    
+                $bindVar = $stmtIns->bindParam(':patronid', $patronid);
+                $bindVar = $stmtIns->bindParam(':date', $date);
+                $bindVar = $stmtIns->bindParam(':year', $year);
+                $bindVar = $stmtIns->bindParam(':donation', $donation);
+                $bindVar = $stmtIns->bindParam(':headcount', $headcount);
+                $bindVar = $stmtIns->bindParam(':msg', $message);
+                $bindVar = $stmtIns->bindParam(':ipadd', $ipaddress);
+    
+                // binding values
+                
+                //patronid filled above
+                $year = $post->regyear;
+                $date = date("Ymd:His");
+                $donation = $post->donamount;
+                $headcount = $post->regcount;
+                $message = $post->volmsg;
+                //ipaddress filled above
                     
-                    $result = $db->query('SELECT last_insert_rowid() AS rowid FROM tb_patrons LIMIT 1');
-                    
-                    //$f = $q->fetch();
-                    $lastrow = $result['rowid'];
-                    
-                    $return["msg"] = "NEW ROW ADDED";
-                    $return["data"] = $lastrow;
+                if($bindVar)
+                {
+                    //inserting new registration
+                    $exec = $stmtIns->execute();
+    
+                    if($exec){
+                        $return["msg"] = "NEW ROW ADDED";
+                    }
+                    else{
+                        $return["err"] = "DB: Execute Failed";
+                        $return["msg"] = $stmtIns->errorInfo();
+                    }
                 }
                 else{
-                    $return["err"] = "DB: Execute Failed";
+                    $return["err"] = "DB: Bind Failed";
                     $return["msg"] = $stmtIns->errorInfo();
                 }
+    
+                //closing DB
+                $db = NULL;
+                        
             }
-            else{
-                $return["err"] = "DB: Bind Failed";
-                $return["msg"] = $stmtIns->errorInfo();
-            }
-
-            //closing DB
-            $db = NULL;
+            
         }
         catch(PDOException $e)
         {
             $return["err"] = "DB: Unhandled PDO Exception";
             $return["msg"] = $e->getMessage();
         }
+        catch(Exception $e){
+            $return["err"] = "Unhandled Registration Exception";
+            $return["msg"] = $e->getMessage();
+        }
 
         echo json_encode($return);
+        
+    }
 
-     }
+  
 
 
 

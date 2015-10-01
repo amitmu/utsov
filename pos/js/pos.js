@@ -31,15 +31,22 @@ app.controller('registerCtrl', function ($scope, $http) {
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
-    $scope.title = "Register To Volunteer";
+    $scope.title = "Register your patronage";
     $scope.service = '../api/volunteers.php';
     
     //console.log("Action:" + $scope.action);
     console.log("Service:" + $scope.service);
     console.log("Title:" + $scope.title);
 
+    $scope.SearchPatron = function () {
+        $scope.errors = '';
+        $scope.msgs = '';
+        $scope.found = 0;
+        $scope.formData.action = 'search';
+    }
+    
     //The actual add function
-    $scope.SubmitFormData = function () {
+    $scope.SubmitRegistration = function () {
         $scope.errors = '';
         $scope.msgs = '';
         $scope.success = 0;

@@ -92,8 +92,17 @@
          <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-user text-danger"></span> {{ title}}</h4>
-            </div>
-        <form role="form" name="frmRegister" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
+         </div>
+         <form role="form" name="frmSearch" class="form-horizontal" novalidate data-ng-submit="SearchPatron()">
+         <div class="modal-body">
+             <div>If you have registered with us before, including manually, please use he search function to search for your email address or phone number. You can also search with part of your name.</div>
+         </div>
+        <div class="modal-body">
+             <div>If you have registered with us before, including manually, please use he search function to search for your email address or phone number. You can also search with part of your name.</div>
+         </div>
+
+         </form>
+        <form role="form" name="frmRegister" class="form-horizontal" novalidate data-ng-submit="SubmitRegistration()">
             <div class="modal-body">
         
                 <div class="form-group" data-ng-class="{ 'has-error': frmAddVol.volname.$invalid }">
