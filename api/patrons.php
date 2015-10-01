@@ -6,39 +6,12 @@ use PDO;
 require(dirname(__FILE__).'/utils.php');
 
 //// Main Section /////
-    $_post = json_decode(file_get_contents("php://input"));
-    //$request_type = $_SERVER['HTTP_X_REQUESTED_WITH'];
+    //$_post = json_decode(file_get_contents("php://input"));
 
-    //if (is_ajax()) {
-
-    $action = $_post->action;
-    switch($action) { //Switch case for value of action
-        case "test": test_function($_post); break;
-        case "list" :  getPatronList($_post); break;
-        case "add" :  addPatron($_post); break;
-        default:  testFunction($_post);
-    }
-
-    //}
-    //else{ //should not be used - for test only
-    //    getPatronList($_post);
-    //}
-
-
-
-
-////// End Main Section //////
-
-    function testFunction($post){
-        $return["err"] = '';
-        $return["msg"] = "Test";
-        $return["post"] = $post;
-        echo json_encode($return);
-    }
 
     //Function to return  list of patrons
 
-    function getPatronList($post){
+    function getPatronList(){
         $return["err"] = '';
         $return["msg"] = '';
         $arr = array();
@@ -65,13 +38,104 @@ require(dirname(__FILE__).'/utils.php');
             $return["msg"] = $e->getMessage();
         }
 
-        echo json_encode($return);
+        return $return;
+        //echo json_encode($return);
+    }
+
+    //Function to find Patron by id
+    function getPatron($patronid){
+        $return["err"] = '';
+        $return["msg"] = '';
+        $arr = array();
+        
+        try {
+            /*** connect to SQLite database ***/
+            $db = new PDO("sqlite:" . getDBPath("patron"));
+            
+            $stmt = $db->prepare('SELECT * FROM tb_patrons WHERE id = :patronid');
+            
+            $bindVar = $stmt->bindParam(':patronid', $patronid);
+            
+            if($bindVar)
+            {
+                $num = 0;
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+                foreach($result as $row)
+                {
+                    $arr[$num] = $row;
+                    $num++;
+                }
+                
+                $return["data"] = $arr;
+                $return ["msg"] = $num . " rows returned";
+                //closing DB
+                $db = NULL;
+            }
+            else{
+                $return["err"] = "DB:Patrons Bind Failed";
+                $return["msg"] = $stmt->errorInfo();
+            }
+        }
+        catch(PDOException $e)
+        {
+            $return["err"] = "DB:Patrons Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
+        }
+        
+        return $return;
+    }
+
+    //Function to search Patron by name, email or phone number
+    
+    function findPatron($search){
+        $return["err"] = '';
+        $return["msg"] = '';
+        $arr = array();
+        
+        try {
+            /*** connect to SQLite database ***/
+            $db = new PDO("sqlite:" . getDBPath("patron"));
+            
+            $stmt = $db->prepare('SELECT * FROM tb_patrons WHERE name1 LIKE :likesearch OR name2 LIKE :likesearch OR email1 = :fullsearch OR email2 = :fullsearch OR phone1 = :fullsearch OR phone2 = :fullsearch ORDER BY ');
+            
+            $bindVar = $stmt->bindParam(':likesearch', '%'.$search.'%');
+            $bindVar = $stmt->bindParam(':fullsearch', $search);
+            
+            if($bindVar)
+            {
+                $num = 0;
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+                foreach($result as $row)
+                {
+                    $arr[$num] = $row;
+                    $num++;
+                }
+                
+                $return["data"] = $arr;
+                $return ["msg"] = $num . " rows returned";
+                //closing DB
+                $db = NULL;
+            }
+            else{
+                $return["err"] = "DB:Patrons Bind Failed";
+                $return["msg"] = $stmt->errorInfo();
+            }
+        }
+        catch(PDOException $e)
+        {
+            $return["err"] = "DB:Patrons Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
+        }
+        
+        return $return;
     }
 
 
     //Function to add patrons
 
-    function addPatron($post){
+    function addPatron($name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress){
         $return["err"] = '';
         $return["msg"] = '';
         try {
@@ -97,7 +161,7 @@ require(dirname(__FILE__).'/utils.php');
 
             // inserting row
             $date = date("Ymd:His");
-            $name1 = $post->patname1;
+            /*$name1 = $post->patname1;
             $name2 = $post->patname2;
             $email1 = $post->patemail1;
             $email2 = $post->patemail2;
@@ -108,7 +172,7 @@ require(dirname(__FILE__).'/utils.php');
             $city = $post->patcity;
             $state = $post->patstate;
             $zip = $post->patzip;
-            $ipaddress = get_client_ip();
+            $ipaddress = get_client_ip();*/
 
             if($bindVar)
             {
@@ -125,12 +189,12 @@ require(dirname(__FILE__).'/utils.php');
                     $return["data"] = $lastrow;
                 }
                 else{
-                    $return["err"] = "DB: Execute Failed";
+                    $return["err"] = "DB:Patrons Execute Failed";
                     $return["msg"] = $stmtIns->errorInfo();
                 }
             }
             else{
-                $return["err"] = "DB: Bind Failed";
+                $return["err"] = "DB:Patrons Bind Failed";
                 $return["msg"] = $stmtIns->errorInfo();
             }
 
@@ -139,15 +203,10 @@ require(dirname(__FILE__).'/utils.php');
         }
         catch(PDOException $e)
         {
-            $return["err"] = "DB: Unhandled PDO Exception";
+            $return["err"] = "DB:Patrons: Unhandled PDO Exception";
             $return["msg"] = $e->getMessage();
         }
-
-        echo json_encode($return);
-
+        return $return;
      }
-
-
-
 
 ?>

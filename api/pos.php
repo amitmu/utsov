@@ -4,6 +4,8 @@ namespace UtsovAPI;
 use PDO;
 
 require(dirname(__FILE__).'/utils.php');
+require(dirname(__FILE__).'/patrons.php');
+
 
 //// Main Section /////
     $_post = json_decode(file_get_contents("php://input"));
