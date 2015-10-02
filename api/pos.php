@@ -110,7 +110,7 @@ require(dirname(__FILE__).'/patrons.php');
                 $date = date("Ymd:His");
                 $donation = $post->donamount;
                 $headcount = $post->regcount;
-                $message = $post->volmsg;
+                $message = $post->regmsg;
                 //ipaddress filled above
                     
                 if($bindVar)

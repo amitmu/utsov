@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-   
+    <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="../css/utsov.css">
     <style>
       
       .navbar {
@@ -95,83 +95,128 @@
          </div>
          <form role="form" name="frmSearch" class="form-horizontal" novalidate data-ng-submit="SearchPatron()">
          <div class="modal-body">
-             <div>If you have registered with us before, including manually, please use he search function to search for your email address or phone number. You can also search with part of your name.</div>
-         </div>
-        <div class="modal-body">
-             <div>If you have registered with us before, including manually, please use he search function to search for your email address or phone number. You can also search with part of your name.</div>
-         </div>
-
-         </form>
+             <div class="form-group" style="bg-color:yellow;">
+                <p style="padding-left: 20px; padding-right: 10px">
+                    If you have registered with us before or given us your information in any form, please search for your email address or phone number. You can also search with part of your name.  <span class="text-muted">(optional)</span>  
+                </p>
+                <div class="col-sm-10">
+                     <input type="text" class="form-control" name="find" placeholder="Your full email or 10 digit phone number" required data-ng-model="frmSearch.volname" data-ng-minlength="3" data-ng-maxlength="100"> 
+                </div>
+                
+                <div class="col-sm-2 col-xs-12">
+                    <button type="submit" class="btn btn-primary" data-ng-hide="success !== 0" data-ng-disabled="frmSearch.$invalid">Search</button>
+                </div>
+                <p>&nbsp;</p>
+             </div>
+         <!--</div>-->
+        </form>
         <form role="form" name="frmRegister" class="form-horizontal" novalidate data-ng-submit="SubmitRegistration()">
-            <div class="modal-body">
+            <!--<div class="modal-body">-->
         
-                <div class="form-group" data-ng-class="{ 'has-error': frmAddVol.volname.$invalid }">
-                    <label class="col-sm-2" for="volname">Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="volname" placeholder="Your Full Name" required data-ng-model="formData.volname" data-ng-minlength="3" data-ng-maxlength="100">
-                        <span class="help-block" data-ng-show="frmAddVol.volname.$error.required">Required</span>
-                        <span class="help-block" data-ng-show="frmAddVol.volname.$error.minlength">Too Short. Please enter at least 3 characters.</span>
-                        <span class="help-block" data-ng-show="frmAddVol.volname.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                <div class="form-group">
+                    <label class="col-sm-2" for="name1">Name</label>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.name1.$invalid }">
+                        <input type="text" class="form-control" name="name1" placeholder="Your Full Name" required data-ng-model="formData.name1" data-ng-minlength="3" data-ng-maxlength="100">
+                        <!--<span class="help-block" data-ng-show="frmRegister.name1.$error.required">Required</span>-->
+                        <span class="help-block" data-ng-show="frmRegister.name1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block" data-ng-show="frmRegister.name1.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    </div>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.name2.$invalid }">
+                        <input type="text" class="form-control" name="name2" placeholder="Spouse/Partner Full Name" data-ng-model="formData.name2" data-ng-minlength="3" data-ng-maxlength="100">
+                        <span class="help-block" data-ng-show="frmRegister.name2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block" data-ng-show="frmRegister.name2.$error.maxlength">Too long. Please limit to 100 characters.</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2" for="voladd1">Mailing Address <span class="text-muted">(optional)</span></label>
-                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmAddVol.voladd1.$invalid }">
-                        <input type="text" class="form-control" name="voladd1" placeholder="Street address line 1" data-ng-model="formData.voladd1" data-ng-minlength="3" data-ng-maxlength="100">
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd1.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    <label class="col-sm-2" for="email1">Email</label>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.email1.$invalid }">
+                        <input type="email" class="form-control" name="email1" placeholder="Your email address" required data-ng-model="formData.email1">
+                        <!--<span class="help-block" data-ng-show="frmRegister.email1.$error.required">Required</span>-->
+                        <span class="help-block" data-ng-show="frmRegister.email1.$error.email">Please enter a valid email address.</span>
                     </div>
-                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmAddVol.voladd2.$invalid }">
-                        <input type="text" class="form-control" name="voladd2" placeholder="Street address line 2" data-ng-model="formData.voladd2" data-ng-minlength="3" data-ng-maxlength="100">
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.voladd2.$error.maxlength">Too long. Please limit to 100 characters.</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volcity.$invalid }">
-                        <label for="volcity">City</label>
-                        <input type="text" class="form-control" name="volcity" placeholder="Mailing address City" data-ng-model="formData.volcity" data-ng-minlength="3" data-ng-maxlength="50">
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.volcity.$error.minlength">Too Short. Please enter at least 3 characters.</span>
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.volcity.$error.maxlength">Too long. Please limit to 50 characters.</span>
-                    </div>
-                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volstate.$invalid }">
-                        <label for="volstate">State</label>
-                        <input type="text" class="form-control" name="volstate" placeholder="Mailing address State" data-ng-model="formData.volstate" data-ng-minlength="2" data-ng-maxlength="20">
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.volstate.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.volstate.$error.maxlength">Too long. Please limit to 20 characters.</span>
-                    </div>
-                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddVol.volzip.$invalid }">
-                        <label for="volzip">Zip</label>
-                        <input type="text" class="form-control" name="volzip" placeholder="Mailing address Zip" data-ng-model="formData.volzip" data-ng-pattern="zipCodePattern">
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.volzip.$error.pattern">Please enter a valid US ZIP code.</span>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.email2.$invalid }">
+                        <input type="email" class="form-control" name="email2" placeholder="Spouse/Partner email" data-ng-model="formData.email2">
+                        <span class="help-block" data-ng-show="frmRegister.email2.$error.email">Please enter a valid email address.</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-6" data-ng-class="{ 'has-error': frmAddVol.volphone.$invalid }">
-                        <label for="volphone">Phone</label>
-                        <input type="text" class="form-control" name="volphone" placeholder="Primary Phone" required data-ng-model="formData.volphone" data-ng-pattern="phoneNumPattern">
-                        <span class="help-block" data-ng-show="frmAddVol.volphone.$error.required">Required</span>
-                        <span class="help-block" data-ng-show="frmAddVol.volphone.$error.pattern">Please enter a valid 10 digit US phone number.</span>
+                    <label class="col-sm-2" for="phone1">Phone Number</label>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.phone1.$invalid }">
+                        <input type="text" class="form-control" name="phone1" placeholder="Primary Phone" required data-ng-model="formData.phone1" data-ng-pattern="phoneNumPattern">
+                        <!--<span class="help-block" data-ng-show="frmRegister.phone1.$error.required">Required</span>-->
+                        <span class="help-block" data-ng-show="frmRegister.phone1.$error.pattern">Please enter a valid 10 digit US phone number.</span>
                     </div>
-                    <div class="col-sm-6" data-ng-class="{ 'has-error': frmAddVol.volemail.$invalid }">
-                        <label for="volemail">Email address</label>
-                        <input type="email" class="form-control" name="volemail" placeholder="Primary email" required data-ng-model="formData.volemail">
-                        <span class="help-block" data-ng-show="frmAddVol.volemail.$error.required">Required</span>
-                        <span class="help-block" data-ng-show="frmAddVol.volemail.$error.email">Please enter a valid email address.</span>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.phone2.$invalid }">
+                        <input type="text" class="form-control" name="phone2" placeholder="Other Phone" data-ng-model="formData.phone2" data-ng-pattern="phoneNumPattern">
+                        <span class="help-block" data-ng-show="frmRegister.phone2.$error.pattern">Please enter a valid 10 digit US phone number.</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-12" data-ng-class="{ 'has-error': frmAddVol.volmsg.$invalid }">
-                        <label for="volmsg">Any special note for us</label>
+                    <label class="col-sm-2" for="address1">Mailing Address</label>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.address1.$invalid }">
+                        <input type="text" class="form-control" name="address1" placeholder="Street address line 1" data-ng-model="formData.address1" data-ng-minlength="3" data-ng-maxlength="100">
+                        <span class="help-block text-danger" data-ng-show="frmRegister.address1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.address1.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    </div>
+                    <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.address2.$invalid }">
+                        <input type="text" class="form-control" name="address2" placeholder="Street address line 2" data-ng-model="formData.address2" data-ng-minlength="3" data-ng-maxlength="100">
+                        <span class="help-block text-danger" data-ng-show="frmRegister.address2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.address2.$error.maxlength">Too long. Please limit to 100 characters.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.city.$invalid }">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" name="city" placeholder="Mailing address City" data-ng-model="formData.city" data-ng-minlength="3" data-ng-maxlength="50">
+                        <span class="help-block text-danger" data-ng-show="frmRegister.city.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.city.$error.maxlength">Too long. Please limit to 50 characters.</span>
+                    </div>
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.state.$invalid }">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" name="state" placeholder="Mailing address State" data-ng-model="formData.state" data-ng-minlength="2" data-ng-maxlength="20">
+                        <span class="help-block text-danger" data-ng-show="frmRegister.state.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.state.$error.maxlength">Too long. Please limit to 20 characters.</span>
+                    </div>
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.zip.$invalid }">
+                        <label for="zip">Zip</label>
+                        <input type="text" class="form-control" name="zip" placeholder="Mailing address Zip" data-ng-model="formData.zip" data-ng-pattern="zipCodePattern">
+                        <span class="help-block text-danger" data-ng-show="frmRegister.zip.$error.pattern">Please enter a valid US ZIP code.</span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.regyear.$invalid }">
+                        <label for="city">Year</label>
+                        <input type="number" class="form-control" name="regyear" placeholder="2015" data-ng-model="formData.regyear" min="2012" max="2015" required>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.regyear.$error.min">Invalid year. Utsov started in 2012</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.regyear.$error.max">Invalid year. Beyond this year.</span>
+                    </div>
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.regcount.$invalid }">
+                        <label for="state">Head Count</label>
+                        <input type="number" class="form-control" name="regcount" placeholder="Count of people in your party" data-ng-model="formData.regcount" min="1" max="10" required>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.regcount.$error.min">Invalid count. Count yourself as 1.</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.regcount.$error.max">Invalid count. If you have more than 10 people, please ask a few others to register.</span>
+                    </div>
+                    <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }">
+                        <label for="zip">Donation Amount</label>
+                        <input type="number" step="0.01" class="form-control" name="donamount" placeholder="Your donation amount for this year" data-ng-model="formData.donamount" min="0" max="1000000" required>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Invalid amount.Please enter 0 if not donating today</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <div class="col-sm-12" data-ng-class="{ 'has-error': frmRegister.volmsg.$invalid }">
+                        <label for="volmsg">Corrections to your information above or any note for us</label>
                         <textarea class="form-control" rows="3" name="volmsg" data-ng-model="formData.volmsg" data-ng-maxlength="300"></textarea>
-                        <span class="help-block text-danger" data-ng-show="frmAddVol.volmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.volmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
                     <div class="col-sm-9 text-danger">
-                        <p data-ng-show="frmAddVol.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
+                        <p data-ng-show="frmRegister.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
                     </div>
                     <div class="col-sm-9 col-xs-12 alert alert-success" data-ng-show="success == 1">
                         <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks for the offer to help. We will contact you as needed.</p>
@@ -180,7 +225,7 @@
                         <p class="pull-left"><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or contact us via social media.</p>
                     </div>
                     <div class="col-sm-2 col-xs-12">
-                        <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmAddVol.$invalid">Save Your Information</button>
+                        <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmRegister.$invalid">Save Your Information</button>
                     </div>
                     <div class="col-sm-1 col-xs-12">
                         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
