@@ -3,7 +3,7 @@
 namespace UtsovAPI;
 use PDO;
 
-require(dirname(__FILE__).'/utils.php');
+//require(dirname(__FILE__).'/utils.php');
 require(dirname(__FILE__).'/patrons.php');
 
 
@@ -14,7 +14,7 @@ require(dirname(__FILE__).'/patrons.php');
     switch($action) { //Switch case for value of action
         case "test": test_function($_post); break;
         case "register" :  register($_post); break;
-        case "search" :  registerpatron($_post); break;
+        case "search" :  searchpatron($_post); break;
         default:  testFunction($_post);
     }
 

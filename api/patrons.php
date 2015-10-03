@@ -97,10 +97,14 @@ require(dirname(__FILE__).'/utils.php');
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("patron"));
             
-            $stmt = $db->prepare('SELECT * FROM tb_patrons WHERE name1 LIKE :likesearch OR name2 LIKE :likesearch OR email1 = :fullsearch OR email2 = :fullsearch OR phone1 = :fullsearch OR phone2 = :fullsearch ORDER BY ');
+            $stmt = $db->prepare('SELECT * FROM tb_patrons WHERE name1 LIKE :likesearch OR name2 LIKE :likesearch OR email1 = :fullsearch OR email2 = :fullsearch OR phone1 = :fullsearch OR phone2 = :fullsearch ORDER BY name1');
+           
+            $like = '%'.$search.'%';
+            $full = $search;
             
-            $bindVar = $stmt->bindParam(':likesearch', '%'.$search.'%');
-            $bindVar = $stmt->bindParam(':fullsearch', $search);
+            $bindVar = $stmt->bindParam(':likesearch', $like);
+            $bindVar = $stmt->bindParam(':fullsearch', $full);
+            
             
             if($bindVar)
             {
