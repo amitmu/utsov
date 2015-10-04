@@ -72,4 +72,11 @@ function get_client_ip() {
     return $ipaddress;
 }
 
+//Function to log to file
+function logMessage($message)
+{
+   
+    error_log("\n[".date("H:i:s l jS F Y")."]: ".$message, 3, "/var/tmp/utsovapi.log");
+}
+
 ?>

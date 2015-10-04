@@ -11,6 +11,9 @@ require(dirname(__FILE__).'/patrons.php');
     $_post = json_decode(file_get_contents("php://input"));
     
     $action = $_post->action;
+    
+    logMessage("**Running registration:" . $action);
+
     switch($action) { //Switch case for value of action
         case "test": test_function($_post); break;
         case "register" :  register($_post); break;
@@ -54,16 +57,23 @@ require(dirname(__FILE__).'/patrons.php');
     function register($post){
         $return["err"] = '';
         $return["msg"] = '';
+
+        logMessage("**Starting registration");
+
         try {
             
             /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("register"));
+            //$db = new PDO("sqlite:" . getDBPath("register"));
             
-            $patronid = $post->patronid;
+            $patronid = $post->id;
             $ipaddress = get_client_ip();
-            
+
+            logMessage(">>Patron ID:" . $patronid);
+
             if(empty($patronid))
             {
+                logMessage(">>Patron is empty: Adding Patron");
+
                 //adding new patron record
                 $name1 = $post->name1;
                 $name2 = $post->name2;
@@ -82,22 +92,23 @@ require(dirname(__FILE__).'/patrons.php');
                 $return = addPatron($name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress);
                 //storing the returned id for the new record 
                 $patronid = $return["data"];
+                logMessage(">>New Patron ID:" . $patronid);
             }
             
            
             if(empty($return["err"])){
                 
                 //adding registration record
-                
+                logMessage(">>Adding Registration record:" . $patronid);
                 /*** connect to SQLite database ***/
                 $db = new PDO("sqlite:" . getDBPath("register"));
-                
-                $stmtIns = $db->prepare("INSERT INTO tb_registration(patronid, year, date, donation, headcount, message, ipaddress)
-                    VALUES(:patronid, :date, :year, :date, :donation, :headcount, :msg, :ipadd)");
     
-                $bindVar = $stmtIns->bindParam(':patronid', $patronid);
-                $bindVar = $stmtIns->bindParam(':date', $date);
+                $stmtIns = $db->prepare("INSERT INTO tb_registration(patron_id, year, date, donation, headcount, message, ipaddress)
+                    VALUES(:patron, :year, :date, :donation, :headcount, :msg, :ipadd)");
+                
+                $bindVar = $stmtIns->bindParam(':patron', $patron);
                 $bindVar = $stmtIns->bindParam(':year', $year);
+                $bindVar = $stmtIns->bindParam(':date', $date);
                 $bindVar = $stmtIns->bindParam(':donation', $donation);
                 $bindVar = $stmtIns->bindParam(':headcount', $headcount);
                 $bindVar = $stmtIns->bindParam(':msg', $message);
@@ -105,7 +116,7 @@ require(dirname(__FILE__).'/patrons.php');
     
                 // binding values
                 
-                //patronid filled above
+                $patron = $patronid;
                 $year = $post->regyear;
                 $date = date("Ymd:His");
                 $donation = $post->donamount;
@@ -139,10 +150,12 @@ require(dirname(__FILE__).'/patrons.php');
         }
         catch(PDOException $e)
         {
+            logMessage("**DBError:" . $e->getMessage());
             $return["err"] = "DB: Unhandled PDO Exception";
             $return["msg"] = $e->getMessage();
         }
         catch(Exception $e){
+            logMessage("**Error:" . $e->getMessage());
             $return["err"] = "Unhandled Registration Exception";
             $return["msg"] = $e->getMessage();
         }

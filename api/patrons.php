@@ -142,6 +142,7 @@ require(dirname(__FILE__).'/utils.php');
     function addPatron($name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress){
         $return["err"] = '';
         $return["msg"] = '';
+        logMessage(">>>>Adding New Patron record");
         try {
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("patron"));
@@ -151,11 +152,11 @@ require(dirname(__FILE__).'/utils.php');
 
             $bindVar = $stmtIns->bindParam(':date', $date);
             $bindVar = $stmtIns->bindParam(':name1', $name1);
-            $bindVar = $stmtIns->bindParam(':name2', $name1);
-            $bindVar = $stmtIns->bindParam(':email1', $name1);
-            $bindVar = $stmtIns->bindParam(':email2', $name1);
-            $bindVar = $stmtIns->bindParam(':phone1', $name1);
-            $bindVar = $stmtIns->bindParam(':phone2', $name1);
+            $bindVar = $stmtIns->bindParam(':name2', $name2);
+            $bindVar = $stmtIns->bindParam(':email1', $email1);
+            $bindVar = $stmtIns->bindParam(':email2', $email2);
+            $bindVar = $stmtIns->bindParam(':phone1', $phone1);
+            $bindVar = $stmtIns->bindParam(':phone2', $phone2);
             $bindVar = $stmtIns->bindParam(':add1', $address1);
             $bindVar = $stmtIns->bindParam(':add2', $address2);
             $bindVar = $stmtIns->bindParam(':city', $city);
@@ -186,9 +187,11 @@ require(dirname(__FILE__).'/utils.php');
                     
                     $result = $db->query('SELECT last_insert_rowid() AS rowid FROM tb_patrons LIMIT 1');
                     
-                    //$f = $q->fetch();
-                    $lastrow = $result['rowid'];
+                    $r = $result->fetch();
                     
+                    $lastrow = $r['rowid'];
+                    
+                    logMessage(">>>>New Patron record:" . $lastrow);
                     $return["msg"] = "NEW ROW ADDED";
                     $return["data"] = $lastrow;
                 }
@@ -207,7 +210,14 @@ require(dirname(__FILE__).'/utils.php');
         }
         catch(PDOException $e)
         {
+            logMessage("**DBError:" . $e->getMessage());
             $return["err"] = "DB:Patrons: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
+        }
+        catch(Exception $ex)
+        {
+            logMessage("**Error:" . $ex->getMessage());
+            $return["err"] = "Error:Patrons: Unhandled Exception";
             $return["msg"] = $e->getMessage();
         }
         return $return;
