@@ -144,7 +144,7 @@ body {
 
 }
 
-#info {
+#philanthropy {
 
     background: url(../img/light-back2.jpg) no-repeat center center fixed;
 
@@ -165,6 +165,26 @@ body {
 
 }
 
+#about-utsov {
+
+    background: url(../img/light-back.jpg) no-repeat center center fixed;
+
+    display: table;
+    height: 100%;
+
+    position: relative;
+
+    width: 100%;
+
+    -webkit-background-size: cover;
+
+    -moz-background-size: cover;
+
+    -o-background-size: cover;
+
+    background-size: cover;
+
+}
 
 #map_canvas {
 
@@ -174,4 +194,62 @@ body {
 
 }
 
+//================  Marquee ===================//
+.wrapper {
+    width: 100%;
+    border: 3px solid lighten(@brand-primary, 10%);
+    margin: auto;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.marquee {
+    position: relative;
+    overflow: hidden;
+    float: left;
+}
+.marquee span{
+    position: relative;
+    white-space: nowrap;
+    display: inline;
+    left: 0%;
+    font-family: @font-family-base;
+    -moz-animation: marquee 15s infinite linear 3s;
+    -webkit-animation: marquee 15s infinite linear 3s;
+    -o-animation: marquee 15s infinite linear 3s;
+    animation: marquee 15s infinite linear 3s;
+}
+ 
+.marquee:hover span{
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused; 
+}
 
+.marquee span:after{
+    content: attr(rel);
+    display: inline;
+    color:white;
+    padding-left: 10px;
+}
+
+@-webkit-keyframes marquee {
+    0% { left: 0%;}
+    100%{ left: -50%;}
+}
+
+@-moz-keyframes marquee {
+    0% { left: 0%;}
+    100%{ left: -50%;}
+}
+
+@-o-keyframes marquee {
+    0% { left: 0%;}
+    100%{ left: -50%;}
+}
+
+@keyframes marquee {
+    0% { left: 0%;}
+    100%{ left: -50%;}
+}
+//============= End Marquee ==================//
