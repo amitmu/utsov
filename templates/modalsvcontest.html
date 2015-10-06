@@ -12,9 +12,9 @@
                     <option selected disabled value="">-- Please Select --</option>
                     <option value="ESSAY">Childrens Essay Competition</option>
                     <option value="ART">Childrens Art Competition</option>
-                    <option value="TALENT">Childrens Talent Show</option>
+                    <option value="TALENT" disabled>Childrens Talent Show</option>
                     <!--<option value="GAYL">Childrens Go As You Like</option>-->
-                    <option value="PHOTO">Open Photography Contest</option>
+                    <option value="PHOTO" disabled>Open Photography Contest</option>
                     <option value="CONCH">Open Conch Shell Contest</option>
                 </select>
                 <span class="help-block" data-ng-show="frmAddContest.concontest.$error.required">Required</span>
@@ -27,7 +27,7 @@
                 <span class="help-block" data-ng-show="frmAddContest.conname.$error.maxlength">Too long. Please limit to 100 characters.</span>
             </div>
             <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.conage.$invalid }">
-                <label for="conage">Contestant's Age <span class="text-muted">(on October 5, 2014)</span></label>
+                <label for="conage">Contestant's Age <span class="text-muted">(on October 17, 2015)</span></label>
                 <input type="number" class="form-control" name="conage" placeholder="1 -100" required data-ng-model="formData.conage" min="1" max="100">
                 <span class="help-block" data-ng-show="frmAddContest.conage.$error.required">Required</span>
                 <span class="help-block" data-ng-show="frmAddContest.conage.$error.number">Invalid Age. Please enter a value between 1 and 100 (inclusive).</span>
