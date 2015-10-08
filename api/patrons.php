@@ -164,27 +164,17 @@ require(dirname(__FILE__).'/utils.php');
             $bindVar = $stmtIns->bindParam(':zip', $zip);
             $bindVar = $stmtIns->bindParam(':ipadd', $ipaddress);
 
-            // inserting row
+            
             $date = date("Ymd:His");
-            /*$name1 = $post->patname1;
-            $name2 = $post->patname2;
-            $email1 = $post->patemail1;
-            $email2 = $post->patemail2;
-            $phone1 = $post->patphone1;
-            $phone2 = $post->patphone2;
-            $address1 = $post->patadd1;
-            $address2 = $post->patadd2;
-            $city = $post->patcity;
-            $state = $post->patstate;
-            $zip = $post->patzip;
-            $ipaddress = get_client_ip();*/
+            
 
             if($bindVar)
             {
+                // inserting row
                 $exec = $stmtIns->execute();
 
                 if($exec){
-                    
+                    //retrieving last inserted row for ID.
                     $result = $db->query('SELECT last_insert_rowid() AS rowid FROM tb_patrons LIMIT 1');
                     
                     $r = $result->fetch();
@@ -192,11 +182,11 @@ require(dirname(__FILE__).'/utils.php');
                     $lastrow = $r['rowid'];
                     
                     logMessage(">>>>New Patron record:" . $lastrow);
-                    $return["msg"] = "NEW ROW ADDED";
+                    $return["msg"] = "PATRON ROW INSERT SUCCESS";
                     $return["data"] = $lastrow;
                 }
                 else{
-                    $return["err"] = "DB:Patrons Execute Failed";
+                    $return["err"] = "DB:Patrons Insert Failed";
                     $return["msg"] = $stmtIns->errorInfo();
                 }
             }
@@ -222,5 +212,79 @@ require(dirname(__FILE__).'/utils.php');
         }
         return $return;
      }
+     
+     
+     //Function to update patrons
 
+    function updatePatron($id, $name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress){
+        $return["err"] = '';
+        $return["msg"] = '';
+        logMessage(">>>>Updating Patron id: ".$id);
+        try {
+            /*** connect to SQLite database ***/
+            $db = new PDO("sqlite:" . getDBPath("patron"));
+           
+            $stmt = $db->prepare("UPDATE tb_patrons SET date = :date, name1 = :name1, name2 = :name2, email1 = :email1, email2 = :email2, phone1 = :phone1, phone2 = :phone2, address1 = :add1, address2 = :add2, city = :city, state = :state, zip = :zip, ipaddress = :ipadd WHERE id = :id");
+
+            $bindVar = $stmt->bindParam(':id', $id);
+            $bindVar = $stmt->bindParam(':date', $date);
+            $bindVar = $stmt->bindParam(':name1', $name1);
+            $bindVar = $stmt->bindParam(':name2', $name2);
+            $bindVar = $stmt->bindParam(':email1', $email1);
+            $bindVar = $stmt->bindParam(':email2', $email2);
+            $bindVar = $stmt->bindParam(':phone1', $phone1);
+            $bindVar = $stmt->bindParam(':phone2', $phone2);
+            $bindVar = $stmt->bindParam(':add1', $address1);
+            $bindVar = $stmt->bindParam(':add2', $address2);
+            $bindVar = $stmt->bindParam(':city', $city);
+            $bindVar = $stmt->bindParam(':state', $state);
+            $bindVar = $stmt->bindParam(':zip', $zip);
+            $bindVar = $stmt->bindParam(':ipadd', $ipaddress);
+
+            
+            $date = date("Ymd:His");
+            
+            if($bindVar)
+            {
+                // updating row
+                $exec = $stmt->execute();
+
+                if($exec){
+                   
+                    $return["msg"] = "PATRON ROW UPDATE SUCCESS";
+                    $return["data"] = $id;
+                    logMessage(">>>>Returning patron id: ".$id);
+                }
+                else{
+                    logMessage(">>**Error: Update failed: ".implode("|", $stmt->errorInfo()));
+                    $return["err"] = "DB:Patrons Update Failed";
+                    $return["msg"] = $stmt->errorInfo();
+                    logMessage($stmt->debugDumpParams());
+                }
+            }
+            else{
+                logMessage(">>**Error: Bind failed: ".implode("|", $stmt->errorInfo()));
+                $return["err"] = "DB:Patrons Bind Failed";
+                $return["msg"] = $stmt->errorInfo();
+                
+            }
+
+            //closing DB
+            $db = NULL;
+        }
+        catch(PDOException $e)
+        {
+            logMessage("**DBError:" . $e->getMessage());
+            $return["err"] = "DB:Patrons: Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
+        }
+        catch(Exception $ex)
+        {
+            logMessage("**Error:" . $ex->getMessage());
+            $return["err"] = "Error:Patrons: Unhandled Exception";
+            $return["msg"] = $e->getMessage();
+        }
+        return $return;
+     }
+     
 ?>

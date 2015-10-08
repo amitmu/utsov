@@ -3,8 +3,9 @@
 namespace UtsovAPI;
 use PDO;
 
-//require(dirname(__FILE__).'/utils.php');
+//require(dirname(__FILE__).'/utils.php'); //<- already reffered in patrons.php, not needed here
 require(dirname(__FILE__).'/patrons.php');
+require(dirname(__FILE__).'/registration.php');
 
 
 //// Main Section /////
@@ -62,37 +63,51 @@ require(dirname(__FILE__).'/patrons.php');
 
         try {
             
-            /*** connect to SQLite database ***/
-            //$db = new PDO("sqlite:" . getDBPath("register"));
-            
-            $patronid = $post->id;
+            //Common Items
             $ipaddress = get_client_ip();
+            $patronid = $post->id;
+            $updaterow = $post->update;
+            //Patron Items
+            $name1 = $post->name1;
+            $name2 = $post->name2;
+            $email1 = $post->email1;
+            $email2 = $post->email2;
+            $phone1 = $post->phone1;
+            $phone2 = $post->phone2;
+            $address1 = $post->address1;
+            $address2 = $post->address2;
+            $city = $post->city;
+            $state = $post->state;
+            $zip = $post->zip;
+            
+            //Registration Items
+            $year = $post->regyear;
+            $donation = $post->donamount;
+            $headcount = $post->regcount;
+            $message = $post->regmsg;
 
             logMessage(">>Patron ID:" . $patronid);
 
             if(empty($patronid))
             {
-                logMessage(">>Patron is empty: Adding Patron");
+                logMessage(">>Patron id is empty: Adding Patron");
 
-                //adding new patron record
-                $name1 = $post->name1;
-                $name2 = $post->name2;
-                $email1 = $post->email1;
-                $email2 = $post->email2;
-                $phone1 = $post->phone1;
-                $phone2 = $post->phone2;
-                $address1 = $post->address1;
-                $address2 = $post->address2;
-                $city = $post->city;
-                $state = $post->state;
-                $zip = $post->zip;
-                //ipaddress filled above
-                
-                //calling insert on patron.php
+                //calling insert on patron.php to add new record
                 $return = addPatron($name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress);
                 //storing the returned id for the new record 
                 $patronid = $return["data"];
                 logMessage(">>New Patron ID:" . $patronid);
+            }
+            elseif($updaterow == 'Y'){
+                
+                logMessage(">>Update flag is true : Updating Patron");
+                //updating patron
+                //calling update on patron.php
+                $return = updatePatron($patronid, $name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress);
+                
+            }
+            else{
+                logMessage(">>Update flag is false : skipping patron update");
             }
             
            
@@ -100,50 +115,10 @@ require(dirname(__FILE__).'/patrons.php');
                 
                 //adding registration record
                 logMessage(">>Adding Registration record:" . $patronid);
-                /*** connect to SQLite database ***/
-                $db = new PDO("sqlite:" . getDBPath("register"));
-    
-                $stmtIns = $db->prepare("INSERT INTO tb_registration(patron_id, year, date, donation, headcount, message, ipaddress)
-                    VALUES(:patron, :year, :date, :donation, :headcount, :msg, :ipadd)");
                 
-                $bindVar = $stmtIns->bindParam(':patron', $patron);
-                $bindVar = $stmtIns->bindParam(':year', $year);
-                $bindVar = $stmtIns->bindParam(':date', $date);
-                $bindVar = $stmtIns->bindParam(':donation', $donation);
-                $bindVar = $stmtIns->bindParam(':headcount', $headcount);
-                $bindVar = $stmtIns->bindParam(':msg', $message);
-                $bindVar = $stmtIns->bindParam(':ipadd', $ipaddress);
-    
-                // binding values
-                
-                $patron = $patronid;
-                $year = $post->regyear;
-                $date = date("Ymd:His");
-                $donation = $post->donamount;
-                $headcount = $post->regcount;
-                $message = $post->regmsg;
-                //ipaddress filled above
-                    
-                if($bindVar)
-                {
-                    //inserting new registration
-                    $exec = $stmtIns->execute();
-    
-                    if($exec){
-                        $return["msg"] = "NEW ROW ADDED";
-                    }
-                    else{
-                        $return["err"] = "DB: Execute Failed";
-                        $return["msg"] = $stmtIns->errorInfo();
-                    }
-                }
-                else{
-                    $return["err"] = "DB: Bind Failed";
-                    $return["msg"] = $stmtIns->errorInfo();
-                }
-    
-                //closing DB
-                $db = NULL;
+                 //calling insert on registration.php
+                $return = addRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
+
                         
             }
             

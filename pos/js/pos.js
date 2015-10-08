@@ -223,17 +223,27 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         });
     }
     
-    
+    //search function
     $scope.SelectPatron = function(patronIndex){
       
         console.log("Selected Index = " +patronIndex);
         if ($scope.searchResults[patronIndex]) {
+            
+            //find registrations here.
+            
+            
             $scope.formData = $scope.searchResults[patronIndex];
             $scope.formData.regyear = 2015;
             $scope.showResults = false;
-            if(!$scope.isAdminUser){
-                //not hiding inputs for admin
-                $scope.foundPatron = true;    
+            if($scope.isAdminUser){
+               //admin user, allow updates
+                $scope.formData.update = 'Y';
+                $scope.foundPatron = false;
+            }
+            else{
+                //non-admin hide update fields
+                $scope.formData.update = 'N';
+                $scope.foundPatron = true;
             }
             
             console.log("Selected Patron ID = " + $scope.formData.id);
@@ -260,8 +270,6 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         ).success(function(output, status, headers, config) {
             if (output.err == ''){
                 $scope.msgs = "Server: " + output.msg;
-                //$scope.success = 1;
-                //$scope.postData = output.post;
                 $scope.clearData();
                 $scope.success = 1;
                 console.log($scope.msgs);

@@ -332,13 +332,24 @@
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
                     </div>
                 </div>
-                
-                
                 <div class="form-group">
-                    <div class="col-sm-12" data-ng-class="{ 'has-error': frmRegister.regmsg.$invalid }">
+                    <div class="col-sm-12" data-ng-class="{ 'has-error': frmRegister.regmsg.$invalid }" data-ng-hide="isAdminUser">
                         <label for="regmsg">Corrections to your information above or any note for us</label>
                         <textarea class="form-control" rows="3" name="regmsg" data-ng-model="formData.regmsg" data-ng-maxlength="300"></textarea>
                         <span class="help-block text-danger" data-ng-show="frmRegister.regmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
+                    </div>
+                    <div class="col-sm-8 col-xs-12" data-ng-class="{ 'has-error': frmRegister.regmsg1.$invalid }" data-ng-show="isAdminUser">
+                        <label for="regmsg1">User Message</label>
+                        <textarea class="form-control" rows="3" name="regmsg1" data-ng-model="formData.regmsg" data-ng-maxlength="300"></textarea>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.regmsg1.$error.maxlength">Too long. Please limit to 300 characters.</span>
+                    </div>
+                    <div class="col-sm-4 col-xs-12" data-ng-show="isAdminUser">
+                        <div style="overflow-y: scroll;">
+                             <table class="table table-condensed">
+                                 <tr><td style="text-align:right">Year</td><td style="text-align:right">Amount</td></tr>
+                                 <tr><td style="text-align:right">2015</td><td style="text-align:right">1000</td></tr>
+                             </table>
+                        </div>
                     </div>
                 </div>
             </div>
