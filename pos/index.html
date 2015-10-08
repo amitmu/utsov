@@ -17,6 +17,8 @@
     
     <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="../css/utsov.css">
+    
+    
     <style>
       
       .navbar {
@@ -27,6 +29,8 @@
           background:rgba(0,0,0,0.3);   /* for latest browsers */
          /*background: #000;  fallback for older browsers */
       }
+      
+      
     </style>
 </head>
 <body ng-app="utsovPOS" style="background-color: #DD4814;">
@@ -60,35 +64,36 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon-fa fa fa-arrows"></span>&nbsp;Screen Size<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a ng-href="#Wide" ng-click="selectFolder('wide')"><span class="icon-fa fa fa-desktop"></span>&nbsp;Wide Screen</a></li>
-                    <li class="disabled"><a ng-href="#Square" ng-click="selectFolder('reg')"><span class="icon-fa fa fa-laptop"></span>&nbsp;Standard Screen</a></li>
-                    <li><a ng-href="#Tablet" ng-click="selectFolder('small')"><span class="icon-fa fa fa-tablet"></span>&nbsp;Tablet</a></li>
+                    <li class="{{activeFolder('reg')}}"><a ng-href="#Wide" ng-click="selectFolder('wide')"><span class="icon-fa fa fa-desktop"></span>&nbsp;Desktop (1900)</a></li>
+                    <li class="{{activeFolder('reg')}}"><a ng-href="#Square" ng-click="selectFolder('reg')"><span class="icon-fa fa fa-laptop"></span>&nbsp;Laptop (1600)</a></li>
+                    <li class="{{activeFolder('small')}}"><a ng-href="#Tablet" ng-click="selectFolder('small')"><span class="icon-fa fa fa-tablet"></span>&nbsp;Tablet (1024)</a></li>
                 </ul>
             </li>
           </ul>
           <form class="navbar-form navbar-right" role="search">
-            <!--<div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>-->
             <a class="btn btn-success" href="#Register" role="button" data-toggle="modal" data-target="#registerModal">
               <span class="icon-fa fa fa-users"></span>&nbsp;Visitor Registation
             </a>
-            <!--<button type="button" class="btn btn-default">Register here</button>-->
           </form>
         </div><!-- /.navbar-collapse -->
           
       </div><!-- /.container-fluid -->
     </nav>
       
-    <div class="container-fluid"  style="padding:0px; height:100%">
+    <div class="container-fluid"  style="padding:0px; margin-top: -50px; height:auto; width: auto;">
       <!-- Carousel================================================== -->
-      <div id="myCarousel" class="carousel slide" style="width: {{w}}px; height:{{h}}px; margin: 0 auto" data-ride="carousel">
+        <div id="myCarousel" class="carousel slide" style="width: 100%; height:auto ; data-ride="carousel">
+      
         <!-- Indicators -->
         <ol class="carousel-indicators">
           <li data-target="#myCarousel" ng-repeat="img in images" class="{active : (img === 0)}" data-slide-to="{{img}}"></li>
         </ol>
-        <div class="carousel-inner">
-          <div ng-class="{item: true, active : (img === 0)}" ng-repeat="img in images"> <img ng-src="img/{{currentFolder}}/{{img}}.jpg" alt="Slide numder {{img}}">
+        <div class="carousel-inner" style="width: 100%;">
+          <div ng-class="{item: true, active : (img === 0)}" ng-repeat="img in images" style="overflow: hidden;">
+            <div  style="background: url(img/{{currentFolder}}/{{img}}.jpg); background-size: cover;">
+                <!--<img class="img-responsive" ng-src="img/{{currentFolder}}/{{img}}.jpg" alt="Slide numder {{img}}">-->
+                <img src="" style="width:{{w}}px; height:{{h}}px; border: 0px;">
+            </div>
             <div class="container">
               <div class="carousel-caption"><h1>{{ getMessage(img) }}</h1></div>
             </div>

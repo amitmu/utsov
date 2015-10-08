@@ -51,29 +51,32 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
     
 	$scope.images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 	$scope.currentFolder = $scope.folders[0];
-	$scope.selectFolder = function (folder) {
+	//console.log("W:H = "  + $scope.w + ":" + $scope.h);
+    
+    $scope.selectFolder = function (folder) {
 		$scope.currentFolder = folder;
 	}
 	
     $scope.activeFolder = function (folder) {
+        //console.log("Asked:"  + folder + ", Current:" + $scope.currentFolder);
 		return (folder === $scope.currentFolder) ? 'active' : '';
 	}    
     
     $scope.getMessage = function(index) {
-        console.log("Message Index = " + index);
+        //console.log("Message Index = " + index);
         return (index < $scope.messages.length ? $scope.messages[index] : $scope.messages[index - $scope.messages.length]);
     }
     
     $scope.signOut = function(){
-        console.log("Signing out user...");
+        //console.log("Signing out user...");
         userInfoService.updateUser('GUEST', 'Patron');
     }
     
     $scope.$on('userChanged', function(){
         $scope.user.name = userInfoService.name;
         $scope.user.type = userInfoService.type;
-        console.log("Trapping Event in carousel controller");
-        console.log("User:" + $scope.user.name + "[" + $scope.user.type + "]");
+        //console.log("User:" + $scope.user.name + "[" + $scope.user.type + "]");
+        //console.log("Trapping Event in carousel controller");
     });
 });
 
@@ -89,9 +92,9 @@ app.controller('loginCntrl', function ($scope, $http, userInfoService) {
     $scope.status = 0;
     $scope.success = 0;
 
-    console.log("Action:" + $scope.action);
-    console.log("Service:" + $scope.service);
-    console.log("Title:" + $scope.title);
+    //console.log("Action:" + $scope.action);
+    //console.log("Service:" + $scope.service);
+    //console.log("Title:" + $scope.title);
 
     $scope.initialize = function(){
         
