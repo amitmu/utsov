@@ -30,12 +30,26 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
     $scope.user.type = 'GUEST';
     $scope.user.name = 'Patron';
 	$scope.folders = [
-		'2012',
-		'2013',
-		'2014',
+		'small',
+        'reg',
+		'wide'
 	];
     
-	$scope.images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    $scope.messages = [
+		'Welcome to the 2015 Utsav Pujo.',
+        'Please remember to donate.',
+		'Join us in efforts.',
+        'Every donated dollar helps.',
+        'Ask an Utsov team member.',
+        'Or visit our website.',
+        'Enjoy a special musical performance.',
+        'Enjoy tastes and flavours of India.',
+        'Snacks available for purchase.',
+        'Register on the website to join us.',
+        'Have a safe and happy Pujo.'
+	];
+    
+	$scope.images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 	$scope.currentFolder = $scope.folders[0];
 	$scope.selectFolder = function (folder) {
 		$scope.currentFolder = folder;
@@ -44,6 +58,11 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
     $scope.activeFolder = function (folder) {
 		return (folder === $scope.currentFolder) ? 'active' : '';
 	}    
+    
+    $scope.getMessage = function(index) {
+        console.log("Message Index = " + index);
+        return (index < $scope.messages.length ? $scope.messages[index] : $scope.messages[index - $scope.messages.length]);
+    }
     
     $scope.signOut = function(){
         console.log("Signing out user...");
