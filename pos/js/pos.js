@@ -30,9 +30,9 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
     $scope.user.type = 'GUEST';
     $scope.user.name = 'Patron';
 	$scope.folders = [
-		'small',
-        'reg',
-		'wide'
+		'1024',
+        '1600',
+		'1900'
 	];
     
     $scope.messages = [
@@ -55,6 +55,27 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
     
     $scope.selectFolder = function (folder) {
 		$scope.currentFolder = folder;
+        /*switch (folder)
+        {
+            case '1024':
+                $scope.w = 1024;
+	            $scope.h = 760; 
+                break;
+            case '1600':
+                $scope.w = 1600;
+	            $scope.h = 870;
+                break;
+            case '1900':
+                $scope.w = 1900;
+                $scope.h = 1000;
+                break;
+            default:
+                $scope.w = window.innerWidth;
+	            $scope.h = window.innerHeight;
+                break;
+        }*/
+        $scope.w = window.innerWidth;
+	    $scope.h = window.innerHeight;
 	}
 	
     $scope.activeFolder = function (folder) {
@@ -161,7 +182,6 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
-    $scope.newpatron = true;
     $scope.title = "Register your patronage";
     $scope.service = '../api/pos.php';
     $scope.user = {};
@@ -211,7 +231,11 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             $scope.formData = $scope.searchResults[patronIndex];
             $scope.formData.regyear = 2015;
             $scope.showResults = false;
-            $scope.foundPatron = true;
+            if(!$scope.isAdminUser){
+                //not hiding inputs for admin
+                $scope.foundPatron = true;    
+            }
+            
             console.log("Selected Patron ID = " + $scope.formData.id);
         } else {
             $scope.formData = {};
@@ -300,7 +324,6 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.found = 0;
         $scope.showResults = false;
         $scope.foundPatron = false;
-        $scope.newpatron = true;
     }
     
     $scope.$on('userChanged', function(){
