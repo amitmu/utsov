@@ -36,7 +36,7 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
 	];
     
     $scope.messages = [
-		'Welcome to the 2015 Utsav Pujo.',
+		'Welcome to the 2015 Utsov Pujo.',
         'Please remember to donate.',
 		'Join us in efforts.',
         'Every donated dollar helps.',
