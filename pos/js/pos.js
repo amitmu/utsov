@@ -175,6 +175,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.errors = '';
     $scope.msgs = '';
     $scope.formData = {};
+    $scope.registrations = {};
     $scope.formData.regyear = 2015;
     $scope.found = 0;
     $scope.showResults = false;
@@ -230,17 +231,24 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         if ($scope.searchResults[patronIndex]) {
             $scope.errors = '';
             $scope.msgs = '';
+            $scope.formData = $scope.searchResults[patronIndex];
+            $scope.formData.regyear = 2015;
             $scope.formData.action = 'details';
+            //$scope.formData.id = $scope.searchResults[patronIndex].id;
             
             //retrieve all registrations for selected patron
             $http.post($scope.service,  $scope.formData
             ).success(function(output, status, headers, config) {
                 if (output.err == ''){
                     $scope.msgs = "Server: " + output.msg;
-                    $scope.patronRegs = output.data;
-                    //$scope.found = $scope.searchResults.length;
-                    console.log($scope.msgs);
-                    console.log($scope.msgs);
+                    $scope.registrations = output.data;
+                    console.log(($scope.registrations[0].donation < 25 ? "<25":">25") );
+                    console.log(($scope.registrations[0].donation == 0 ? "=0":"!=0") );                        
+                    console.log(($scope.registrations[0].donation > 0 ? ">0":"!>0") );                        
+                    
+                                            
+                    //console.log("Donation Value:" + $scope.registrations[0].donation);
+                    //console.log("Star Count:" + $scope.massageResults('donation', $scope.registrations[0].donation) );
                 }
                 else{
                     $scope.errors = "Error: " + output.err;
@@ -261,8 +269,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             });
             
             
-            $scope.formData = $scope.searchResults[patronIndex];
-            $scope.formData.regyear = 2015;
+            
             $scope.showResults = false;
             if($scope.isAdminUser){
                //admin user, allow updates
@@ -333,14 +340,19 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                 return data.substr(0, 3) + "***" + data.substr(6, 4);
                 break;
             case 'donation':
-                if(isNaN(data)) {return 0;}
-                if(data < 25){return 0;}
-                if(data < 50){return 1;}
-                if(data < 100){return 2;}
-                var don = data - 100;
-                don = Math.floor(don/25); 
-                don += 2;
-                return don;
+                console.log("Massaging donation Amount: "  + data );
+                var don = 0;
+                if(isNaN(data) || data < 25) {don = 0;}
+                else if(data < 50){don = 1;}
+                else if(data < 100){don = 2;}
+                else{ 
+                    don = data - 100;
+                    don = Math.floor(don/25); 
+                    don += 2;
+                }
+                console.log("Star Count = " + don)
+                return Array.apply(0, Array(+don));
+                //return don;
                 break;
             default:
                 return data;
@@ -352,6 +364,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.formData = {};
         $scope.formData.regyear = 2015;
         $scope.searchResults = {};
+        $scope.registrations = {};
         $scope.errors = '';
         
         //$scope.msgs = '';

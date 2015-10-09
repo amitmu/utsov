@@ -58,12 +58,12 @@ use PDO;
         $return["err"] = '';
         $return["msg"] = '';
         $arr = array();
-        
+        logMessage(">>>>Retrieving Registration records for:".$patronid);
         try {
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("patron"));
             
-            $stmt = $db->prepare('SELECT * FROM tb_registration WHERE id = :patronid ORDER BY year');
+            $stmt = $db->prepare('SELECT * FROM tb_registration WHERE patron_id = :patronid ORDER BY year DESC');
             
             $bindVar = $stmt->bindParam(':patronid', $patronid);
             
@@ -86,6 +86,8 @@ use PDO;
             else{
                 $return["err"] = "DB:Registration Bind Failed";
                 $return["msg"] = $stmt->errorInfo();
+                logMessage(">>**Error: Failed Retrieving Registration records");
+                logMessage($stmt->errorInfo());
             }
         }
         catch(PDOException $e)
@@ -108,7 +110,7 @@ use PDO;
         try {
             
                 //adding registration record
-                logMessage(">>Adding Registration record for:" . $patronid);
+                logMessage(">>>>Adding Registration record for:" . $patronid);
                 /*** connect to SQLite database ***/
                 $db = new PDO("sqlite:" . getDBPath("register"));
     

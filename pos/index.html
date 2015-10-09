@@ -221,9 +221,14 @@
                             <td><strong>Last Visit</strong></td>
                             <td>{{ registrations[0].year }}</td>
                             <td>
-                                <span class="icon fa fa-star" data-ng-repeat="star in massageResults(registrations[0].donation)" data-ng-hide="registrations[0].donation < 25"></span>
                                 <span class="icon fa fa-star-o" data-ng-show="registrations[0].donation == 0"></span>
-                                <span class="icon fa fa-star-half-o" data-ng-show="registrations[0].donation > 0"></span>&nbsp;
+                                <span class="icon fa fa-star-half-o" data-ng-show="registrations[0].donation > 0 && registrations[0].donation < 25"></span>
+                                <span class="icon fa fa-star" data-ng-repeat="star in massageResults('donation', registrations[0].donation) track by $index"></span>
+                                <!--<span class="icon fa fa-star" data-ng-hide="registrations[0].donation < 100"></span>
+                                <span class="icon fa fa-star" data-ng-hide="registrations[0].donation < 125"></span>
+                                <span class="icon fa fa-star" data-ng-hide="registrations[0].donation < 150"></span>
+                                <span class="icon fa fa-star" data-ng-hide="registrations[0].donation < 175"></span>
+                                <span class="icon fa fa-star" data-ng-hide="registrations[0].donation < 200"></span>-->
                             </td>
                         </tr>
                         <tr>

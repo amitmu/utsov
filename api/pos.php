@@ -38,7 +38,7 @@ require(dirname(__FILE__).'/registration.php');
     function searchpatron($post){
         $return["err"] = '';
         $return["msg"] = '';
-
+        logMessage("**Starting search patrons");
         try
         {
             $find = $post->find;
@@ -57,10 +57,12 @@ require(dirname(__FILE__).'/registration.php');
     function findRegistrations($post){
         $return["err"] = '';
         $return["msg"] = '';
+        logMessage("**Starting search registrations");
         
         try
         {
             $patronid = $post->id;
+            logMessage(">>Calling search on registrations for patron:".$patronid);
             $return = getPatronRegistrations($patronid);
         }
         catch(Exception $e)
