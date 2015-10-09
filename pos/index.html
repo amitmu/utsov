@@ -9,8 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     
 <!--    <link rel="SHORTCUT ICON" HREF="/favicon.png">-->
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../favicon-16x16.png" sizes="16x16" />
 
     
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -219,14 +219,11 @@
                         </tr>
                         <tr>
                             <td><strong>Last Visit</strong></td>
-                            <td>2015</td>
-                            <td data-ng-hide="isAdminUser">
-                                <span class="icon fa fa-star"></span>
-                                <span class="icon fa fa-star-o"></span>
-                                <span class="icon fa fa-star-half-o"></span>
-                            </td>
-                            <td data-ng-show="isAdminUser">
-                                $1,000.00
+                            <td>{{ registrations[0].year }}</td>
+                            <td>
+                                <span class="icon fa fa-star" data-ng-repeat="star in massageResults(registrations[0].donation)" data-ng-hide="registrations[0].donation < 25"></span>
+                                <span class="icon fa fa-star-o" data-ng-show="registrations[0].donation == 0"></span>
+                                <span class="icon fa fa-star-half-o" data-ng-show="registrations[0].donation > 0"></span>&nbsp;
                             </td>
                         </tr>
                         <tr>
@@ -347,7 +344,7 @@
                         <div style="overflow-y: scroll;">
                              <table class="table table-condensed">
                                  <tr><td style="text-align:right">Year</td><td style="text-align:right">Amount</td></tr>
-                                 <tr><td style="text-align:right">2015</td><td style="text-align:right">1000</td></tr>
+                                 <tr data-ng-repeat="regYear in registrations"><td style="text-align:right">{{regYear.year}}</td><td style="text-align:right">{{regYear.donation}}</td></tr>
                              </table>
                         </div>
                     </div>
@@ -359,9 +356,15 @@
             </div>
             <div class="modal-footer" data-ng-hide="success !== 0">
                 <div class="form-group">
-                    <div class="col-sm-9 text-danger">
+                    <div class="col-sm-9 text-danger" data-ng-hide="isAdminUser && formData.id">
                         <p data-ng-show="frmRegister.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
                     </div>
+                    
+                    <div class="col-sm-9" data-ng-show="isAdminUser && formData.id">
+                        <label><input type="checkbox" id="updatePtrn" data-ng-model="formData.updatePatron" value="Y"> Update Patron</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label><input type="checkbox" id="updateRegis" data-ng-model="formData.updateRegistration" value="Y"> Update Registration</label>
+                    </div>
+                    
                     <div class="col-sm-2 col-xs-12">
                         <button type="submit" class="btn btn-primary pull-right" data-ng-disabled="frmRegister.$invalid">Register Me</button>
                     </div>

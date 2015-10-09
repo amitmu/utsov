@@ -19,6 +19,7 @@ require(dirname(__FILE__).'/registration.php');
         case "test": test_function($_post); break;
         case "register" :  register($_post); break;
         case "search" :  searchpatron($_post); break;
+        case "details" :  findRegistrations($_post); break;
         default:  testFunction($_post);
     }
 
@@ -37,7 +38,7 @@ require(dirname(__FILE__).'/registration.php');
     function searchpatron($post){
         $return["err"] = '';
         $return["msg"] = '';
-        $arr = array();
+
         try
         {
             $find = $post->find;
@@ -53,6 +54,26 @@ require(dirname(__FILE__).'/registration.php');
     }
     
     
+    function findRegistrations($post){
+        $return["err"] = '';
+        $return["msg"] = '';
+        
+        try
+        {
+            $patronid = $post->id;
+            $return = getPatronRegistrations($patronid);
+        }
+        catch(Exception $e)
+        {
+            $return["err"] = "Unhandled Registration Exception";
+            $return["msg"] = $e->getMessage();
+        }
+        
+        echo json_encode($return);
+    }
+    
+    
+    
     //Function to add registration
     
     function register($post){
@@ -66,7 +87,8 @@ require(dirname(__FILE__).'/registration.php');
             //Common Items
             $ipaddress = get_client_ip();
             $patronid = $post->id;
-            $updaterow = $post->update;
+            $updatePatron = $post->updatePatron;
+            $updateReg = $post->updateRegistration;
             //Patron Items
             $name1 = $post->name1;
             $name2 = $post->name2;
@@ -98,7 +120,7 @@ require(dirname(__FILE__).'/registration.php');
                 $patronid = $return["data"];
                 logMessage(">>New Patron ID:" . $patronid);
             }
-            elseif($updaterow == 'Y'){
+            elseif($updatePatron == 'Y'){
                 
                 logMessage(">>Update flag is true : Updating Patron");
                 //updating patron
@@ -114,10 +136,23 @@ require(dirname(__FILE__).'/registration.php');
             if(empty($return["err"])){
                 
                 //adding registration record
-                logMessage(">>Adding Registration record:" . $patronid);
+                logMessage(">>Processing Registration for patron:" . $patronid);
                 
-                 //calling insert on registration.php
-                $return = addRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
+                
+                if($updateReg == 'Y'){
+                
+                    logMessage(">>Update flag is true : Updating Registration");
+                    //updating patron
+                    //calling update on patron.php
+                    $return = updateRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
+                
+                }
+                else{
+                    logMessage(">>Update flag is false : Adding Registration");
+                    
+                    //calling insert on registration.php
+                    $return = addRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
+                }
 
                         
             }

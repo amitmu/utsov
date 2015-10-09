@@ -186,8 +186,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.service = '../api/pos.php';
     $scope.user = {};
     $scope.user.type = 'GUEST';
+    $scope.registrations = [{"year":"No Data", "donation":0}];
     $scope.isAdminUser = false; //for admin user functionality
-    $scope.formData.regyear = 2015;
     //console.log("Action:" + $scope.action);
     console.log("Service:" + $scope.service);
     console.log("Title:" + $scope.title);
@@ -223,13 +223,42 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         });
     }
     
-    //search function
+    //select function
     $scope.SelectPatron = function(patronIndex){
       
         console.log("Selected Index = " +patronIndex);
         if ($scope.searchResults[patronIndex]) {
+            $scope.errors = '';
+            $scope.msgs = '';
+            $scope.formData.action = 'details';
             
-            //find registrations here.
+            //retrieve all registrations for selected patron
+            $http.post($scope.service,  $scope.formData
+            ).success(function(output, status, headers, config) {
+                if (output.err == ''){
+                    $scope.msgs = "Server: " + output.msg;
+                    $scope.patronRegs = output.data;
+                    //$scope.found = $scope.searchResults.length;
+                    console.log($scope.msgs);
+                    console.log($scope.msgs);
+                }
+                else{
+                    $scope.errors = "Error: " + output.err;
+                    $scope.msgs = output.msg;
+                    $scope.registrations = [{"year":"No Data", "donation":0}];
+                    //$scope.found = -1;
+                    console.log($scope.errors);
+                    console.log($scope.msgs);
+                    
+                }
+            }).error(function(output, status){
+                $scope.errors = "Status: " + status;
+                $scope.msgs = output.msg;
+                //$scope.found = -1;
+                $scope.registrations = [{"year":"No Data", "donation":0}];
+                console.log($scope.errors);
+                console.log($scope.msgs);
+            });
             
             
             $scope.formData = $scope.searchResults[patronIndex];
@@ -237,12 +266,10 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             $scope.showResults = false;
             if($scope.isAdminUser){
                //admin user, allow updates
-                $scope.formData.update = 'Y';
                 $scope.foundPatron = false;
             }
             else{
                 //non-admin hide update fields
-                $scope.formData.update = 'N';
                 $scope.foundPatron = true;
             }
             
