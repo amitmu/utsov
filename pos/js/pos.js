@@ -16,7 +16,7 @@ app.factory('userInfoService', function($rootScope){
     };
     
     userInfo.publishUser = function() {
-        console.log("Broadcasting change from service...")
+        //console.log("Broadcasting change from service...")
         $rootScope.$broadcast('userChanged');    
     };
     
@@ -148,8 +148,8 @@ app.controller('loginCntrl', function ($scope, $http, userInfoService) {
                 newUserName = $scope.user.name;
                 
                 console.log($scope.msgs);
-                console.log("Raising Event in login controller");
-                console.log("User:" + newUserName + "[" + newUserType + "]");
+                //console.log("Raising Event in login controller");
+                //console.log("User:" + newUserName + "[" + newUserType + "]");
                 
                 userInfoService.updateUser(newUserType, newUserName);
                 
@@ -159,11 +159,13 @@ app.controller('loginCntrl', function ($scope, $http, userInfoService) {
                 $scope.msgs = output.msg;
                 $scope.success = 2;
                 console.log($scope.errors);
+                console.log($scope.msgs);
             }
         }).error(function(output, status){
             $scope.errors = "Status: " + status;
             $scope.success = 2;
             console.log($scope.errors);
+            console.log($scope.msgs);
         });
     }
 });
@@ -176,7 +178,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.msgs = '';
     $scope.formData = {};
     $scope.registrations = {};
-    $scope.formData.regyear = 2015;
+    $scope.formData.regyear = new Date().getFullYear(); //2015;
     $scope.found = 0;
     $scope.showResults = false;
     $scope.foundPatron = false;
@@ -190,8 +192,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.registrations = [{"year":"No Data", "donation":0}];
     $scope.isAdminUser = false; //for admin user functionality
     //console.log("Action:" + $scope.action);
-    console.log("Service:" + $scope.service);
-    console.log("Title:" + $scope.title);
+    //console.log("Service:" + $scope.service);
+    //console.log("Title:" + $scope.title);
     
     //The find function
     $scope.SearchPatron = function () {
@@ -199,7 +201,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.msgs = '';
         $scope.success = 0;
         $scope.formData.action = 'search';
-        console.log("Running search...");
+        //console.log("Running search...");
         $scope.showResults = true;
         $scope.found = -2;
         $http.post($scope.service,  $scope.formData
@@ -227,12 +229,12 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     //select function
     $scope.SelectPatron = function(patronIndex){
       
-        console.log("Selected Index = " +patronIndex);
+        //console.log("Selected Index = " +patronIndex);
         if ($scope.searchResults[patronIndex]) {
             $scope.errors = '';
             $scope.msgs = '';
             $scope.formData = $scope.searchResults[patronIndex];
-            $scope.formData.regyear = 2015;
+            $scope.formData.regyear = new Date().getFullYear();//2015;
             $scope.formData.action = 'details';
             //$scope.formData.id = $scope.searchResults[patronIndex].id;
             
@@ -242,10 +244,9 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                 if (output.err == ''){
                     $scope.msgs = "Server: " + output.msg;
                     $scope.registrations = output.data;
-                    console.log(($scope.registrations[0].donation < 25 ? "<25":">25") );
-                    console.log(($scope.registrations[0].donation == 0 ? "=0":"!=0") );                        
-                    console.log(($scope.registrations[0].donation > 0 ? ">0":"!>0") );                        
-                    
+                    if($scope.registrations == null || $scope.registrations == undefined || $scope.registrations.length == 0){
+                        $scope.registrations = [{"year":"No Data", "donation":0}];
+                    }
                                             
                     //console.log("Donation Value:" + $scope.registrations[0].donation);
                     //console.log("Star Count:" + $scope.massageResults('donation', $scope.registrations[0].donation) );
@@ -280,10 +281,10 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                 $scope.foundPatron = true;
             }
             
-            console.log("Selected Patron ID = " + $scope.formData.id);
+            //console.log("Selected Patron ID = " + $scope.formData.id);
         } else {
             $scope.formData = {};
-            $scope.formData.regyear = 2015;
+            $scope.formData.regyear = new Date().getFullYear(); //2015;
             $scope.errors = "ERROR: Unable to load selected patron - " + patronIndex;
             $scope.success = 2;
         }
@@ -298,8 +299,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.user = {};
         $scope.user.type = 'GUEST';
         $scope.formData.action = 'register';
-        console.log("Running submit registration...");
-        console.log("Patron Id:", $scope.formData.id);
+        //console.log("Running submit registration...");
+        //console.log("Patron Id:", $scope.formData.id);
         $http.post($scope.service,  $scope.formData
         ).success(function(output, status, headers, config) {
             if (output.err == ''){
@@ -340,7 +341,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                 return data.substr(0, 3) + "***" + data.substr(6, 4);
                 break;
             case 'donation':
-                console.log("Massaging donation Amount: "  + data );
+                //console.log("Massaging donation Amount: "  + data );
                 var don = 0;
                 if(isNaN(data) || data < 25) {don = 0;}
                 else if(data < 50){don = 1;}
@@ -350,7 +351,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                     don = Math.floor(don/25); 
                     don += 2;
                 }
-                console.log("Star Count = " + don)
+                //console.log("Star Count = " + don)
                 return Array.apply(0, Array(+don));
                 //return don;
                 break;
@@ -362,7 +363,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     
     $scope.clearData = function () {
         $scope.formData = {};
-        $scope.formData.regyear = 2015;
+        $scope.formData.regyear = new Date().getFullYear(); //2015;
         $scope.searchResults = {};
         $scope.registrations = {};
         $scope.errors = '';
@@ -378,8 +379,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.user.name = userInfoService.name;
         $scope.user.type = userInfoService.type;
         $scope.isAdminUser =  ($scope.user.type == 'ADMIN');
-        console.log("Trapping Event in registration controller");
-        console.log("User:" + $scope.user.name + "[" + $scope.user.type + "]");
+        //console.log("Trapping Event in registration controller");
+        //console.log("User:" + $scope.user.name + "[" + $scope.user.type + "]");
 
     });
 });

@@ -3,7 +3,7 @@
 namespace UtsovAPI;
 use PDO;
 
-//require(dirname(__FILE__).'/utils.php'); //<- already reffered in patrons.php, not needed here
+require(dirname(__FILE__).'/utils.php'); //<- already reffered in patrons.php, not needed here
 require(dirname(__FILE__).'/patrons.php');
 require(dirname(__FILE__).'/registration.php');
 

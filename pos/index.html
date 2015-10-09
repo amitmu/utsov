@@ -29,7 +29,9 @@
           background:rgba(0,0,0,0.3);   /* for latest browsers */
          /*background: #000;  fallback for older browsers */
       }
-      
+      .modal-footer{
+          margin-top: -20px;
+      }
       
     </style>
 </head>
@@ -121,7 +123,7 @@
          <form role="form" name="frmSearch" class="form-horizontal" novalidate data-ng-submit="SearchPatron()">
              <div class="form-group" style="background:rgba(253,255,191,0.7); padding: 10px;" data-ng-hide="foundPatron">
                 <p>
-                    If you have registered with us before or given us your information in any form, please search for your email address, phone number, or name.  <span class="text-muted">(optional)</span>  
+                    *If you have registered with us before or given us your information in any form, please search for your email address, phone number, or name.  <span class="text-muted">(optional)</span>  
                 </p>
                 <div class="input-group">
                     <input type="text" class="form-control" name="find" placeholder="Your full email or 10 digit phone number, or any part of your name" required data-ng-model="formData.find" data-ng-minlength="3" data-ng-maxlength="100">
@@ -129,6 +131,7 @@
                         <button type="submit" class="btn btn-primary" data-ng-disabled="frmSearch.$invalid"><span class="icon fa fa-search"></span> Find Me</button>
                     </div>    
                 </div>
+                <span class="text-danger small">* The information collected here, is used by Utsov solely for notifications about events and our philathropic initiatives. We do not share this information with any third party.</span>
              </div>
              
             <div class="panel panel-success"  data-ng-show="showResults">
@@ -183,12 +186,12 @@
         </form>
         <form role="form" name="frmRegister" class="form-horizontal" novalidate data-ng-submit="SubmitRegistration()">
             <div class="well well-sm" data-ng-show="foundPatron">
-                <p>We were able to retrieve the following information from a previous registartion or from information you have provide to us in another form. </p>
+                <p>** We were able to retrieve the following information from a previous registartion or from information you have provide to us in another form. </p>
                 <p>
                     <table class="table table-responsive table-condensed">
                         <thead>
                         <tr>
-                            <th>&nbsp;**</th>
+                            <th>&nbsp;</th>
                             <th>Primary</th>
                             <th>Secondary</th>
                         </tr>
@@ -239,7 +242,8 @@
                         </tbody>
                     </table>
                 </p>
-                <p>** If any of the above information is incorrect, please leave us a note with your correct contact information below, and we will make the neccessary changes to our records. </p>
+                <p>** If any of the above information is incorrect, please talk to one of our volunteers, or leave us a note with your correct contact information below. </p>
+                <p class="text-muted">* The information collected above is used by Utsov for notifications about events and our philathropic initiatives. We do not share this information with any third party.</p>
             </div>
                 
                 <div class="form-group" data-ng-hide="showResults || foundPatron">
@@ -326,9 +330,9 @@
                         <span class="help-block text-danger" data-ng-show="frmRegister.regcount.$error.max">Invalid count. If you have more than 10 people, please ask a few others to register.</span>
                     </div>
                     <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }">
-                        <label for="donamount" data-ng-hide="isAdminUser">Please donate to aid our efforts</label>
+                        <label for="donamount" data-ng-hide="isAdminUser">Your donations make this event possible</label>
                         <label for="donamount" data-ng-show="isAdminUser">Donation Amount</label>
-                        <p class="lead" data-ng-hide="isAdminUser">Thanks for your support</p>
+                        <p class="lead" data-ng-hide="isAdminUser">Please Remember to Donate</p>
                         <input type="number" step="0.01" class="form-control" name="donamount" placeholder="Your donation amount for this year" data-ng-model="formData.donamount" min="0" max="1000000" data-ng-show="isAdminUser">
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Invalid amount.Please enter at least 0.00</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
@@ -336,8 +340,8 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12" data-ng-class="{ 'has-error': frmRegister.regmsg.$invalid }" data-ng-hide="isAdminUser">
-                        <label for="regmsg">Corrections to your information above or any note for us</label>
-                        <textarea class="form-control" rows="3" name="regmsg" data-ng-model="formData.regmsg" data-ng-maxlength="300"></textarea>
+                        <label for="regmsg">Corrections to your information above or any note for us.</label>
+                        <textarea class="form-control" rows="2" name="regmsg" data-ng-model="formData.regmsg" data-ng-maxlength="300"></textarea>
                         <span class="help-block text-danger" data-ng-show="frmRegister.regmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
                     </div>
                     <div class="col-sm-8 col-xs-12" data-ng-class="{ 'has-error': frmRegister.regmsg1.$invalid }" data-ng-show="isAdminUser">
