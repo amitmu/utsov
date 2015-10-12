@@ -89,6 +89,7 @@ require(dirname(__FILE__).'/registration.php');
             //Common Items
             $ipaddress = get_client_ip();
             $patronid = $post->id;
+            $regid = $post -> regid;
             $updatePatron = $post->updatePatron;
             $updateReg = $post->updateRegistration;
             //Patron Items
@@ -145,8 +146,8 @@ require(dirname(__FILE__).'/registration.php');
                 
                     logMessage(">>Update flag is true : Updating Registration");
                     //updating patron
-                    //calling update on patron.php
-                    $return = updateRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
+                    //calling update on registration.php
+                    $return = updateRegistration($regid, $patronid, $year, $headcount, $donation, $message, $ipaddress);
                 
                 }
                 else{

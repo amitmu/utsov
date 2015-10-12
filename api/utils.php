@@ -12,8 +12,8 @@ class UtsovDB extends \SQLite3
             case "contact":  $dbpath = 'db/capture.db'; break;
             case "contest":  $dbpath = 'db/capture.db'; break;
             case "sponsor":  $dbpath = 'db/capture.db'; break;
-            case "patron":  $dbpath = 'db/capture.db'; break;
-            case "register":  $dbpath = 'db/capture.db'; break;
+            case "patron":  $dbpath = 'db/registration.db'; break;
+            case "register":  $dbpath = 'db/registration.db'; break;
             default:  $dbpath = 'db/utsov.db';
         }
         
@@ -42,8 +42,8 @@ function getDBPath($dbname)
         case "contest":  $dbpath = realpath('.') . '/db/capture.db'; break;
         case "sponsor":  $dbpath = realpath('.') . '/db/capture.db'; break;
         case "donation":  $dbpath = realpath('.') . '/db/capture.db'; break;
-        case "patron":  $dbpath = realpath('.') . '/db/capture.db'; break;
-        case "register":  $dbpath = realpath('.') . '/db/capture.db'; break;
+        case "patron":  $dbpath = realpath('.') . '/db/registration.db'; break;
+        case "register":  $dbpath = realpath('.') . '/db/registration.db'; break;
         default:  $dbpath = realpath('.') . '/db/utsov.db';
     }
     return $dbpath;
@@ -78,7 +78,7 @@ function get_client_ip() {
 function logMessage($message)
 {
    // logging into custom file in /var/tmp folder
-   // error_log("\n[".date("H:i:s l jS F Y")."]: ".$message, 3, "/var/tmp/utsovapi.log");
+   error_log("[".date("H:i:s l jS F Y")."]: ".$message."\n", 3, "/var/tmp/utsovapi.log");
 }
 
 ?>

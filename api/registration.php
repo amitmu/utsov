@@ -63,7 +63,7 @@ use PDO;
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("patron"));
             
-            $stmt = $db->prepare('SELECT * FROM tb_registration WHERE patron_id = :patronid ORDER BY year DESC');
+            $stmt = $db->prepare('SELECT * FROM tb_registration WHERE patron_id = :patronid ORDER BY year DESC, date DESC');
             
             $bindVar = $stmt->bindParam(':patronid', $patronid);
             
@@ -135,6 +135,7 @@ use PDO;
     
                     if($exec){
                         $return["msg"] = "NEW ROW ADDED";
+                        logMessage(">>>>New Registration insert Success:");
                     }
                     else{
                         logMessage(">>**Error registration insert failed:".$stmtIns->errorInfo());
@@ -164,23 +165,27 @@ use PDO;
             $return["err"] = "Error:Registration: Unhandled Exception";
             $return["msg"] = $e->getMessage();
         }
+        logMessage(">>>>Registration insert Complete");
         return $return;
      }
      
      
      //Function to update registration
 
-    function updateRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress){
+    function updateRegistration($id, $patronid, $year, $headcount, $donation, $message, $ipaddress){
         $return["err"] = '';
         $return["msg"] = '';
-        logMessage(">>>>Updating row for patron: ".$patronid." Year:".$year);
+        logMessage(">>>>Updating registration for patron: ".$patronid." Reg ID:".$id);
         try {
             
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("register"));
            
-            $stmt = $db->prepare("UPDATE tb_registration SET date = :date, donation = :donation, headcount = :headcount, message = :message, ipaddress = :ipadd WHERE patron_id = :patronid AND year = :year");
+/*            $stmt = $db->prepare("UPDATE tb_registration SET date = :date, donation = :donation, headcount = :headcount, message = :message, ipaddress = :ipadd WHERE patron_id = :patronid AND year = :year");
+*/
+            $stmt = $db->prepare("UPDATE tb_registration SET patron_id = :patronid, year = :year, date = :date, donation = :donation, headcount = :headcount, message = :message, ipaddress = :ipadd WHERE id = :id");
 
+            $bindVar = $stmt->bindParam(':id', $id);
             $bindVar = $stmt->bindParam(':patronid', $patronid);
             $bindVar = $stmt->bindParam(':year', $year);
             $bindVar = $stmt->bindParam(':date', $date);
@@ -198,7 +203,8 @@ use PDO;
                 $exec = $stmt->execute();
 
                 if($exec){
-                   
+                    
+                    logMessage(">>>>Registration update Success:");
                     $return["msg"] = "REGISTRATION ROW UPDATE SUCCESS";
                 }
                 else{
@@ -230,6 +236,7 @@ use PDO;
             $return["err"] = "Error:Registration: Unhandled Exception";
             $return["msg"] = $e->getMessage();
         }
+        logMessage(">>>>Registration update Complete");
         return $return;
      }
      

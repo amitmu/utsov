@@ -168,6 +168,17 @@ app.controller('loginCntrl', function ($scope, $http, userInfoService) {
             console.log($scope.msgs);
         });
     }
+    
+    $scope.$on('userChanged', function(){
+        if($scope.user.name !== userInfoService.name)
+        {//i.e. Logout happened outside this controller
+            $scope.user.name = userInfoService.name
+            $scope.user.type = userInfoService.type;
+            $scope.success = 0;
+            $scope.formData = {};
+        }
+    });
+    
 });
 
 
@@ -178,7 +189,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.msgs = '';
     $scope.formData = {};
     $scope.registrations = {};
-    $scope.formData.regyear = new Date().getFullYear(); //2015;
+    $scope.currentYear = new Date().getFullYear(); 
+    $scope.formData.regyear = $scope.currentYear; //2015;
     $scope.found = 0;
     $scope.showResults = false;
     $scope.foundPatron = false;
@@ -189,7 +201,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.service = '../api/pos.php';
     $scope.user = {};
     $scope.user.type = 'GUEST';
-    $scope.registrations = [{"year":"No Data", "donation":0}];
+    //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
     $scope.isAdminUser = false; //for admin user functionality
     //console.log("Action:" + $scope.action);
     //console.log("Service:" + $scope.service);
@@ -234,7 +246,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             $scope.errors = '';
             $scope.msgs = '';
             $scope.formData = $scope.searchResults[patronIndex];
-            $scope.formData.regyear = new Date().getFullYear();//2015;
+            $scope.formData.regyear = $scope.currentYear;//2015;
             $scope.formData.action = 'details';
             //$scope.formData.id = $scope.searchResults[patronIndex].id;
             
@@ -245,7 +257,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                     $scope.msgs = "Server: " + output.msg;
                     $scope.registrations = output.data;
                     if($scope.registrations == null || $scope.registrations == undefined || $scope.registrations.length == 0){
-                        $scope.registrations = [{"year":"No Data", "donation":0}];
+                        //$scope.registrations = [{"id":0, "year":"No Data", "donation":0}];
+                         $scope.registrations = {};
                     }
                                             
                     //console.log("Donation Value:" + $scope.registrations[0].donation);
@@ -254,7 +267,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                 else{
                     $scope.errors = "Error: " + output.err;
                     $scope.msgs = output.msg;
-                    $scope.registrations = [{"year":"No Data", "donation":0}];
+                    //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
+                    $scope.registrations = {};
                     //$scope.found = -1;
                     console.log($scope.errors);
                     console.log($scope.msgs);
@@ -264,7 +278,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                 $scope.errors = "Status: " + status;
                 $scope.msgs = output.msg;
                 //$scope.found = -1;
-                $scope.registrations = [{"year":"No Data", "donation":0}];
+                //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
+                $scope.registrations = {};
                 console.log($scope.errors);
                 console.log($scope.msgs);
             });
@@ -284,11 +299,27 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             //console.log("Selected Patron ID = " + $scope.formData.id);
         } else {
             $scope.formData = {};
-            $scope.formData.regyear = new Date().getFullYear(); //2015;
+            $scope.formData.regyear = $scope.currentYear; //2015;
             $scope.errors = "ERROR: Unable to load selected patron - " + patronIndex;
             $scope.success = 2;
         }
         
+    }
+    
+    $scope.SelectRegistration = function(regIndex){
+        //filling in registration on selection
+        console.log("Selected Registration Index = " +regIndex);
+        if ($scope.registrations[regIndex]) {
+            
+            $scope.formData.regid = parseInt($scope.registrations[regIndex]['id']);
+            $scope.formData.regyear = parseInt($scope.registrations[regIndex]['year']);
+            $scope.formData.donamount = parseFloat($scope.registrations[regIndex]['donation']);
+            $scope.formData.regmsg = $scope.registrations[regIndex]['message'];
+            $scope.formData.regcount = parseInt($scope.registrations[regIndex]['headcount']);
+
+            $scope.formData.updateRegistration = true;
+
+        }
     }
     
     //The actual add function
@@ -327,33 +358,44 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.massageResults = function (field, data) {
         
         //ignore if admin user by forcing default case
-        if($scope.isAdminUser){field = "xx"};
+        if($scope.isAdminUser && field !== "date"){field = "xx"};
         
         switch (field)
         {
             case 'name':
                 return data.split(' ')[0] + " ***";
                 break;
-            case 'email':
+           /* case 'email':
                 return "***@" + data.split('@')[1];
-                break;
+                break;*/
             case 'phone':
                 return data.substr(0, 3) + "***" + data.substr(6, 4);
                 break;
             case 'donation':
                 //console.log("Massaging donation Amount: "  + data );
                 var don = 0;
-                if(isNaN(data) || data < 25) {don = 0;}
-                else if(data < 50){don = 1;}
-                else if(data < 100){don = 2;}
+                if(isNaN(data) || data < 50) {don = 0;}
+                //else if(data < 50){don = 1;}
+                //else if(data < 100){don = 2;}
                 else{ 
-                    don = data - 100;
+                    don = data - 49; //avoiding divide by zero error 
                     don = Math.floor(don/25); 
-                    don += 2;
+                    don += 1;
                 }
+                
                 //console.log("Star Count = " + don)
+                //forcing 5 star max
+                if(don > 5){don = 5};
                 return Array.apply(0, Array(+don));
-                //return don;
+                
+                break;
+            case 'date':
+                //console.log("Converting Date = " + data);
+                var retDate = new Date(data.substring(0,4), data.substring(4,6), data.substring(6,8), data.substring(9,11), data.substring(11,13), data.substring(13,15));
+                //console.log("Returning: " + retDate.toLocaleString());
+                
+                return retDate.toLocaleString();
+                        
                 break;
             default:
                 return data;
@@ -363,8 +405,9 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     
     $scope.clearData = function () {
         $scope.formData = {};
-        $scope.formData.regyear = new Date().getFullYear(); //2015;
+        $scope.formData.regyear =  $scope.currentYear; //2015;
         $scope.searchResults = {};
+        //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
         $scope.registrations = {};
         $scope.errors = '';
         
@@ -374,6 +417,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.showResults = false;
         $scope.foundPatron = false;
     }
+    
+    
     
     $scope.$on('userChanged', function(){
         $scope.user.name = userInfoService.name;

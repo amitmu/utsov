@@ -210,6 +210,7 @@ use PDO;
             $return["err"] = "Error:Patrons: Unhandled Exception";
             $return["msg"] = $e->getMessage();
         }
+        logMessage(">>>>Patron Insert Complete");
         return $return;
      }
      
@@ -253,7 +254,7 @@ use PDO;
                    
                     $return["msg"] = "PATRON ROW UPDATE SUCCESS";
                     $return["data"] = $id;
-                    logMessage(">>>>Returning patron id: ".$id);
+                    logMessage(">>>>Updated patron id: ".$id);
                 }
                 else{
                     logMessage(">>**Error: Update failed: ".implode("|", $stmt->errorInfo()));
@@ -284,6 +285,7 @@ use PDO;
             $return["err"] = "Error:Patrons: Unhandled Exception";
             $return["msg"] = $e->getMessage();
         }
+        logMessage(">>>>Patron Update Complete");
         return $return;
      }
      
