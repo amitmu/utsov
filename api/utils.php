@@ -78,7 +78,7 @@ function get_client_ip() {
 function logMessage($message)
 {
    // logging into custom file in /var/tmp folder
-   error_log("[".date("H:i:s l jS F Y")."]: ".$message."\n", 3, "/var/tmp/utsovapi.log");
+   //error_log("[".date("H:i:s l jS F Y")."]: ".$message."\n", 3, "/var/tmp/utsovapi.log");
 }
 
 ?>
