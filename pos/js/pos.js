@@ -421,7 +421,12 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.patronLoaded = false;
     }
     
-    
+    $scope.checkNumber= function(data){
+        var retVal = data - 0;
+        if(isNaN(retVal)){retVal = 0;}
+        //console.log("Returning " + retVal);
+        return retVal; 
+    }
     
     $scope.$on('userChanged', function(){
         $scope.user.name = userInfoService.name;
@@ -431,4 +436,5 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         //console.log("User:" + $scope.user.name + "[" + $scope.user.type + "]");
 
     });
+    
 });
