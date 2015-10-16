@@ -194,6 +194,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     $scope.found = 0;
     $scope.showResults = false;
     $scope.foundPatron = false;
+    $scope.patronLoaded = false;
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
@@ -290,6 +291,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             if($scope.isAdminUser){
                //admin user, allow updates
                 $scope.foundPatron = false;
+                $scope.patronLoaded = true;
             }
             else{
                 //non-admin hide update fields
@@ -416,6 +418,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
         $scope.found = 0;
         $scope.showResults = false;
         $scope.foundPatron = false;
+        $scope.patronLoaded = false;
     }
     
     

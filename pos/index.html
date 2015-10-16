@@ -251,13 +251,13 @@
                 <div class="form-group" data-ng-hide="showResults || foundPatron">
                     <label class="col-sm-2" for="name1">Name</label>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.name1.$invalid }">
-                        <input type="text" class="form-control" name="name1" placeholder="Your Full Name" required data-ng-model="formData.name1" data-ng-minlength="3" data-ng-maxlength="100" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="name1" placeholder="Your Full Name" required data-ng-model="formData.name1" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <!--<span class="help-block" data-ng-show="frmRegister.name1.$error.required">Required</span>-->
                         <span class="help-block" data-ng-show="frmRegister.name1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                         <span class="help-block" data-ng-show="frmRegister.name1.$error.maxlength">Too long. Please limit to 100 characters.</span>
                     </div>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.name2.$invalid }">
-                        <input type="text" class="form-control" name="name2" placeholder="Spouse/Partner Full Name" data-ng-model="formData.name2" data-ng-minlength="3" data-ng-maxlength="100"  data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="name2" placeholder="Spouse/Partner Full Name" data-ng-model="formData.name2" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block" data-ng-show="frmRegister.name2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                         <span class="help-block" data-ng-show="frmRegister.name2.$error.maxlength">Too long. Please limit to 100 characters.</span>
                     </div>
@@ -265,36 +265,36 @@
                 <div class="form-group" data-ng-hide="showResults || foundPatron">
                     <label class="col-sm-2" for="email1">Email</label>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.email1.$invalid }">
-                        <input type="email" class="form-control" name="email1" placeholder="Your email address" required data-ng-model="formData.email1" data-ng-hide="foundPatron">
+                        <input type="email" class="form-control" name="email1" placeholder="Your email address" required data-ng-model="formData.email1" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <!--<span class="help-block" data-ng-show="frmRegister.email1.$error.required">Required</span>-->
                         <span class="help-block" data-ng-show="frmRegister.email1.$error.email">Please enter a valid email address.</span>
                     </div>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.email2.$invalid }">
-                        <input type="email" class="form-control" name="email2" placeholder="Spouse/Partner email" data-ng-model="formData.email2"  data-ng-hide="foundPatron">
+                        <input type="email" class="form-control" name="email2" placeholder="Spouse/Partner email" data-ng-model="formData.email2" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block" data-ng-show="frmRegister.email2.$error.email">Please enter a valid email address.</span>
                     </div>
                 </div>
                 <div class="form-group" data-ng-hide="showResults || foundPatron">
                     <label class="col-sm-2" for="phone1">Phone Number</label>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.phone1.$invalid }">
-                        <input type="text" class="form-control" name="phone1" placeholder="Primary Phone" required data-ng-model="formData.phone1" data-ng-pattern="phoneNumPattern" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="phone1" placeholder="Primary Phone" required data-ng-model="formData.phone1" data-ng-pattern="phoneNumPattern" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <!--<span class="help-block" data-ng-show="frmRegister.phone1.$error.required">Required</span>-->
                         <span class="help-block" data-ng-show="frmRegister.phone1.$error.pattern">Please enter a valid 10 digit US phone number.</span>
                     </div>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.phone2.$invalid }">
-                        <input type="text" class="form-control" name="phone2" placeholder="Other Phone" data-ng-model="formData.phone2" data-ng-pattern="phoneNumPattern" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="phone2" placeholder="Other Phone" data-ng-model="formData.phone2" data-ng-pattern="phoneNumPattern" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block" data-ng-show="frmRegister.phone2.$error.pattern">Please enter a valid 10 digit US phone number.</span>
                     </div>
                 </div>
                 <div class="form-group" data-ng-hide="showResults || foundPatron">
                     <label class="col-sm-2" for="address1">Mailing Address</label>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.address1.$invalid }">
-                        <input type="text" class="form-control" name="address1" placeholder="Street address line 1" data-ng-model="formData.address1" data-ng-minlength="3" data-ng-maxlength="100" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="address1" placeholder="Street address line 1" data-ng-model="formData.address1" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block text-danger" data-ng-show="frmRegister.address1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.address1.$error.maxlength">Too long. Please limit to 100 characters.</span>
                     </div>
                     <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.address2.$invalid }">
-                        <input type="text" class="form-control" name="address2" placeholder="Street address line 2" data-ng-model="formData.address2" data-ng-minlength="3" data-ng-maxlength="100" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="address2" placeholder="Street address line 2" data-ng-model="formData.address2" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block text-danger" data-ng-show="frmRegister.address2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.address2.$error.maxlength">Too long. Please limit to 100 characters.</span>
                     </div>
@@ -302,22 +302,23 @@
                 <div class="form-group" data-ng-hide="showResults || foundPatron">
                     <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.city.$invalid }">
                         <label for="city">City</label>
-                        <input type="text" class="form-control" name="city" placeholder="Mailing address City" data-ng-model="formData.city" data-ng-minlength="3" data-ng-maxlength="50" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="city" placeholder="Mailing address City" data-ng-model="formData.city" data-ng-minlength="3" data-ng-maxlength="50" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block text-danger" data-ng-show="frmRegister.city.$error.minlength">Too Short. Please enter at least 3 characters.</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.city.$error.maxlength">Too long. Please limit to 50 characters.</span>
                     </div>
                     <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.state.$invalid }">
                         <label for="state">State</label>
-                        <input type="text" class="form-control" name="state" placeholder="Mailing address State" data-ng-model="formData.state" data-ng-minlength="2" data-ng-maxlength="20" data-ng-hide="foundPatron">
+                        <input type="text" class="form-control" name="state" placeholder="Mailing address State" data-ng-model="formData.state" data-ng-minlength="2" data-ng-maxlength="20" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron">
                         <span class="help-block text-danger" data-ng-show="frmRegister.state.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.state.$error.maxlength">Too long. Please limit to 20 characters.</span>
                     </div>
                     <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.zip.$invalid }">
                         <label for="zip">Zip</label>
-                        <input type="text" class="form-control" name="zip" placeholder="Mailing address Zip" data-ng-model="formData.zip" data-ng-pattern="zipCodePattern" data-ng-hide="foundPatron"> 
+                        <input type="text" class="form-control" name="zip" placeholder="Mailing address Zip" data-ng-model="formData.zip" data-ng-pattern="zipCodePattern" data-ng-disabled="(isAdminUser && patronLoaded) && !formData.updatePatron"> 
                         <span class="help-block text-danger" data-ng-show="frmRegister.zip.$error.pattern">Please enter a valid US ZIP code.</span>
                     </div>
                 </div>
+                <hr></hr>
                  <div class="form-group">
                     <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.regyear.$invalid }">
                         <label for="city">Year</label>
