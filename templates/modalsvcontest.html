@@ -10,12 +10,12 @@
                 <label for="concontest">Contest Entry</label>
                 <select class="form-control" name="concontest" required data-ng-model="formData.concontest">
                     <option selected disabled value="">-- Please Select --</option>
-                    <option value="ESSAY" disabled>Childrens Essay Competition</option>
-                    <option value="ART" disabled>Childrens Art Competition</option>
-                    <option value="TALENT" disabled>Childrens Talent Show</option>
+                    <!-- <option value="ESSAY" disabled>Childrens Essay Competition</option> -->
+                    <option value="ART">Childrens Art Competition</option>
+                    <option value="TALENT">Childrens Talent Show</option>
                     <!--<option value="GAYL">Childrens Go As You Like</option>-->
-                    <option value="PHOTO" disabled>Open Photography Contest</option>
-                    <option value="CONCH" disabled>Open Conch Shell Contest</option>
+                    <option value="PHOTO">Open Photography Contest</option>
+                    <option value="CONCH">Open Conch Shell Contest</option>
                 </select>
                 <span class="help-block" data-ng-show="frmAddContest.concontest.$error.required">Required</span>
             </div>
@@ -54,29 +54,29 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-4" >
+            <!-- <div class="col-sm-4" >
                 <label for="confiletype">Submission Type</label>
                 <select class="form-control" name="confiletype"  data-ng-model="formData.confiletype">
-                    <option selected disabled value="">-- Please Select --</option>
-                    <option value="TEXT">Document for Essay Competition</option>$
-                    <option value="IMAGE">Image for Art/Photography Competition</option>
+                    <option selected disabled value=""> Please Select </option>
+                    <option value="TEXT">Document for Essay Competition</option>
+                    <option selected value="IMAGE">Image for Art/Photography Competition</option>
                 </select>
-            </div>
-            <div class="col-sm-8 alert alert-warning">
+            </div> -->
+            <div class="col-sm-12 alert alert-warning">
                 <label><span class="fa fa-lg fa-info-circle"></span> Please Note</label>
                 <p>By submitting your text or image to Utsov Inc., you are explicitly granting us the right to use them on the website or in print media.</p>
+                <p><small>We are unable to provide a file upload because of resource constraints. Please submit a link to any online storage service which can be directly accessed. Please note that we will not be able to validate your entry if we cannot access the link.</small></p>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-6">
-                <label for="confileurl">Submission URL <span class="text-muted">(for self-hosted files)</span></label>
-                <input type="url" class="form-control" name="confileurl" placeholder="File Url - (starting with 'http://')" data-ng-model="formData.confileurl">
-                <span class="help-block text-danger" data-ng-show="frmAddContest.confileurl.$error.url">Please enter a valid URL</span>
+                <label for="confiletype">Submission Type</label>
+                <input type="text" class="form-control" name="confileurl" placeholder="Image" data-ng-model="formData.confiletype" value="IMAGE" disabled>
             </div>
             <div class="col-sm-6">
-                <!--<label for="confilename">Upload Submission <span class="text-muted">(coming soon)</span></label>
-                <input name="confilename" type="file" disabled>-->
-                <p><small>We are unable to provide a file upload because of resource constraints. Please submit a link to any online storage service which can be directly accessed. Please note that we will not be able to validate your entry if we cannot access the link.</small></p>
+              <label for="confileurl">Submission URL <span class="text-muted">(for self-hosted files)</span></label>
+              <input type="url" class="form-control" name="confileurl" placeholder="File Url - (starting with 'http://')" data-ng-model="formData.confileurl">
+              <span class="help-block text-danger" data-ng-show="frmAddContest.confileurl.$error.url">Please enter a valid URL</span>
             </div>
         </div>
         <div class="form-group">
