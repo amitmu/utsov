@@ -1,37 +1,140 @@
 <h1>{{title}}</h1>
+
+<form role="form" name="frmListSponsors" class="form-horizontal" novalidate ng-submit="fetchData()">
+    <div class="form-group" >
+        <label class="col-sm-2"  for="yearrequested">Year Registered</label>
+        <div class="col-sm-3">
+            <select class="form-control col-sm-2" name="yearrequested" data-ng-model="formData.yearrequested" ng-change="fetchData()" ng-init="initialize()">
+                <option data-ng-repeat="yearavailable in resultset.yearsavailable" value="{{yearavailable.year}}" ng-selected ="isSelected(yearavailable.year)">{{yearavailable.year}}</option>
+            </select>
+        </div>
+        <label class="col-sm-2" for="company">Company</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="company" placeholder="Company"  data-ng-model="formData.company" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+    </div>
+    <div class="form-group" >
+        <label class="col-sm-2" for="contact">Contact</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="contact" placeholder="Contact"  data-ng-model="formData.contact" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+        <label class="col-sm-2" for="sponsor">Sponsor</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="sponsor" placeholder="Sponsor"  data-ng-model="formData.sponsor" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+    </div>
+    <div class="form-group" >
+        <label class="col-sm-2" for="phone">Phone</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="phone" placeholder="Phone"  data-ng-model="formData.phone" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+        <label class="col-sm-2" for="email">Email</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="email" placeholder="Email"  data-ng-model="formData.email" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-9 col-xs-12 small-padding">
+            <button type="submit" class="btn btn-primary pull-right"  data-ng-click="fetchData()">Submit</button>
+        </div>
+        <div class="col-sm-1 col-xs-12 small-padding">
+            <button type="button" class="btn btn-default"  data-ng-click="clear()">Clear</button>
+        </div>
+    </div>
+</form>
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <tr>
-            <th>Date</th>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Sponsor</th>
-            <th>Address</th>
-            <!--<th>Address2</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip</th>-->
-            <th>Phone</th>
-            <th>Email</th>
+            <th>
+                <a ng-click="orderByField='date'; reverseSort = !reverseSort">
+                    Date
+                    <span ng-show="orderByField == 'date'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+
+            <th>
+                <a ng-click="orderByField='company'; reverseSort = !reverseSort">
+                    Company
+                    <span ng-show="orderByField == 'company'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+
+            <th>
+                <a ng-click="orderByField='contact'; reverseSort = !reverseSort">
+                    Contact
+                    <span ng-show="orderByField == 'contact'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+
+            <th>
+                <a ng-click="orderByField='sponsor_type'; reverseSort = !reverseSort">
+                    Sponsor
+                    <span ng-show="orderByField == 'sponsor_type'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+
+            <th>
+                <a ng-click="orderByField=['address1', 'address2', 'state', 'zip']; reverseSort = !reverseSort">
+                    Address
+                    <span ng-show="orderByField.toString() == 'address1,address2,state,zip';">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+
+            <th>
+                <a ng-click="orderByField='phone'; reverseSort = !reverseSort">
+                    Phone
+                    <span ng-show="orderByField == 'phone'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+
+            <th>
+                <a ng-click="orderByField='email'; reverseSort = !reverseSort">
+                    Email
+                    <span ng-show="orderByField == 'email'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
             <th>Message</th>
             <th>IP</th>
         </tr>
-        <tr data-ng-repeat="sponsor in resultset">
-            <td>{{sponsor.date}}</td>
+        <tr data-ng-repeat="sponsor in resultset.sponsors|orderBy:orderByField:reverseSort">
+            <td>{{formatDate(sponsor.date)}}</td>
             <td>{{sponsor.company}}</td>
             <td>{{sponsor.contact}}</td>
             <td>{{sponsor.sponsor_type}}</td>
-            <td>{{sponsor.address1}} {{sponsor.address2}}
-                {{sponsor.city}} {{sponsor.state}} {{sponsor.zip}}
+            <td><span>{{formatAddressLines(sponsor)}}</span> <br />
+                <span>{{sponsor.city}}</span> <br />
+                <span>{{formatStateZip(sponsor)}}</span> <br />
             </td>
             <!--<td>{{sponsor.address1}}</td>
             <td>{{sponsor.address2}}</td>
             <td>{{sponsor.city}}</td>
             <td>{{sponsor.state}}</td>
             <td>{{sponsor.zip}}</td>-->
-            <td>{{sponsor.phone}}</td>
+            <td>{{formatPhoneNumber(sponsor.phone)}}</td>
             <td>{{sponsor.email}}</td>
-            <td>{{sponsor.message}}</td>
+            <td title = "{{vol.message}}">{{sponsor.message}}</td>
             <td>{{sponsor.ipaddress}}</td>
         </tr>
     </table>

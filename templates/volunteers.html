@@ -2,31 +2,64 @@
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Address2</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip</th>
-            <th>Phone</th>
-            <th>Email</th>
+            <th>
+                <a ng-click="orderByField='date'; reverseSort = !reverseSort">
+                    Date
+                    <span ng-show="orderByField == 'date'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='name'; reverseSort = !reverseSort">
+                    Name
+                    <span ng-show="orderByField == 'name'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='address'; reverseSort = !reverseSort">
+                    Address
+                    <span ng-show="orderByField == 'address'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='phone'; reverseSort = !reverseSort">
+                    Phone
+                    <span ng-show="orderByField == 'phone'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='email'; reverseSort = !reverseSort">
+                    Email
+                    <span ng-show="orderByField == 'email'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
             <th>Message</th>
             <th>IP</th>
         </tr>
-        <tr data-ng-repeat="vol in resultset">
-            <td>{{vol.id}}</td>
-            <td>{{vol.date}}</td>
+        <tr data-ng-repeat="vol in resultset|orderBy:orderByField:reverseSort">
+            <td>{{formatDate(vol.date)}}</td>
             <td>{{vol.name}}</td>
-            <td>{{vol.address1}}</td>
-            <td>{{vol.address2}}</td>
-            <td>{{vol.city}}</td>
-            <td>{{vol.state}}</td>
-            <td>{{vol.zip}}</td>
-            <td>{{vol.phone}}</td>
+            <td><span>{{formatAddressLines(vol)}}</span> <br/>
+                <span>{{vol.city}}</span> <br/>
+                <span>{{formatStateZip(vol)}}</span> <br/>
+            </td>
+            <td>{{formatPhoneNumber(vol.phone)}}</td>
             <td>{{vol.email}}</td>
-            <td>{{vol.message}}</td>
+            <td title = "{{vol.message}}">{{vol.message}}</td>
             <td>{{vol.ipaddress}}</td>
         </tr>
     </table>

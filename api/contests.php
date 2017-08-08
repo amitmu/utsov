@@ -4,6 +4,7 @@ namespace UtsovAPI;
 use PDO;
 
 require(dirname(__FILE__).'/utils.php');
+date_default_timezone_set('America/New_York');
 
 //// Main Section /////
     $_post = json_decode(file_get_contents("php://input"));
@@ -36,6 +37,49 @@ require(dirname(__FILE__).'/utils.php');
         echo json_encode($return);
     }
 
+    function IsNullOrEmptyString($question){
+        return (!isset($question) || trim($question)==='');
+    }
+
+    function getParamExpression($post){
+        $param_arr = array();
+        $num = 0;
+
+        $year_requested = $post->formData->yearrequested;
+        if(IsNullOrEmptyString($year_requested)){
+            $year_requested = $year;
+        }
+        $next_year = (int)$year_requested + 1;
+        $param_arr[$num++] = "date > '$year_requested' and date <'$next_year'";
+
+        $contest = $post->formData->contest;
+        if(!IsNullOrEmptyString($contest)){
+            $param_arr[$num++] = "competition like '%$contest%'";
+        }
+
+        $contestant = $post->formData->contestant;
+        if(!IsNullOrEmptyString($contestant)){
+            $param_arr[$num++] = "name like '%$contestant%'";
+        }
+
+        $contact = $post->formData->contact;
+        if(!IsNullOrEmptyString($contact)){
+            $param_arr[$num++] = "contact like '%$contact%'";
+        }
+
+        $phone = $post->formData->phone;
+        if(!IsNullOrEmptyString($phone)){
+            $param_arr[$num++] = "phone like '%$phone%'";
+        }
+
+        $email = $post->formData->email;
+        if(!IsNullOrEmptyString($email)){
+            $param_arr[$num++] = "email like '%$email%'";
+        }
+
+
+        return join(' and ', $param_arr);
+    }
 
     //Function to return  list of volunteers
 
@@ -43,11 +87,15 @@ require(dirname(__FILE__).'/utils.php');
         $return["err"] = '';
         $return["msg"] = '';
         $arr = array();
+        $year_arr = array();
+        $year = strftime("%Y", time());
         try {
+            $params = getParamExpression($post);
+
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("contest"));
 
-            $result = $db->query('SELECT * FROM tb_competition');
+            $result = $db->query("SELECT * FROM tb_competition where $params");
             $num = 0;
             foreach($result as $row)
             {
@@ -55,8 +103,28 @@ require(dirname(__FILE__).'/utils.php');
                 $num++;
             }
 
-            $return["data"] = $arr;
+            $return["data"]["contests"] = $arr;
             $return ["msg"] = $num . " rows returned";
+
+            $result = $db->query("SELECT distinct substr(date, 1, 4) as year FROM tb_competition");
+            $num = 0;
+            $current_year_found = false;
+            foreach($result as $row)
+            {
+                $year_arr[$num] = $row;
+
+                if($row["year"]  == $year){
+                    $current_year_found = true;
+                }
+
+                $num++;
+            }
+            if($current_year_found == false){
+                $year_arr[$num]["year"] = $year;
+            }
+
+            $return["data"]["yearsavailable"] = $year_arr;
+            /*** $return["data"]["params"] = $params; **/
 
             //closing DB
             $db = NULL;
