@@ -1,34 +1,139 @@
 <h1>{{title}}</h1>
+
+<form role="form" name="frmListSponsors" class="form-horizontal" novalidate ng-submit="fetchData()">
+    <div class="form-group" >
+        <label class="col-sm-2"  for="yearrequested">Year Submitted</label>
+        <div class="col-sm-3">
+            <select class="form-control col-sm-2" name="yearrequested" data-ng-model="formData.yearrequested" ng-change="fetchData()" ng-init="initialize()">
+                <option data-ng-repeat="yearavailable in resultset.yearsavailable" value="{{yearavailable.year}}" ng-selected ="isSelected(yearavailable.year)">{{yearavailable.year}}</option>
+            </select>
+        </div>
+        <label class="col-sm-2"  for="contest">Contest</label>
+        <div class="col-sm-3">
+            <select class="form-control col-sm-2" name="contest" data-ng-model="formData.contest" ng-change="fetchData()">
+                <option selected disabled value="">-- Please Select --</option>
+                <option value="ESSAY" >Childrens Essay Competition</option>
+                <option value="ART">Childrens Art Competition</option>
+                <option value="TALENT" >Childrens Talent Show</option>
+                <!--<option value="GAYL">Childrens Go As You Like</option>-->
+                <option value="PHOTO" >Open Photography Contest</option>
+                <option value="CONCH">Open Conch Shell Contest</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group" >
+
+        <label class="col-sm-2" for="contestant">Contestant</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="contestant" placeholder="Contestant"  data-ng-model="formData.contestant" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+        <label class="col-sm-2" for="contact">Contact</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="contact" placeholder="Contact"  data-ng-model="formData.contact" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+    </div>
+    <div class="form-group" >
+        <label class="col-sm-2" for="phone">Phone</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="phone" placeholder="Phone"  data-ng-model="formData.phone" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+        <label class="col-sm-2" for="email">Email</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="email" placeholder="Email"  data-ng-model="formData.email" change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-9 small-padding">
+            <button type="submit" class="btn btn-primary pull-right"  data-ng-click="fetchData()">Submit</button>
+        </div>
+        <div class="col-sm-1 small-padding">
+            <button type="button" class="btn btn-default"  data-ng-click="clear()">Clear</button>
+        </div>
+    </div>
+</form>
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Contest</th>
-            <th>Contestant</th>
-            <th>Age</th>
-            <th>Contact</th>
-            <th>Phone</th>
-            <th>Email</th>
+            <th>
+                <a ng-click="orderByField='date'; reverseSort = !reverseSort">
+                    Date
+                    <span ng-show="orderByField == 'date'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='competition'; reverseSort = !reverseSort">
+                    Contest
+                    <span ng-show="orderByField == 'competition'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='name'; reverseSort = !reverseSort">
+                    Contestant
+                    <span ng-show="orderByField == 'name'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='age'; reverseSort = !reverseSort">
+                    Age
+                    <span ng-show="orderByField == 'age'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='contact'; reverseSort = !reverseSort">
+                    Contact
+                    <span ng-show="orderByField == 'contact'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='phone'; reverseSort = !reverseSort">
+                    Phone
+                    <span ng-show="orderByField == 'phone'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='email'; reverseSort = !reverseSort">
+                    Email
+                    <span ng-show="orderByField == 'email'">
+                        <span ng-show="!reverseSort"><i class="fa fa-fw fa-sort-asc"></i></span>
+                        <span ng-show="reverseSort"><i class="fa fa-fw  fa-sort-desc"></i></span>
+                    </span>
+                </a>
+            </th>
             <th>Submission Type</th>
-            <th>File URL</th>
-            <th>File Location</th>
+            <th>File</th>
             <th>Message</th>
             <th>IP</th>
         </tr>
-        <tr data-ng-repeat="sub in resultset">
-            <td>{{sub.id}}</td>
-            <td>{{sub.date}}</td>
+        <tr data-ng-repeat="sub in resultset.contests|orderBy:orderByField:reverseSort">
+            <td>{{formatDate(sub.date)}}</td>
             <td>{{sub.competition}}</td>
             <td>{{sub.name}}</td>
             <td>{{sub.age}}</td>
             <td>{{sub.contact}}</td>
-            <td>{{sub.phone}}</td>
+            <td>{{formatPhoneNumber(sub.phone)}}</td>
             <td>{{sub.email}}</td>
             <td>{{sub.file_type}}</td>
-            <td>{{sub.url}}</td>
-            <td>{{sub.file_path}}</td>
-            <td>{{sub.message}}</td>
+            <td><a ng-show="sub.url" href ="{{sub.url}}" >Link</a></td>
+            <td title = "{{sub.message}}">{{sub.message}}</td>
             <td>{{sub.ipaddress}}</td>
         </tr>
     </table>

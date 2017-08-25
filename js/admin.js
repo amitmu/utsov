@@ -4,9 +4,49 @@ $(document).ready(function () {
     $('[data-toggle=offcanvas]').click(function () {
         $('.row-offcanvas').toggleClass('active');
     });
+  $('[data-toggle="tooltip"]').tooltip();
 });
 
 var utsovAdminApp = angular.module('utsovAdminApp', ['ngRoute']);
+
+utsovAdminApp.directive('changeOnBlur', function() {
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function(scope, elm, attrs, ngModelCtrl) {
+      if (attrs.type === 'radio' || attrs.type === 'checkbox')
+        return;
+
+      var expressionToCall = attrs.changeOnBlur;
+
+      var oldValue = null;
+      elm.bind('focus',function() {
+        scope.$apply(function() {
+          oldValue = elm.val();
+          console.log(oldValue);
+        });
+      })
+      elm.bind('blur', function() {
+        scope.$apply(function() {
+          var newValue = elm.val();
+          console.log(newValue, oldValue, newValue !== oldValue);
+          if (newValue !== oldValue){
+            scope.$eval(expressionToCall);
+          }
+          //alert('changed ' + oldValue);
+        });
+      });
+
+      elm.bind("keydown keypress", function(event) {
+        if(event.which === 13) {
+          oldValue = elm.val();
+          scope.$eval(expressionToCall);
+          event.preventDefault();
+        }
+      });
+    }
+  };
+});
 
 utsovAdminApp.run(function($rootScope) {
 
@@ -141,68 +181,113 @@ utsovAdminApp.controller('UserController', function ($scope, $http) {
 
 utsovAdminApp.controller('ListController', function ($scope, $route, $http, $rootScope, $location) {
 
-    console.log("Checking Login Status:" + $rootScope.IsLoggedIn);
-    if(!$rootScope.IsLoggedIn)
-    {
-        console.log("Redirecting based on Login Status check");
-        $location.path("templates/front.html");
+  $scope.fetchData = function () {
+    console.log("Selects changed", $scope.formData);
+    $http.post($scope.service, {"action": "list", "formData": $scope.formData}
+    ).success(function (output, status, headers, config) {
+      if (output.err == '') {
+        $scope.resultset = output.data;
+        $scope.msgs = "Server: " + output.msg;
+        console.log($scope.msgs);
+      }
+      else {
+        $scope.errors = "Error: " + output.err;
+        $scope.msgs = output.msg;
+        console.log($scope.errors);
+      }
+    }).error(function (output, status) {
+      $scope.errors = "Status: " + status;
+      console.log($scope.errors);
+    });
+  };
+
+  $scope.isSelected = function (value) {
+    return value === ($scope.formData || {}).yearrequested;
+  };
+
+  $scope.initialize = function () {
+    $scope.formData = {};
+    $scope.formData.yearrequested = new Date().getUTCFullYear().toString();
+  };
+
+  $scope.clear = function () {
+    $scope.formData = {};
+    $scope.formData.yearrequested = new Date().getUTCFullYear().toString();
+    $scope.fetchData();
+  };
+
+  $scope.formatDate = function(dateValue){
+    return dateValue.substring(0,4) + "/" + dateValue.substring(4,6) + "/" + dateValue.substring(6,8);
+  };
+
+  $scope.formatPhoneNumber = function(phone) {
+    var s2 = (""+phone).replace(/\D/g, '');
+    var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+    return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+  };
+
+  $scope.formatAddressLines = function(data){
+    return data.address1 ? data.address1 + " " + (data.address2 || "") + ",": "";
+  };
+
+  $scope.formatStateZip = function(data){
+    return data.state ? data.state + (data.zip ? " - " + data.zip : "") : "";
+  };
+
+  $scope.changeSorting = function(column) {
+    var sort = $scope.sort;
+
+    if (sort.column == column) {
+      sort.descending = !sort.descending;
+    } else {
+      sort.column = column;
+      sort.descending = false;
     }
-    else
-    {
-        //initializing....
-        $scope.errors = '';
-        $scope.msgs = '';
+  };
+
+  console.log("Checking Login Status:" + $rootScope.IsLoggedIn);
+  if (!$rootScope.IsLoggedIn) {
+    console.log("Redirecting based on Login Status check");
+    $location.path("templates/front.html");
+  }
+  else {
+    //initializing....
+    $scope.errors = '';
+    $scope.msgs = '';
 
 
-        $scope.action = $route.current.action;
-        switch ($route.current.action)
-        {
-            case 'VOL':
-                $scope.title = "Registered Volunteers";
-                $scope.service = 'api/volunteers.php';
-                break;
-            case 'SPON':
-                $scope.title = "Contacts for Sponsorship";
-                $scope.service = 'api/sponsors.php';
-                break;
-            case 'CON':
-                $scope.title = "Contest Submissions";
-                $scope.service = 'api/contests.php';
-                break;
-            case 'DON':
-                $scope.title = "Paypal Donations";
-                $scope.service = 'api/donations.php';
-                break;
-            case 'USER':
-                $scope.title = "Admin Users";
-                $scope.service = 'api/users.php';
-                break;
-        }
-
-        console.log("Action:" + $scope.action);
-        console.log("Service:" + $scope.service);
-        console.log("Title:" + $scope.title);
-
-        $http.post($scope.service, {"action" : "list"}
-        ).success(function(output, status, headers, config) {
-            if (output.err == ''){
-                $scope.resultset = output.data;
-                $scope.msgs = "Server: " + output.msg;
-                console.log($scope.msgs);
-            }
-            else{
-                $scope.errors = "Error: " + output.err;
-                $scope.msgs = output.msg;
-                console.log($scope.errors);
-            }
-        }).error(function(output, status){
-            $scope.errors = "Status: " + status;
-            console.log($scope.errors);
-        });
+    $scope.action = $route.current.action;
+    switch ($route.current.action) {
+      case 'VOL':
+        $scope.title = "Registered Volunteers";
+        $scope.service = 'api/volunteers.php';
+        break;
+      case 'SPON':
+        $scope.title = "Contacts for Sponsorship";
+        $scope.service = 'api/sponsors.php';
+        break;
+      case 'CON':
+        $scope.title = "Contest Submissions";
+        $scope.service = 'api/contests.php';
+        break;
+      case 'DON':
+        $scope.title = "Paypal Donations";
+        $scope.service = 'api/donations.php';
+        break;
+      case 'USER':
+        $scope.title = "Admin Users";
+        $scope.service = 'api/users.php';
+        break;
     }
+
+    console.log("Action:" + $scope.action);
+    console.log("Service:" + $scope.service);
+    console.log("Title:" + $scope.title);
+
+    $scope.fetchData();
+  }
 
 });
-
 
 utsovAdminApp.controller('AddController', function ($scope, $route, $http, $rootScope, $location) {
 
