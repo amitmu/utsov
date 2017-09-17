@@ -9,13 +9,16 @@ require(dirname(__FILE__).'/utils.php');
     $_post = json_decode(file_get_contents("php://input"));
     //$request_type = $_SERVER['HTTP_X_REQUESTED_WITH'];
 
-    //if (is_ajax()) {
+    //$_post = file_get_contents("php://input");
 
+    //if (is_ajax()) {
     $action = $_post->action;
     switch($action) { //Switch case for value of action
         case "test": test_function($_post); break;
         case "list" :  getDonationList($_post); break;
         case "add" :  addDonation($_post); break;
+        case "getapikey" :  getApiKey($_post); break;
+        case "savedonation" :  saveDonation($_post); break;
         default:  testFunction($_post);
     }
 
@@ -30,10 +33,123 @@ require(dirname(__FILE__).'/utils.php');
 ////// End Main Section //////
 
     function testFunction($post){
-        $return["post"] = json_encode($post);
+        $return["test"] = json_encode($post);
         echo json_encode($return);
     }
 
+    function saveDonation($post) {
+    $return["err"] = '';
+    $return["msg"] = "";
+
+    try {
+        $db = new PDO("sqlite:" . getDBPath("register"));
+
+        $client_ip = get_client_ip();
+        $donation_year = $post->donation_year;
+        $txDateTime = $post->txDateTime;
+        $email = $post->email;
+        $first_name = $post->first_name;
+        $middle_name = $post->middle_name;
+        $last_name = $post->last_name;
+        $payer_id = $post->payer_id;
+        $line1 = $post->line1;
+        $line2 = $post->line2;
+        $city = $post->city;
+        $state = $post->state;
+        $postal_code = $post->postal_code;
+        $payment_method = $post->payment_method;
+        $payment_status = $post->payment_status;
+        $payment_amount = $post->payment_amount;
+        $paypal_resp = $post->paypal_resp;
+
+        $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, paypal_resp)
+            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :paypal_resp)");
+
+        $bindVar = $stmtIns->bindParam(':client_ip', $client_ip);
+        $bindVar = $stmtIns->bindParam(':donation_year', $donation_year);
+        $bindVar = $stmtIns->bindParam(':txDateTime', $txDateTime);
+        $bindVar = $stmtIns->bindParam(':email', $email);
+        $bindVar = $stmtIns->bindParam(':first_name', $first_name);
+        $bindVar = $stmtIns->bindParam(':middle_name', $middle_name);
+        $bindVar = $stmtIns->bindParam(':last_name', $last_name);
+        $bindVar = $stmtIns->bindParam(':payer_id', $payer_id);
+        $bindVar = $stmtIns->bindParam(':line1', $line1);
+        $bindVar = $stmtIns->bindParam(':line2', $line2);
+        $bindVar = $stmtIns->bindParam(':city', $city);
+        $bindVar = $stmtIns->bindParam(':state', $state);
+        $bindVar = $stmtIns->bindParam(':postal_code', $postal_code);
+        $bindVar = $stmtIns->bindParam(':payment_method', $payment_method);
+        $bindVar = $stmtIns->bindParam(':payment_status', $payment_status);
+        $bindVar = $stmtIns->bindParam(':payment_amount', $payment_amount);
+        $bindVar = $stmtIns->bindParam(':paypal_resp', $paypal_resp);
+
+        $exec = $stmtIns->execute();
+
+        if($exec){
+            //retrieving last inserted row for ID.
+            $result = $db->query('SELECT last_insert_rowid() AS rowid FROM tb_patrons LIMIT 1');
+
+            $r = $result->fetch();
+
+            $lastrow = $r['rowid'];
+
+            logMessage(">>>>New Patron record:" . $lastrow);
+            $return["msg"] = "PATRON ROW INSERT SUCCESS";
+            $return["data"] = $lastrow;
+        }
+        else{
+            $return["err"] = "DB:Patrons Insert Failed";
+            $return["msg"] = $stmtIns->errorInfo();
+        }
+        echo json_encode($return);
+    }
+    catch(PDOException $e)
+    {
+        $return["err"] = "DB:Patrons Unhandled PDO Exception";
+        $return["msg"] = $e->getMessage();
+    }
+
+    return $return;
+    }
+
+    function getApiKey($post){
+        $return["err"] = '';
+        $return["msg"] = "";
+
+        try {
+            $db = new PDO("sqlite:" . getDBPath("register"));
+
+            $stmt = $db->prepare('select value from tb_config where key = "paypalEnv"');
+
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            foreach($result as $row)
+            {
+                $return["paypalEnv"] = $row['value'];
+                $key = "{$row['value']}Key";
+            }
+
+            $stmt = $db->prepare('select value from tb_config where key = :key');
+            $bindVar = $stmt->bindParam(':key', $key);
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            foreach($result as $row)
+            {
+                $return["apiKey"] = $row['value'];
+            }
+
+            echo json_encode($return);
+        }
+        catch(PDOException $e)
+        {
+            $return["err"] = "DB:Patrons Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
+        }
+
+        return $return;
+    }
 
     //Function to return  list of volunteers
 
