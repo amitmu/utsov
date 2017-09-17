@@ -72,6 +72,7 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
   $scope.success = 0;
 
+  rendered = false;
   $scope.action = $route.current.action;
   switch ($route.current.action)
   {
@@ -127,7 +128,8 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
-
+    rendered = false;
+  
     $scope.action = $route.current.action;
     switch ($route.current.action)
     {

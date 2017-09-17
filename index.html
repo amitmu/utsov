@@ -167,7 +167,7 @@
                         <img src="img/decor.png"  class="img-responsive" alt="Latest News from Utsov" />
                     </div>
 
-                    <div class="col-lg-10 col-sm-10 padded-section-small" id="primeGuest">
+                    <div class="col-lg-10 col-sm-10 padded-section-small">
                         <span>
                             <h3><span class="icon fa fa-star-o"></span> 2017 Prime Guest Program <span class="icon fa fa-star-o"></span>
                                 <!--<small>Get ready for the 2014 edition</small>-->
@@ -181,8 +181,17 @@
                       <li>Free food coupons (varies by level, extra coupons available for purchase)</li>
                           </ul>
                         </h4>
-                        <a class="btn btn-success" href="#/BecomePrimeGuest" role="button" data-toggle="modal" data-target="#primeGuestModal">&nbsp;Become a Prime Guest
-                        </a>
+                        <div id="primeGuest">
+                            <a class="btn btn-success" href="#/BecomePrimeGuest" role="button" data-toggle="modal" data-target="#primeGuestModal">&nbsp;Become a Prime Guest
+                            </a>
+                            <div class="modal fade" id="primeGuestModal" tabindex="-1" role="dialog" aria-labelledby="modalHeaderLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" style="color: black;">
+                                    <div class="modal-content" data-ng-view>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <p>&nbsp;</p>
                         <p>We firmly believe that it is YOUR Puja. Join us and celebrate this great festival with your family. Contact us to Sponsor, Donate or Volunteer</p>
                         <p>
