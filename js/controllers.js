@@ -75,22 +75,6 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   $scope.action = $route.current.action;
   switch ($route.current.action)
   {
-    case 'VOL':
-      $scope.title = "Register To Volunteer";
-      $scope.service = 'api/volunteers.php';
-      break;
-    case 'SPON':
-      $scope.title = "Register For Sponsorship";
-      $scope.service = 'api/sponsors.php';
-      break;
-    case 'CON':
-      $scope.title = "Register For Contest";
-      $scope.service = 'api/contests.php';
-      break;
-    case 'DON':
-      $scope.title = "Donate with Paypal";
-      $scope.service = 'api/donations.php';
-      break;
     case 'BPG':
       $scope.title = "Become a Prime Guest";
       $scope.service = 'api/donations.php';
@@ -101,95 +85,10 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   console.log("Service:" + $scope.service);
   console.log("Title:" + $scope.title);
 
-  $scope.calculatePrimeGuest = function() {
-
-    if($scope.formData.donamount >= 160 && $scope.formData.donamount <225){
-      $scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 1";
-    } else if($scope.formData.donamount >= 225 && $scope.formData.donamount <325){
-      $scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 2";
-    } else if($scope.formData.donamount >= 325){
-      $scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 3";
-    } else {
-      $scope.formData.primeGuestLevel = "You are not eligible for Prime Guest. Minimum amount for Prime Guest eligibility is $160.";
-    }
-
-  }
-
-  var rendered = false;
-  $scope.renderCheckout = function() {
-    if(rendered) return;
-    $.post('api/donations.php', JSON.stringify({"action":"getapikey"}), function (json, status) {
-      if(status === "success" && json.apiKey && json.paypalEnv){
-        paypal.Button.render({
-
-          env: json.paypalEnv, // Or 'sandbox'
-
-          client: {
-            sandbox: json.apiKey,
-            production: ''
-          },
-
-          commit: true, // Show a 'Pay Now' button
-
-          payment: function(data, actions) {
-            var donamount = document.getElementById("donamount").value;
-            return actions.payment.create({
-              payment: {
-                transactions: [
-                  {
-                    amount: { total: donamount, currency: 'USD' }
-                  }
-                ]
-              }
-            });
-          },
-
-          onAuthorize: function(data, actions) {
-            return actions.payment.execute().then(function(payment) {
-
-              var payPalResponse = {
-                "action":"savedonation",
-                "donation_year": new Date().getFullYear()
-              };
-              payPalResponse.txDateTime = payment.create_time;
-              payPalResponse.email = payment.payer.payer_info.email;
-
-              payPalResponse.first_name = payment.payer.payer_info.first_name;
-              payPalResponse.middle_name = payment.payer.payer_info.middle_name;
-              payPalResponse.last_name = payment.payer.payer_info.last_name;
-              payPalResponse.payer_id = payment.payer.payer_info.payer_id;
-
-              payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1;
-              payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2;
-              payPalResponse.city = payment.payer.payer_info.shipping_address.city;
-              payPalResponse.state = payment.payer.payer_info.shipping_address.state;
-              payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code;
-
-              payPalResponse.payment_method = payment.payer.payment_method;
-              payPalResponse.payment_status = payment.payer.status;
-              payPalResponse.payment_amount = payment.transactions[0].amount.total;
-              payPalResponse.paypal_resp = JSON.stringify(payment);
-
-              $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {
-                if(status === "success") {
-                  document.getElementById("modal-body").style.display = "none";
-                  document.getElementById("confirmation").style.display = "block";
-
-                } else {
-                  document.getElementById("modal-body").style.display = "none";
-                  document.getElementById("unableToRegister").style.display = "block";
-                }
-              }, 'json');
-
-
-            });
-          }
-
-        }, '#paypal-button');
-      }
-    }, 'json');
-    rendered= true;
-  }
+  $scope.calculatePrimeGuest = function(){
+    return calculatePrimeGuest($scope);
+  };
+  $scope.renderCheckout =renderCheckout;
 
   //The actual add function
   $scope.SubmitFormData = function () {
@@ -258,96 +157,10 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
     console.log("Service:" + $scope.service);
     console.log("Title:" + $scope.title);
 
-    $scope.calculatePrimeGuest = function() {
-
-      if($scope.formData.donamount >= 160 && $scope.formData.donamount <225){
-        $scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 1";
-      } else if($scope.formData.donamount >= 225 && $scope.formData.donamount <325){
-        $scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 2";
-      } else if($scope.formData.donamount >= 325){
-        $scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 3";
-      } else {
-        $scope.formData.primeGuestLevel = "You are not eligible for Prime Guest. Minimum amount for Prime Guest eligibility is $160.";
-      }
-
-    }
-
-    var rendered = false;
-    $scope.renderCheckout = function() {
-      if(rendered) return;
-      $.post('api/donations.php', JSON.stringify({"action":"getapikey"}), function (json, status) {
-        if(status === "success" && json.apiKey && json.paypalEnv){
-          paypal.Button.render({
-
-            env: json.paypalEnv, // Or 'sandbox'
-
-            client: {
-              sandbox: json.apiKey,
-              production: ''
-            },
-
-            commit: true, // Show a 'Pay Now' button
-
-            payment: function(data, actions) {
-              var donamount = document.getElementById("donamount").value;
-              return actions.payment.create({
-                payment: {
-                  transactions: [
-                    {
-                      amount: { total: donamount, currency: 'USD' }
-                    }
-                  ]
-                }
-              });
-            },
-
-            onAuthorize: function(data, actions) {
-              return actions.payment.execute().then(function(payment) {
-
-                var payPalResponse = {
-                  "action":"savedonation",
-                  "donation_year": new Date().getFullYear()
-                };
-                payPalResponse.txDateTime = payment.create_time;
-                payPalResponse.email = payment.payer.payer_info.email;
-
-                payPalResponse.first_name = payment.payer.payer_info.first_name;
-                payPalResponse.middle_name = payment.payer.payer_info.middle_name;
-                payPalResponse.last_name = payment.payer.payer_info.last_name;
-                payPalResponse.payer_id = payment.payer.payer_info.payer_id;
-
-                payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1;
-                payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2;
-                payPalResponse.city = payment.payer.payer_info.shipping_address.city;
-                payPalResponse.state = payment.payer.payer_info.shipping_address.state;
-                payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code;
-
-                payPalResponse.payment_method = payment.payer.payment_method;
-                payPalResponse.payment_status = payment.payer.status;
-                payPalResponse.payment_amount = payment.transactions[0].amount.total;
-                payPalResponse.paypal_resp = JSON.stringify(payment);
-
-                $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {
-                  if(status === "success") {
-                    document.getElementById("modal-body").style.display = "none";
-                    document.getElementById("confirmation").style.display = "block";
-
-                  } else {
-                    document.getElementById("modal-body").style.display = "none";
-                    document.getElementById("unableToRegister").style.display = "block";
-                  }
-                }, 'json');
-
-
-              });
-            }
-
-          }, '#paypal-button');
-        }
-      }, 'json');
-      rendered= true;
-    }
-
+    $scope.calculatePrimeGuest = function(){
+      return calculatePrimeGuest($scope);
+    };
+    $scope.renderCheckout =renderCheckout;
     //The actual add function
     $scope.SubmitFormData = function () {
         $scope.errors = '';
@@ -448,3 +261,94 @@ angular.element(document).ready(function() {
       var divPrimeGuest = document.getElementById("primeGuest");
       angular.bootstrap(divPrimeGuest, ["utsovPrimeGuestApp"]);
 });
+
+var rendered = false;
+
+function calculatePrimeGuest(scope) {
+
+  if(scope.formData.donamount >= 160 && scope.formData.donamount <225){
+    scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 1";
+  } else if(scope.formData.donamount >= 225 && scope.formData.donamount <325){
+    scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 2";
+  } else if(scope.formData.donamount >= 325){
+    scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 3";
+  } else {
+    scope.formData.primeGuestLevel = "You are not eligible for Prime Guest. Minimum amount for Prime Guest eligibility is $160.";
+  }
+
+}
+
+function renderCheckout() {
+  if(rendered) return;
+  $.post('api/donations.php', JSON.stringify({"action":"getapikey"}), function (json, status) {
+    if(status === "success" && json.apiKey && json.paypalEnv){
+      paypal.Button.render({
+
+        env: json.paypalEnv, // Or 'sandbox'
+
+        client: {
+          sandbox: json.apiKey,
+          production: ''
+        },
+
+        commit: true, // Show a 'Pay Now' button
+
+        payment: function(data, actions) {
+          var donamount = document.getElementById("donamount").value;
+          return actions.payment.create({
+            payment: {
+              transactions: [
+                {
+                  amount: { total: donamount, currency: 'USD' }
+                }
+              ]
+            }
+          });
+        },
+
+        onAuthorize: function(data, actions) {
+          return actions.payment.execute().then(function(payment) {
+
+            var payPalResponse = {
+              "action":"savedonation",
+              "donation_year": new Date().getFullYear()
+            };
+            payPalResponse.txDateTime = payment.create_time;
+            payPalResponse.email = payment.payer.payer_info.email;
+
+            payPalResponse.first_name = payment.payer.payer_info.first_name;
+            payPalResponse.middle_name = payment.payer.payer_info.middle_name;
+            payPalResponse.last_name = payment.payer.payer_info.last_name;
+            payPalResponse.payer_id = payment.payer.payer_info.payer_id;
+
+            payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1;
+            payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2;
+            payPalResponse.city = payment.payer.payer_info.shipping_address.city;
+            payPalResponse.state = payment.payer.payer_info.shipping_address.state;
+            payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code;
+
+            payPalResponse.payment_method = payment.payer.payment_method;
+            payPalResponse.payment_status = payment.payer.status;
+            payPalResponse.payment_amount = payment.transactions[0].amount.total;
+            payPalResponse.paypal_resp = JSON.stringify(payment);
+
+            $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {
+              if(status === "success") {
+                document.getElementById("modal-body").style.display = "none";
+                document.getElementById("confirmation").style.display = "block";
+
+              } else {
+                document.getElementById("modal-body").style.display = "none";
+                document.getElementById("unableToRegister").style.display = "block";
+              }
+            }, 'json');
+
+
+          });
+        }
+
+      }, '#paypal-button');
+    }
+  }, 'json');
+  rendered= true;
+}
