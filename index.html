@@ -167,7 +167,7 @@
                         <img src="img/decor.png"  class="img-responsive" alt="Latest News from Utsov" />
                     </div>
 
-                    <div class="col-lg-10 col-sm-10 padded-section-small">
+                    <div class="col-lg-10 col-sm-10 padded-section-small" id="primeGuest" style="color: black;">
                         <span>
                             <h3><span class="icon fa fa-star-o"></span> New Prime Guest Program <span class="icon fa fa-star-o"></span>
                                 <!--<small>Get ready for the 2014 edition</small>-->
@@ -181,6 +181,9 @@
                       <li>Free food coupons (varies by level, extra coupons available for purchase)</li>
                           </ul>
                         </h4>
+                        <a class="btn btn-success" href="#/BecomePrimeGuest" role="button" data-toggle="modal" data-target="#primeGuestModal">&nbsp;Become a Prime Guest
+                        </a>
+                        <p>&nbsp;</p>
                         <p>We firmly believe that it is YOUR Puja. Join us and celebrate this great festival with your family. Contact us to Sponsor, Donate or Volunteer</p>
                         <p>
                             <span>
@@ -193,6 +196,13 @@
                                 </a>
                             </span>
                         </p>
+                        <div class="modal fade" id="primeGuestModal" tabindex="-1" role="dialog" aria-labelledby="modalHeaderLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content" data-ng-view>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                  <div class="row">
@@ -1350,6 +1360,7 @@ The Prime Patron program is designed for patrons who want to make a donation to 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 </body>
 
 </html>
