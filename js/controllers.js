@@ -335,7 +335,8 @@ function renderCheckout() {
             payPalResponse.paypal_resp = JSON.stringify(payment);
 
             $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {
-              if(status === "success") {
+              document.getElementById("results").style.display = "block";
+              if(status === "success" && !json.err) {
                 document.getElementById("modal-body").style.display = "none";
                 document.getElementById("confirmation").style.display = "block";
 
