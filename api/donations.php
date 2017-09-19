@@ -4,6 +4,7 @@ namespace UtsovAPI;
 use PDO;
 
 require(dirname(__FILE__).'/utils.php');
+date_default_timezone_set('America/New_York');
 
 //// Main Section /////
     $_post = json_decode(file_get_contents("php://input"));
@@ -151,25 +152,89 @@ require(dirname(__FILE__).'/utils.php');
         return $return;
     }
 
-    //Function to return  list of volunteers
+    function IsNullOrEmptyString($question){
+        return (!isset($question) || trim($question)==='');
+    }
 
+    function getParamExpression($post){
+        $param_arr = array();
+        $num = 0;
+        $year = strftime("%Y", time());
+
+        $year_requested = $post->formData->yearrequested;
+        if(IsNullOrEmptyString($year_requested)){
+            $year_requested = $year;
+
+        }
+
+        $param_arr[$num++] = "donation_year = '$year_requested'";
+
+
+        $name = $post->formData->name;
+        if(!IsNullOrEmptyString($name)){
+            $param_arr[$num++] = "(first_name like '%$name%' OR middle_name like '%$name%' OR last_name like '%$name%')";
+        }
+
+        $payer_id = $post->formData->payer_id;
+        if(!IsNullOrEmptyString($payer_id)){
+            $param_arr[$num++] = "payer_id like '%$payer_id%'";
+        }
+
+        $email = $post->formData->email;
+        if(!IsNullOrEmptyString($email)){
+            $param_arr[$num++] = "email like '%$email%'";
+        }
+
+
+        return join(' and ', $param_arr);
+    }
     function getDonationList($post){
         $return["err"] = '';
         $return["msg"] = '';
         $arr = array();
+        $year_arr = array();
+        $year = strftime("%Y", time());
         try {
-            /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("donation"));
+            $params = getParamExpression($post);
 
-            $result = $db->query('SELECT * FROM tb_donations');
+            /*** connect to SQLite database ***/
+            $db = new PDO("sqlite:" . getDBPath("register"));
+
+            $result = $db->query('SELECT * FROM tb_donations where '.$params);
             $num = 0;
             foreach($result as $row)
             {
                 $arr[$num] = $row;
                 $num++;
             }
-            $return["data"] = $arr;
+
+            $return["data"]["query"] = 'SELECT * FROM tb_donations where '.$params;
+            $return["data"]["donors"] = $arr;
             $return ["msg"] = $num . " rows returned";
+
+            $result = $db->query("SELECT distinct donation_year as year FROM tb_donations where donation_year IS NOT NULL");
+
+            $num = 0;
+            $current_year_found = false;
+
+            foreach($result as $row)
+            {
+                $year_arr[$num] = $row;
+
+                if($row["year"]  == $year){
+                    $current_year_found = true;
+                }
+
+                $num++;
+            }
+            if($current_year_found == false){
+                $year_arr[$num]["year"] = $year;
+            }
+            $return["data"]["yearsavailable"] = $year_arr;
+            /*** $return["data"]["params"] = $params; **/
+
+            //closing DB
+            $db = NULL;
 
             //closing DB
             $db = NULL;
