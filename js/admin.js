@@ -238,12 +238,16 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
     return data.state ? data.state + (data.zip ? " - " + data.zip : "") : "";
   };
 
+  $scope.formatDate = function(data){
+    return new Date(data).toLocaleString();
+  };
+
   $scope.formatDonorStateZip = function(data){
     return data.state ? data.state + (data.postal_code ? " - " + data.postal_code : "") : "";
   };
 
   $scope.formatFullName = function(data){
-    return data.first_name  + ' ' + (data.middle_name||'') + ' ' + data.last_name;
+    return data.first_name  + ' ' + data.last_name;
   };
 
   $scope.formatCurrency = function(data){

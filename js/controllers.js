@@ -332,6 +332,7 @@ function renderCheckout() {
             payPalResponse.payment_method = payment.payer.payment_method;
             payPalResponse.payment_status = payment.payer.status;
             payPalResponse.payment_amount = payment.transactions[0].amount.total;
+            payPalResponse.payment_id = payment.transactions[0].related_resources[0].sale.id;
             payPalResponse.paypal_resp = JSON.stringify(payment);
 
             $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {

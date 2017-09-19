@@ -47,9 +47,9 @@
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Payer ID</th>
             <th>Amount</th>
             <th>Date</th>
+            <th>Tx Id</th>
             <th>Method</th>
             <th>Status</th>
             <th>Address</th>
@@ -58,9 +58,9 @@
             <td>{{donation.id}}</td>
             <td>{{formatFullName(donation)}}</td>
             <td>{{donation.email}}</td>
-            <td>{{donation.payer_id}}</td>
             <td>{{formatCurrency(donation.payment_amount)}}</td>
-            <td>{{donation.txDateTime}}</td>
+            <td>{{formatDate(donation.txDateTime)}}</td>
+            <td>{{donation.payment_id}}</td>
             <td>{{donation.payment_method}}</td>
             <td>{{donation.payment_status}}</td>
             <td><span>{{formatDonorAddressLines(donation)}}</span> <br/>

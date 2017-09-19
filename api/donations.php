@@ -61,10 +61,11 @@ date_default_timezone_set('America/New_York');
         $payment_method = $post->payment_method;
         $payment_status = $post->payment_status;
         $payment_amount = $post->payment_amount;
+        $payment_id = $post->payment_id;
         $paypal_resp = $post->paypal_resp;
 
-        $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, paypal_resp)
-            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :paypal_resp)");
+        $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, payment_id, paypal_resp)
+            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :payment_id, :paypal_resp)");
 
         $bindVar = $stmtIns->bindParam(':client_ip', $client_ip);
         $bindVar = $stmtIns->bindParam(':donation_year', $donation_year);
@@ -82,6 +83,7 @@ date_default_timezone_set('America/New_York');
         $bindVar = $stmtIns->bindParam(':payment_method', $payment_method);
         $bindVar = $stmtIns->bindParam(':payment_status', $payment_status);
         $bindVar = $stmtIns->bindParam(':payment_amount', $payment_amount);
+        $bindVar = $stmtIns->bindParam(':payment_id', $payment_id);
         $bindVar = $stmtIns->bindParam(':paypal_resp', $paypal_resp);
 
         $exec = $stmtIns->execute();
@@ -208,7 +210,6 @@ date_default_timezone_set('America/New_York');
                 $num++;
             }
 
-            $return["data"]["query"] = 'SELECT * FROM tb_donations where '.$params;
             $return["data"]["donors"] = $arr;
             $return ["msg"] = $num . " rows returned";
 
