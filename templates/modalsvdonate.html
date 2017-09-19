@@ -30,23 +30,29 @@
                                 <input type="number" step="0.01" class="form-control" id="donamount" name="donamount"
                                        placeholder="Your donation amount for this year"
                                        data-ng-model="formData.donamount"
-                                       min="1"
+                                       min="30"
                                        max="1000000" required ng-change="calculatePrimeGuest()">
 
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <div data-ng-hide="frmRegister.donamount.$invalid" id="paypal-button"
                                  style="padding-top: 10px"></div>
                         </div>
 
                     </div>
-                    <div class=" text-center col-lg-9">
+                    <div class=" text-center col-lg-8">
                         <br/>
-                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Invalid amount.Please enter at least $ 10.00</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 30.00</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
-                        <label data-ng-hide="frmRegister.donamount.$invalid">{{formData.primeGuestLevel}}</label>
+                        <label data-ng-hide="frmRegister.donamount.$invalid"><h3>{{formData.primeGuestLevel}}</h3></label>
 
+                    </div>
+                    <div class=" text-center col-lg-8">
+                        <br/>
+                        <span class="" >Prime Guest Level 3 - $325.00 or above</span><br/>
+                        <span class="" >Prime Guest Level 2 - $225.00 or above</span><br/>
+                        <span class="" >Prime Guest Level 1 - $160.00 or above</span><br/>
                     </div>
                 </div>
             </div>

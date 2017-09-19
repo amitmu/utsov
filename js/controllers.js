@@ -269,11 +269,11 @@ var rendered = false;
 function calculatePrimeGuest(scope) {
 
   if(scope.formData.donamount >= 160 && scope.formData.donamount <225){
-    scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 1";
+    scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 1";
   } else if(scope.formData.donamount >= 225 && scope.formData.donamount <325){
-    scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 2";
+    scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 2";
   } else if(scope.formData.donamount >= 325){
-    scope.formData.primeGuestLevel = "With this amount you will be eligible for Prime Guest Level 3";
+    scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 3";
   } else {
     scope.formData.primeGuestLevel = "You are not eligible for Prime Guest. Minimum amount for Prime Guest eligibility is $160.";
   }
