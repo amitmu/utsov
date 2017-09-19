@@ -289,8 +289,8 @@ function renderCheckout() {
         env: json.paypalEnv, // Or 'sandbox'
 
         client: {
-          sandbox: json.apiKey,
-          production: ''
+          sandbox: json.paypalEnv ==="sandbox" ? json.apiKey : '',
+          production: json.paypalEnv ==="production" ? json.apiKey : '',
         },
 
         commit: true, // Show a 'Pay Now' button
