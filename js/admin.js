@@ -264,6 +264,17 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
     }
   };
 
+  $scope.issueTicket = function(column) {
+    confirm("Are you sure you want to make the change?");
+  };
+
+  $scope.updateTicketIssued = function (donationId) {
+    $.post('api/donations.php',
+      JSON.stringify({"action": "updateticketissued", "donationId": donationId}), function (json, status) {
+        $scope.fetchData();
+      });
+  };
+
   console.log("Checking Login Status:" + $rootScope.IsLoggedIn);
   if (!$rootScope.IsLoggedIn) {
     console.log("Redirecting based on Login Status check");

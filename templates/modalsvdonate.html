@@ -4,14 +4,11 @@
 </div>
 <div class="modal-body">
     <div class="" id="modal-body">
-        <p class="lead">
-            We sincerely appreciate your support and endorsements. Please remember to note down the email used during
-            paypal payment. We will use this email for
-            verification while issuing tickets.
+        <p class="lead" style="margin-bottom: 10px;">
+            We sincerely appreciate your support and endorsement.
         </p>
-        <hr class="featurette-divider">
+        <hr class="featurette-divider" style="margin-top: 10px;">
         <form role="form" name="frmRegister" class="form-horizontal" novalidate>
-
 
             <div class="row text-center"
                  data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }">
@@ -45,21 +42,20 @@
                         <br/>
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 30.00</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
-                        <label data-ng-hide="frmRegister.donamount.$invalid"><h3>{{formData.primeGuestLevel}}</h3></label>
+                        <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
 
                     </div>
-                    <div class=" text-center col-lg-8">
+                    <div class=" col-lg-9">
                         <br/>
-                        <span class="" >Prime Guest Level 3 - $325.00 or above</span><br/>
-                        <span class="" >Prime Guest Level 2 - $225.00 or above</span><br/>
-                        <span class="" >Prime Guest Level 1 - $160.00 or above</span><br/>
+                        <span class="" style="font-size: 11px;" ><h4 class="featurette-heading"><span class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 1 - $160.00 or above:</h4> Designed for single patrons or couples. Comes with 4 dinner coupons and 4 snack coupons.</span><br/>
+                        <span class="" style="font-size: 11px;"><h4 class="featurette-heading"><span class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 2 - $225.00 or above:</h4> Designed for families with 2 children. Comes with 4 dinner coupons for adults, 4 dinner (pizza) coupons for children, 6 snack coupons. </span><br/>
+                        <span class="" style="font-size: 11px;"><h4 class="featurette-heading"><span class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 3 - $325.00 or above:</h4> Designed for families with 2 children and 2 seniors. Comes with 8 dinner coupons for adults, 4 dinner (pizza) coupons for children, 10 snack coupons. </span><br/>
                     </div>
                 </div>
             </div>
-
         </form>
 
-        <hr class="featurette-divider">
+        <hr class="featurette-divider" style="margin-top: 10px;">
         <p>You can also send your donation check (payable to “Utsov Inc.”) to our mailing address:</p>
         <address>
             <strong>Utsov, Inc.</strong><br>
@@ -81,9 +77,9 @@
             <p class="lead">
                 <br/>
 
-            We have received your payment of amount ${{formData.donamount}}. We sincerely appreciate your support
+            <u><b>Payment ID: <span id="txSuccessPaymentId"></span></b></u>. We have received your payment of amount <u><b>${{formData.donamount}}</b></u>. We sincerely appreciate your support
             and
-            endorsements. Please remember to note down the email used in paypal payment. We will use this email for
+            endorsements. We have sent an email to <u><b><span id="txEmail"></span></b></u> confirming you donation. Please remember to carry a copy of this email for
             verification while issuing tickets.
             </p>
                 </div>
@@ -96,7 +92,7 @@
                 <p class="lead">
                     <br/>
 
-                    You paypal transaction went through but we were unable to update our database. Please email
+                    Payment ID: <u><span id="txFailurePaymentId"></span></u></i>. You paypal transaction went through but we were unable to update our database. Please email
                     utsov.usa@gmail.com
                     with details of the transaction and we will get back to you as soon as possible. We are very sorry
                     for
@@ -116,8 +112,4 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
     <span ng-show="renderCheckout()"></span>
-
-    <script>
-
-
-    </script>
+</div>

@@ -275,7 +275,7 @@ function calculatePrimeGuest(scope) {
   } else if(scope.formData.donamount >= 325){
     scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 3";
   } else {
-    scope.formData.primeGuestLevel = "You are not eligible for Prime Guest. Minimum amount for Prime Guest eligibility is $160.";
+    scope.formData.primeGuestLevel = "You are not eligible for Prime Guest.";
   }
 
 }
@@ -310,30 +310,62 @@ function renderCheckout() {
 
         onAuthorize: function(data, actions) {
           return actions.payment.execute().then(function(payment) {
+            var donamount = document.getElementById("donamount").value;
 
             var payPalResponse = {
               "action":"savedonation",
-              "donation_year": new Date().getFullYear()
+              "donation_year": new Date().getFullYear(),
+              "email": "",
+              "first_name": "",
+              "middle_name": "",
+              "last_name": "",
+              "payer_id": "",
+              "line1": "",
+              "line2": "",
+              "city": "",
+              "state": "",
+              "postal_code": "",
+              "payment_method": "",
+              "payment_status": "",
+              "payment_amount": parseFloat(donamount),
+              "payment_id": ""
             };
-            payPalResponse.txDateTime = payment.create_time;
-            payPalResponse.email = payment.payer.payer_info.email;
 
-            payPalResponse.first_name = payment.payer.payer_info.first_name;
-            payPalResponse.middle_name = payment.payer.payer_info.middle_name;
-            payPalResponse.last_name = payment.payer.payer_info.last_name;
-            payPalResponse.payer_id = payment.payer.payer_info.payer_id;
+            if(payment) {
+              payPalResponse.txDateTime = payment.create_time;
 
-            payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1;
-            payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2;
-            payPalResponse.city = payment.payer.payer_info.shipping_address.city;
-            payPalResponse.state = payment.payer.payer_info.shipping_address.state;
-            payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code;
+              if (payment.payer && payment.payer.payer_info) {
+                payPalResponse.email = payment.payer.payer_info.email || "";
+                document.getElementById("txEmail").innerHTML = payPalResponse.email;
 
-            payPalResponse.payment_method = payment.payer.payment_method;
-            payPalResponse.payment_status = payment.payer.status;
-            payPalResponse.payment_amount = payment.transactions[0].amount.total;
-            payPalResponse.payment_id = payment.transactions[0].related_resources[0].sale.id;
-            payPalResponse.paypal_resp = JSON.stringify(payment);
+                payPalResponse.first_name = payment.payer.payer_info.first_name;
+                payPalResponse.middle_name = payment.payer.payer_info.middle_name;
+                payPalResponse.last_name = payment.payer.payer_info.last_name;
+                payPalResponse.payer_id = payment.payer.payer_info.payer_id;
+
+                if (payment.payer.payer_info.shipping_address) {
+                  payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1;
+                  payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2;
+                  payPalResponse.city = payment.payer.payer_info.shipping_address.city;
+                  payPalResponse.state = payment.payer.payer_info.shipping_address.state;
+                  payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code;
+                }
+              }
+
+              if (payment.payer && payment.transactions && payment.transactions.length) {
+                payPalResponse.payment_method = payment.payer.payment_method;
+                payPalResponse.payment_status = payment.payer.status;
+                payPalResponse.payment_amount = payment.transactions[0].amount.total;
+                if (payment.transactions[0].related_resources && payment.transactions[0].related_resources.length) {
+
+                  payPalResponse.payment_id = payment.transactions[0].related_resources[0].sale.id;
+                  document.getElementById("txSuccessPaymentId").innerHTML = payPalResponse.payment_id;
+                  document.getElementById("txFailurePaymentId").innerHTML = payPalResponse.payment_id;
+
+                }
+              }
+              payPalResponse.paypal_resp = JSON.stringify(payment);
+            }
 
             $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {
               document.getElementById("results").style.display = "block";

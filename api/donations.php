@@ -4,6 +4,7 @@ namespace UtsovAPI;
 use PDO;
 
 require(dirname(__FILE__).'/utils.php');
+require(dirname(__FILE__).'/patrons.php');
 date_default_timezone_set('America/New_York');
 
 //// Main Section /////
@@ -20,6 +21,8 @@ date_default_timezone_set('America/New_York');
         case "add" :  addDonation($_post); break;
         case "getapikey" :  getApiKey($_post); break;
         case "savedonation" :  saveDonation($_post); break;
+        case "sendtestemail" :  sendTestEmail($_post); break;
+        case "updateticketissued" :  updateTicketIssued($_post); break;
         default:  testFunction($_post);
     }
 
@@ -64,8 +67,23 @@ date_default_timezone_set('America/New_York');
         $payment_id = $post->payment_id;
         $paypal_resp = $post->paypal_resp;
 
-        $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, payment_id, paypal_resp)
-            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :payment_id, :paypal_resp)");
+        $patrons = findPatron($email);
+        $patron_id = 0;
+
+        foreach($patrons["data"] as $patron)
+        {
+            $patron_id = $patron['id'];
+        }
+
+        if($patron_id==0){
+            $patron = addPatron($first_name." ".$last_name, null, $email, null, null, null, $line1, $line2, $city, $state, $postal_code, $client_ip);
+            $patron_id=$patron["data"];
+        } else {
+            updatePatron($patron_id, $first_name." ".$last_name, null, $email, null, null, null, $line1, $line2, $city, $state, $postal_code, $client_ip);
+        }
+
+        $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, payment_id, patron_id, paypal_resp)
+            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :payment_id, :patron_id, :paypal_resp)");
 
         $bindVar = $stmtIns->bindParam(':client_ip', $client_ip);
         $bindVar = $stmtIns->bindParam(':donation_year', $donation_year);
@@ -84,7 +102,9 @@ date_default_timezone_set('America/New_York');
         $bindVar = $stmtIns->bindParam(':payment_status', $payment_status);
         $bindVar = $stmtIns->bindParam(':payment_amount', $payment_amount);
         $bindVar = $stmtIns->bindParam(':payment_id', $payment_id);
+        $bindVar = $stmtIns->bindParam(':patron_id', $patron_id);
         $bindVar = $stmtIns->bindParam(':paypal_resp', $paypal_resp);
+
 
         $exec = $stmtIns->execute();
 
@@ -99,6 +119,9 @@ date_default_timezone_set('America/New_York');
             logMessage(">>>>New Patron record:" . $lastrow);
             $return["msg"] = "PATRON ROW INSERT SUCCESS";
             $return["data"] = $lastrow;
+
+            $return["email_sent"] = sendEmail($post);
+
         }
         else{
             $return["err"] = "DB:Patrons Insert Failed";
@@ -177,9 +200,9 @@ date_default_timezone_set('America/New_York');
             $param_arr[$num++] = "(first_name like '%$name%' OR middle_name like '%$name%' OR last_name like '%$name%')";
         }
 
-        $payer_id = $post->formData->payer_id;
-        if(!IsNullOrEmptyString($payer_id)){
-            $param_arr[$num++] = "payer_id like '%$payer_id%'";
+        $payment_id = $post->formData->payment_id;
+        if(!IsNullOrEmptyString($payment_id)){
+            $param_arr[$num++] = "payment_id like '%$payment_id%'";
         }
 
         $email = $post->formData->email;
@@ -196,6 +219,7 @@ date_default_timezone_set('America/New_York');
         $arr = array();
         $year_arr = array();
         $year = strftime("%Y", time());
+
         try {
             $params = getParamExpression($post);
 
@@ -249,6 +273,35 @@ date_default_timezone_set('America/New_York');
         echo json_encode($return);
     }
 
+    function updateTicketIssued($post){
+        $return["err"] = '';
+        $return["msg"] = '';
+        $donationId = $post->donationId;
+
+        try {
+                /*** connect to SQLite database ***/
+                $db = new PDO("sqlite:" . getDBPath("register"));
+                $stmtUpd = $db->prepare("UPDATE tb_donations SET ticket_issued = 1 where id = '".$donationId."'");
+
+                $exec = $stmtUpd->execute();
+
+                if($exec){
+                    $return["msg"] = "Ticket Issued";
+                }
+                else{
+                    $return["err"] = "DB: Execute Failed";
+                    $return["msg"] = $stmtUpd->errorInfo();
+                }
+             }
+         catch(PDOException $e)
+         {
+             $return["err"] = "DB:" . $e->getMessage();
+         }
+
+         $return["data"] = $arr;
+         $return["post"] = $post;
+         echo json_encode($return);
+    }
 
     //Function to add volunteers
 
@@ -319,5 +372,102 @@ date_default_timezone_set('America/New_York');
 
 
      }
+
+    function sendTestEmail($post){
+        $return["msg"]  = sendEmail($post);
+        echo json_encode($return);
+    }
+    function sendEmail($post){
+
+       $email = $post->email;
+       $payment_amount = $post->payment_amount;
+       $payment_id = $post->payment_id;
+
+       $to = $email;
+       $subject = "Utsov - Donation confirmation.";
+       $from = "utsov@utsov.org";
+
+       $headers = "MIME-Version: 1.0"."\r\n";
+       $headers .= "Content-type: text/html; charset=UTF-8"."\r\n";
+       $headers .= "From: ".$from."\r\n";
+       $headers .= "Reply-To: ".$from."\r\n";
+
+       $message = "<html>
+                  <head>
+                       <meta http-equiv='content-type' content='text/html;'>
+                   </head>
+                   <body style='word-wrap: break-word; font-size: 14px; font-family: Calibri, sans-serif;color: #1f497d'>
+                   <div>Hi,
+                       <br/>
+                       <br/>
+                       We have successfully received your donation.&nbsp;We sincerely appreciate your support.&nbsp;
+                       <br/>
+                       Please remember to carry a copy of this email. We will use this for verification while issuing tickets.
+                   </div>
+                   <ul>
+                       <li>
+                           Email: <a href='mailto:".$email."'>".$email."</a>
+                       </li>
+                       <li>
+                           Amount: $".$payment_amount."
+                       </li>
+                       <li>
+                           PaymentID: ".$payment_id."
+
+                       </li>
+                   </ul>
+                   <div>
+                       Regards,<br>
+                       UTSOV Team
+                   </div>
+                   <div style='color: rgb(0, 0, 0);'>
+                       <p style='color: rgb(80, 0, 80); font-family: arial, sans-serif; font-size: 12px;'>
+                           <img src='http://www.utsov.org/img/Utsov_logo.png'>
+                           <br/>
+                           <br/>
+                           <b>
+                               <span style='font-size: 14pt; font-family: Arial, sans-serif;'>&nbsp;UTSOV &nbsp;Inc.</span>
+                           </b>
+                           <br/>
+                           <i>
+                               <span style='font-size: 9pt; font-family: Arial, sans-serif;'>501(c)(3) organization</span>
+                           </i>
+                           <br/>
+                           <br/>
+                           <b>
+                               <span style='font-size: 10pt; font-family: Arial, sans-serif; color: rgb(102, 0, 0);'>(313) 33-UTSOV</span>
+                           </b>
+                           <br/>
+                           <br/>
+                           <span style='font-size: 9pt; font-family: Arial, sans-serif;'>
+                               <a href='mailto:utsov@utsov.org' target='_blank' style='color: rgb(17, 85, 204);'>utsov@utsov.org</a>
+                           </span>
+                           <br/>
+                           <span style='font-size: 9pt; font-family: Arial, sans-serif;'>
+                               <a href='http://www.utsov.org' target='_blank' style='color: rgb(17, 85, 204);'>www.utsov.org</a>
+                           </span>
+                           <br/>
+                           <span style='font-size: 9pt; font-family: Arial, sans-serif;'>
+                               <a href='http://facebook.com/utsov.usa' target='_blank' style='color: rgb(17, 85, 204);'>facebook.com/utsov.usa</a>
+                           </span>
+                           <br/>
+                       </p>
+
+
+                       <p style='color: rgb(80, 0, 80); font-family: arial, sans-serif; font-size: 12.800000190734863px;'>
+                           <span style='font-size: 10pt; font-family: 'Palatino Linotype', serif;'>
+                               If you don&#8217;t want to receive further communications from
+                               <span class='il'>UTSOV</span>,&nbsp;
+                               please reply back to this email with &#8220;UNSUBSCRIBE&#8221; on the subject line, and your email address will be removed.
+                           </span>
+                       </p>
+
+                   </div>
+                   </body>
+                   </html>";
+
+
+       return mail($to, $subject, $message, $headers);
+    }
 
 ?>
