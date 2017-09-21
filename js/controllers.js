@@ -269,13 +269,17 @@ var rendered = false;
 function calculatePrimeGuest(scope) {
 
   if(scope.formData.donamount >= 160 && scope.formData.donamount <225){
-    scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 1";
+    scope.formData.primeGuestLevel = "You are eligible for Prime Guest Level 1.";
+    scope.formData.isPrimeGuest = true;
   } else if(scope.formData.donamount >= 225 && scope.formData.donamount <325){
-    scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 2";
+    scope.formData.primeGuestLevel = "You are eligible for Prime Guest Level 2.";
+    scope.formData.isPrimeGuest = true;
   } else if(scope.formData.donamount >= 325){
-    scope.formData.primeGuestLevel = "Eligible for Prime Guest Level 3";
+    scope.formData.primeGuestLevel = "You are eligible for Prime Guest Level 3.";
+    scope.formData.isPrimeGuest = true;
   } else {
-    scope.formData.primeGuestLevel = "You are not eligible for Prime Guest.";
+    scope.formData.primeGuestLevel = "You will not be eligible for Prime Guest program.";
+    scope.formData.isPrimeGuest = false;
   }
 
 }

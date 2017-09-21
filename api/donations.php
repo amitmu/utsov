@@ -5,6 +5,7 @@ use PDO;
 
 require(dirname(__FILE__).'/utils.php');
 require(dirname(__FILE__).'/patrons.php');
+require(dirname(__FILE__).'/registration.php');
 date_default_timezone_set('America/New_York');
 
 //// Main Section /////
@@ -81,6 +82,8 @@ date_default_timezone_set('America/New_York');
         } else {
             updatePatron($patron_id, $first_name." ".$last_name, null, $email, null, null, null, $line1, $line2, $city, $state, $postal_code, $client_ip);
         }
+
+        addRegistration($patron_id, $donation_year, null, $payment_amount, null, $client_ip);
 
         $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, payment_id, patron_id, paypal_resp)
             VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :payment_id, :patron_id, :paypal_resp)");
