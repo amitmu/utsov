@@ -77,7 +77,7 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   switch ($route.current.action)
   {
     case 'BPG':
-      $scope.title = "Become a Prime Guest";
+      $scope.title = "Donate with Paypal  - We sincerely appreciate your help!";
       $scope.service = 'api/donations.php';
       break;
   }
@@ -88,6 +88,9 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
 
   $scope.calculatePrimeGuest = function(){
     return calculatePrimeGuest($scope);
+  };
+  $scope.reset = function(){
+      return reset($scope);
   };
   $scope.renderCheckout =renderCheckout;
 
@@ -163,6 +166,10 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
       return calculatePrimeGuest($scope);
     };
     $scope.renderCheckout =renderCheckout;
+
+    $scope.reset = function(){
+      return reset($scope);
+    };
     //The actual add function
     $scope.SubmitFormData = function () {
         $scope.errors = '';
@@ -392,3 +399,11 @@ function renderCheckout() {
   }, 'json');
   rendered= true;
 }
+
+function reset(scope){
+  scope.formData.donamount = null;
+  document.getElementById("modal-body").style.display = "block";
+  document.getElementById("confirmation").style.display = "none";
+  document.getElementById("unableToRegister").style.display = "none";
+  document.getElementById("results").style.display = "none";
+};

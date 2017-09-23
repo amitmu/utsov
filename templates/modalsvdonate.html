@@ -57,11 +57,12 @@
     <!-- Prime Guest Options & Donation entry -->
     <div class="" id="modal-body">
         <span class="lead">
-            Prime Guest Options:
+            We encourage you to become <i>Prime Guest</i> and spend both days with us.
+
         </span>
         <div class="row" style="margin-top: -10px">
             <div class="col-lg-10">
-                <br/>
+                <br />
                 <h5 class="featurette-heading" style="font-size: 16px;margin-top: 5px;margin-bottom: 5px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 1 - $160.00 or above:</h5>
                 <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Designed for single patrons or couples. Comes with 4 dinner coupons and 4 snack coupons.</span><br/>
@@ -108,7 +109,7 @@
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <div data-ng-hide="frmRegister.donamount.$invalid" id="paypal-button"></div>
+                            <div data-ng-class="{ 'disable-paypal': frmRegister.donamount.$invalid }" id="paypal-button" style="padding-top: 10px"></div>
                         </div>
                         <div class="col-lg-2" style="margin-top: 10px">
                             &nbsp;
@@ -120,6 +121,7 @@
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 30.00</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
                         <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
+                        <span class="" style="font-size: 10px;"> &nbsp;&nbsp;&nbsp;&nbsp;You will be automatically registered when you donate. Information entered in Paypal transaction (opens new window) will be used in registration. </span>
                     </div>
 
                 </div>
@@ -147,7 +149,12 @@
         </p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <div class="col-sm-11 small-padding">
+            <button type="submit" class="btn btn-primary pull-right" data-ng-click="reset()">Reset</button>
+        </div>
+        <div class="col-sm-1 small-padding">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
     </div>
     <span ng-show="renderCheckout()"></span>
 </div>
