@@ -230,10 +230,29 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
     return data.address1 ? data.address1 + " " + (data.address2 || "") + ",": "";
   };
 
+  $scope.formatDonorAddressLines = function(data){
+    return data.line1 ? data.line1 + " " + (data.line2 || "") + ",": "";
+  };
+
   $scope.formatStateZip = function(data){
     return data.state ? data.state + (data.zip ? " - " + data.zip : "") : "";
   };
 
+  $scope.formatDate = function(data){
+    return new Date(data).toLocaleString();
+  };
+
+  $scope.formatDonorStateZip = function(data){
+    return data.state ? data.state + (data.postal_code ? " - " + data.postal_code : "") : "";
+  };
+
+  $scope.formatFullName = function(data){
+    return data.first_name  + ' ' + data.last_name;
+  };
+
+  $scope.formatCurrency = function(data){
+    return "$ " + parseFloat(data).toFixed(2);
+  };
   $scope.changeSorting = function(column) {
     var sort = $scope.sort;
 
@@ -243,6 +262,17 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
       sort.column = column;
       sort.descending = false;
     }
+  };
+
+  $scope.issueTicket = function(column) {
+    confirm("Are you sure you want to make the change?");
+  };
+
+  $scope.updateTicketIssued = function (donationId) {
+    $.post('api/donations.php',
+      JSON.stringify({"action": "updateticketissued", "donationId": donationId}), function (json, status) {
+        $scope.fetchData();
+      });
   };
 
   console.log("Checking Login Status:" + $rootScope.IsLoggedIn);

@@ -1,23 +1,79 @@
 <h1>{{title}}</h1>
+<form role="form" name="frmListDonos" class="form-horizontal" novalidate ng-submit="fetchData()">
+    <div class="form-group">
+        <label class="col-sm-2" for="yearrequested">Year Submitted</label>
+        <div class="col-sm-3">
+            <select class="form-control col-sm-2" name="yearrequested" data-ng-model="formData.yearrequested"
+                    ng-change="fetchData()" ng-init="initialize()">
+                <option data-ng-repeat="yearavailable in resultset.yearsavailable" value="{{yearavailable.year}}"
+                        ng-selected="isSelected(yearavailable.year)">{{yearavailable.year}}
+                </option>
+            </select>
+        </div>
+        <label class="col-sm-2" for="name">Name</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="name" placeholder="Name"
+                       data-ng-model="formData.name" change-on-blur="fetchData()" data-ng-minlength="3"
+                   data-ng-maxlength="100">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2" for="payment_id">Payment ID</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="payment_id" placeholder="Payment ID" data-ng-model="formData.payment_id"
+                   change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+        <label class="col-sm-2" for="email">Email</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="email" placeholder="Email" data-ng-model="formData.email"
+                   change-on-blur="fetchData()" data-ng-minlength="3" data-ng-maxlength="100">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-9 small-padding">
+            <button type="submit" class="btn btn-primary pull-right" data-ng-click="fetchData()">Submit</button>
+        </div>
+        <div class="col-sm-1 small-padding">
+            <button type="button" class="btn btn-default" data-ng-click="clear()">Clear</button>
+        </div>
+    </div>
+</form>
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Payment For</th>
+            <th>Email</th>
             <th>Amount</th>
             <th>Date</th>
-            <th>Email</th>
-            <th>Identifier</th>
+            <th>Tx Id</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Address</th>
+            <th>Ticket Issued</th>
         </tr>
-        <tr data-ng-repeat="donation in resultset">
+        <tr data-ng-repeat="donation in resultset.donors|orderBy:orderByField:reverseSort">
             <td>{{donation.id}}</td>
-            <td>{{donation.name}}</td>
-            <td>{{donation.payment}}</td>
-            <td>{{donation.amount}}</td>
-            <td>{{donation.date}}</td>
+            <td>{{formatFullName(donation)}}</td>
             <td>{{donation.email}}</td>
-            <td>{{donation.identifier}}</td>
+            <td>{{formatCurrency(donation.payment_amount)}}</td>
+            <td>{{formatDate(donation.txDateTime)}}</td>
+            <td>{{donation.payment_id}}</td>
+            <td>{{donation.payment_method}}</td>
+            <td>{{donation.payment_status}}</td>
+            <td><span>{{formatDonorAddressLines(donation)}}</span> <br/>
+                <span>{{donation.city}}</span> <br/>
+                <span>{{formatStateZip(donation)}}</span> <br/>
+            </td>
+            <td style="text-align: center">
+                <label class="switch">
+                    <input type="checkbox" data-ng-model="ticketIssued" ng-checked ="{{donation.ticket_issued==1}}" ng-change="updateTicketIssued(donation.id)">
+                    <span class="slider round"></span>
+                </label>
+            </td>
         </tr>
     </table>
 </div>

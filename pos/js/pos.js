@@ -358,7 +358,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     }
     
     $scope.massageResults = function (field, data) {
-        
+
+        if(!data) return "";
         //ignore if admin user by forcing default case
         if($scope.isAdminUser && field !== "date"){field = "xx"};
         

@@ -4,18 +4,26 @@ namespace UtsovAPI;
 use PDO;
 
 require(dirname(__FILE__).'/utils.php');
+require(dirname(__FILE__).'/patrons.php');
+require(dirname(__FILE__).'/registration.php');
+date_default_timezone_set('America/New_York');
 
 //// Main Section /////
     $_post = json_decode(file_get_contents("php://input"));
     //$request_type = $_SERVER['HTTP_X_REQUESTED_WITH'];
 
-    //if (is_ajax()) {
+    //$_post = file_get_contents("php://input");
 
+    //if (is_ajax()) {
     $action = $_post->action;
     switch($action) { //Switch case for value of action
         case "test": test_function($_post); break;
         case "list" :  getDonationList($_post); break;
         case "add" :  addDonation($_post); break;
+        case "getapikey" :  getApiKey($_post); break;
+        case "savedonation" :  saveDonation($_post); break;
+        case "sendtestemail" :  sendTestEmail($_post); break;
+        case "updateticketissued" :  updateTicketIssued($_post); break;
         default:  testFunction($_post);
     }
 
@@ -30,30 +38,231 @@ require(dirname(__FILE__).'/utils.php');
 ////// End Main Section //////
 
     function testFunction($post){
-        $return["post"] = json_encode($post);
+        $return["test"] = json_encode($post);
         echo json_encode($return);
     }
 
+    function saveDonation($post) {
+    $return["err"] = '';
+    $return["msg"] = "";
 
-    //Function to return  list of volunteers
+    try {
+        $db = new PDO("sqlite:" . getDBPath("register"));
 
+        $client_ip = get_client_ip();
+        $donation_year = $post->donation_year;
+        $txDateTime = $post->txDateTime;
+        $email = $post->email;
+        $first_name = $post->first_name;
+        $middle_name = $post->middle_name;
+        $last_name = $post->last_name;
+        $payer_id = $post->payer_id;
+        $line1 = $post->line1;
+        $line2 = $post->line2;
+        $city = $post->city;
+        $state = $post->state;
+        $postal_code = $post->postal_code;
+        $payment_method = $post->payment_method;
+        $payment_status = $post->payment_status;
+        $payment_amount = $post->payment_amount;
+        $payment_id = $post->payment_id;
+        $paypal_resp = $post->paypal_resp;
+
+        $patrons = findPatron($email);
+        $patron_id = 0;
+
+        foreach($patrons["data"] as $patron)
+        {
+            $patron_id = $patron['id'];
+        }
+
+        if($patron_id==0){
+            $patron = addPatron($first_name." ".$last_name, null, $email, null, null, null, $line1, $line2, $city, $state, $postal_code, $client_ip);
+            $patron_id=$patron["data"];
+        } else {
+            updatePatron($patron_id, $first_name." ".$last_name, null, $email, null, null, null, $line1, $line2, $city, $state, $postal_code, $client_ip);
+        }
+
+        addRegistration($patron_id, $donation_year, null, $payment_amount, null, $client_ip);
+
+        $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, payment_id, patron_id, paypal_resp)
+            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :payment_id, :patron_id, :paypal_resp)");
+
+        $bindVar = $stmtIns->bindParam(':client_ip', $client_ip);
+        $bindVar = $stmtIns->bindParam(':donation_year', $donation_year);
+        $bindVar = $stmtIns->bindParam(':txDateTime', $txDateTime);
+        $bindVar = $stmtIns->bindParam(':email', $email);
+        $bindVar = $stmtIns->bindParam(':first_name', $first_name);
+        $bindVar = $stmtIns->bindParam(':middle_name', $middle_name);
+        $bindVar = $stmtIns->bindParam(':last_name', $last_name);
+        $bindVar = $stmtIns->bindParam(':payer_id', $payer_id);
+        $bindVar = $stmtIns->bindParam(':line1', $line1);
+        $bindVar = $stmtIns->bindParam(':line2', $line2);
+        $bindVar = $stmtIns->bindParam(':city', $city);
+        $bindVar = $stmtIns->bindParam(':state', $state);
+        $bindVar = $stmtIns->bindParam(':postal_code', $postal_code);
+        $bindVar = $stmtIns->bindParam(':payment_method', $payment_method);
+        $bindVar = $stmtIns->bindParam(':payment_status', $payment_status);
+        $bindVar = $stmtIns->bindParam(':payment_amount', $payment_amount);
+        $bindVar = $stmtIns->bindParam(':payment_id', $payment_id);
+        $bindVar = $stmtIns->bindParam(':patron_id', $patron_id);
+        $bindVar = $stmtIns->bindParam(':paypal_resp', $paypal_resp);
+
+
+        $exec = $stmtIns->execute();
+
+        if($exec){
+            //retrieving last inserted row for ID.
+            $result = $db->query('SELECT last_insert_rowid() AS rowid FROM tb_patrons LIMIT 1');
+
+            $r = $result->fetch();
+
+            $lastrow = $r['rowid'];
+
+            logMessage(">>>>New Patron record:" . $lastrow);
+            $return["msg"] = "PATRON ROW INSERT SUCCESS";
+            $return["data"] = $lastrow;
+
+            $return["email_sent"] = sendEmail($post);
+
+        }
+        else{
+            $return["err"] = "DB:Patrons Insert Failed";
+            $return["msg"] = $stmtIns->errorInfo();
+        }
+        echo json_encode($return);
+    }
+    catch(PDOException $e)
+    {
+        $return["err"] = "DB:Patrons Unhandled PDO Exception";
+        $return["msg"] = $e->getMessage();
+    }
+
+    return $return;
+    }
+
+    function getApiKey($post){
+        $return["err"] = '';
+        $return["msg"] = "";
+
+        try {
+            $db = new PDO("sqlite:" . getDBPath("register"));
+
+            $stmt = $db->prepare('select value from tb_config where key = "paypalEnv"');
+
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            foreach($result as $row)
+            {
+                $return["paypalEnv"] = $row['value'];
+                $key = "{$row['value']}Key";
+            }
+
+            $stmt = $db->prepare('select value from tb_config where key = :key');
+            $bindVar = $stmt->bindParam(':key', $key);
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            foreach($result as $row)
+            {
+                $return["apiKey"] = $row['value'];
+            }
+
+            echo json_encode($return);
+        }
+        catch(PDOException $e)
+        {
+            $return["err"] = "DB:Patrons Unhandled PDO Exception";
+            $return["msg"] = $e->getMessage();
+        }
+
+        return $return;
+    }
+
+    function IsNullOrEmptyString($question){
+        return (!isset($question) || trim($question)==='');
+    }
+
+    function getParamExpression($post){
+        $param_arr = array();
+        $num = 0;
+        $year = strftime("%Y", time());
+
+        $year_requested = $post->formData->yearrequested;
+        if(IsNullOrEmptyString($year_requested)){
+            $year_requested = $year;
+
+        }
+
+        $param_arr[$num++] = "donation_year = '$year_requested'";
+
+
+        $name = $post->formData->name;
+        if(!IsNullOrEmptyString($name)){
+            $param_arr[$num++] = "(first_name like '%$name%' OR middle_name like '%$name%' OR last_name like '%$name%')";
+        }
+
+        $payment_id = $post->formData->payment_id;
+        if(!IsNullOrEmptyString($payment_id)){
+            $param_arr[$num++] = "payment_id like '%$payment_id%'";
+        }
+
+        $email = $post->formData->email;
+        if(!IsNullOrEmptyString($email)){
+            $param_arr[$num++] = "email like '%$email%'";
+        }
+
+
+        return join(' and ', $param_arr);
+    }
     function getDonationList($post){
         $return["err"] = '';
         $return["msg"] = '';
         $arr = array();
-        try {
-            /*** connect to SQLite database ***/
-            $db = new PDO("sqlite:" . getDBPath("donation"));
+        $year_arr = array();
+        $year = strftime("%Y", time());
 
-            $result = $db->query('SELECT * FROM tb_donations');
+        try {
+            $params = getParamExpression($post);
+
+            /*** connect to SQLite database ***/
+            $db = new PDO("sqlite:" . getDBPath("register"));
+
+            $result = $db->query('SELECT * FROM tb_donations where '.$params);
             $num = 0;
             foreach($result as $row)
             {
                 $arr[$num] = $row;
                 $num++;
             }
-            $return["data"] = $arr;
+
+            $return["data"]["donors"] = $arr;
             $return ["msg"] = $num . " rows returned";
+
+            $result = $db->query("SELECT distinct donation_year as year FROM tb_donations where donation_year IS NOT NULL");
+
+            $num = 0;
+            $current_year_found = false;
+
+            foreach($result as $row)
+            {
+                $year_arr[$num] = $row;
+
+                if($row["year"]  == $year){
+                    $current_year_found = true;
+                }
+
+                $num++;
+            }
+            if($current_year_found == false){
+                $year_arr[$num]["year"] = $year;
+            }
+            $return["data"]["yearsavailable"] = $year_arr;
+            /*** $return["data"]["params"] = $params; **/
+
+            //closing DB
+            $db = NULL;
 
             //closing DB
             $db = NULL;
@@ -67,6 +276,35 @@ require(dirname(__FILE__).'/utils.php');
         echo json_encode($return);
     }
 
+    function updateTicketIssued($post){
+        $return["err"] = '';
+        $return["msg"] = '';
+        $donationId = $post->donationId;
+
+        try {
+                /*** connect to SQLite database ***/
+                $db = new PDO("sqlite:" . getDBPath("register"));
+                $stmtUpd = $db->prepare("UPDATE tb_donations SET ticket_issued = 1 where id = '".$donationId."'");
+
+                $exec = $stmtUpd->execute();
+
+                if($exec){
+                    $return["msg"] = "Ticket Issued";
+                }
+                else{
+                    $return["err"] = "DB: Execute Failed";
+                    $return["msg"] = $stmtUpd->errorInfo();
+                }
+             }
+         catch(PDOException $e)
+         {
+             $return["err"] = "DB:" . $e->getMessage();
+         }
+
+         $return["data"] = $arr;
+         $return["post"] = $post;
+         echo json_encode($return);
+    }
 
     //Function to add volunteers
 
@@ -137,5 +375,102 @@ require(dirname(__FILE__).'/utils.php');
 
 
      }
+
+    function sendTestEmail($post){
+        $return["msg"]  = sendEmail($post);
+        echo json_encode($return);
+    }
+    function sendEmail($post){
+
+       $email = $post->email;
+       $payment_amount = $post->payment_amount;
+       $payment_id = $post->payment_id;
+
+       $to = $email;
+       $subject = "Utsov - Donation confirmation.";
+       $from = "utsov@utsov.org";
+
+       $headers = "MIME-Version: 1.0"."\r\n";
+       $headers .= "Content-type: text/html; charset=UTF-8"."\r\n";
+       $headers .= "From: ".$from."\r\n";
+       $headers .= "Reply-To: ".$from."\r\n";
+
+       $message = "<html>
+                  <head>
+                       <meta http-equiv='content-type' content='text/html;'>
+                   </head>
+                   <body style='word-wrap: break-word; font-size: 14px; font-family: Calibri, sans-serif;color: #1f497d'>
+                   <div>Hi,
+                       <br/>
+                       <br/>
+                       We have successfully received your donation.&nbsp;We sincerely appreciate your support.&nbsp;
+                       <br/>
+                       Please remember to carry a copy of this email. We will use this for verification while issuing tickets.
+                   </div>
+                   <ul>
+                       <li>
+                           Email: <a href='mailto:".$email."'>".$email."</a>
+                       </li>
+                       <li>
+                           Amount: $".$payment_amount."
+                       </li>
+                       <li>
+                           PaymentID: ".$payment_id."
+
+                       </li>
+                   </ul>
+                   <div>
+                       Regards,<br>
+                       UTSOV Team
+                   </div>
+                   <div style='color: rgb(0, 0, 0);'>
+                       <p style='color: rgb(80, 0, 80); font-family: arial, sans-serif; font-size: 12px;'>
+                           <img src='http://www.utsov.org/img/Utsov_logo.png'>
+                           <br/>
+                           <br/>
+                           <b>
+                               <span style='font-size: 14pt; font-family: Arial, sans-serif;'>&nbsp;UTSOV &nbsp;Inc.</span>
+                           </b>
+                           <br/>
+                           <i>
+                               <span style='font-size: 9pt; font-family: Arial, sans-serif;'>501(c)(3) organization</span>
+                           </i>
+                           <br/>
+                           <br/>
+                           <b>
+                               <span style='font-size: 10pt; font-family: Arial, sans-serif; color: rgb(102, 0, 0);'>(313) 33-UTSOV</span>
+                           </b>
+                           <br/>
+                           <br/>
+                           <span style='font-size: 9pt; font-family: Arial, sans-serif;'>
+                               <a href='mailto:utsov@utsov.org' target='_blank' style='color: rgb(17, 85, 204);'>utsov@utsov.org</a>
+                           </span>
+                           <br/>
+                           <span style='font-size: 9pt; font-family: Arial, sans-serif;'>
+                               <a href='http://www.utsov.org' target='_blank' style='color: rgb(17, 85, 204);'>www.utsov.org</a>
+                           </span>
+                           <br/>
+                           <span style='font-size: 9pt; font-family: Arial, sans-serif;'>
+                               <a href='http://facebook.com/utsov.usa' target='_blank' style='color: rgb(17, 85, 204);'>facebook.com/utsov.usa</a>
+                           </span>
+                           <br/>
+                       </p>
+
+
+                       <p style='color: rgb(80, 0, 80); font-family: arial, sans-serif; font-size: 12.800000190734863px;'>
+                           <span style='font-size: 10pt; font-family: 'Palatino Linotype', serif;'>
+                               If you don&#8217;t want to receive further communications from
+                               <span class='il'>UTSOV</span>,&nbsp;
+                               please reply back to this email with &#8220;UNSUBSCRIBE&#8221; on the subject line, and your email address will be removed.
+                           </span>
+                       </p>
+
+                   </div>
+                   </body>
+                   </html>";
+
+
+       return mail($to, $subject, $message, $headers);
+    }
 
 ?>
