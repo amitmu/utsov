@@ -36,7 +36,7 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
 	];
     
     $scope.messages = [
-		'Welcome to the 2015 Utsov Pujo.',
+		'Welcome to the 2017 Utsov Pujo.',
         'Please remember to donate.',
 		'Join us in efforts.',
         'Every donated dollar helps.',
@@ -249,6 +249,13 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             $scope.formData = $scope.searchResults[patronIndex];
             $scope.formData.regyear = $scope.currentYear;//2015;
             $scope.formData.action = 'details';
+
+            if(!$scope.formData.name1 || !$scope.formData.email1 || !$scope.formData.phone1){
+                $scope.allReqFieldsPresent = false;
+            } else{
+                $scope.allReqFieldsPresent = true;
+            }
+
             //$scope.formData.id = $scope.searchResults[patronIndex].id;
             
             //retrieve all registrations for selected patron
@@ -261,7 +268,7 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
                         //$scope.registrations = [{"id":0, "year":"No Data", "donation":0}];
                          $scope.registrations = {};
                     }
-                                            
+
                     //console.log("Donation Value:" + $scope.registrations[0].donation);
                     //console.log("Star Count:" + $scope.massageResults('donation', $scope.registrations[0].donation) );
                 }
@@ -356,7 +363,23 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
             console.log($scope.msgs);
         });
     }
-    
+
+    $scope.isFieldValValid = function(value) {
+        return !(value === "" || value === null || typeof value === "undefined");
+    }
+
+    $scope.isValidZip = function(value) {
+        console.log(value, !(value === "" || value === null || typeof value === "undefined") && /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(value));
+        return !(value === "" || value === null || typeof value === "undefined") && /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(value);
+    }
+
+    $scope.isValidEmail = function(value) {
+        return !(value === "" || value === null || typeof value === "undefined") && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+    }
+    $scope.isValidPhone = function(value) {
+        return !(value === "" || value === null || typeof value === "undefined") && /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(value);
+    }
+
     $scope.massageResults = function (field, data) {
 
         if(!data) return "";
