@@ -6,6 +6,7 @@ use PDO;
 require(dirname(__FILE__).'/utils.php'); //<- already reffered in patrons.php, not needed here
 require(dirname(__FILE__).'/patrons.php');
 require(dirname(__FILE__).'/registration.php');
+date_default_timezone_set('America/New_York');
 
 
 //// Main Section /////
@@ -123,7 +124,7 @@ require(dirname(__FILE__).'/registration.php');
                 $patronid = $return["data"];
                 logMessage(">>New Patron ID:" . $patronid);
             }
-            elseif($updatePatron == 'Y'){
+            else{
                 
                 logMessage(">>Update flag is true : Updating Patron");
                 //updating patron
@@ -131,9 +132,10 @@ require(dirname(__FILE__).'/registration.php');
                 $return = updatePatron($patronid, $name1, $name2, $email1, $email2, $phone1, $phone2, $address1, $address2, $city, $state, $zip, $ipaddress);
                 
             }
+            /*
             else{
                 logMessage(">>Update flag is false : skipping patron update");
-            }
+            }*/
             
            
             if(empty($return["err"])){
