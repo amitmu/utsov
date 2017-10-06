@@ -365,7 +365,8 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     }
 
     $scope.isFieldValValid = function(value) {
-        return !(value === "" || value === null || typeof value === "undefined");
+        //return !(value === "" || value === null || typeof value === "undefined");
+        return false;
     }
 
     $scope.isValidZip = function(value) {
@@ -374,10 +375,12 @@ app.controller('registerCtrl', function ($scope, $http, userInfoService) {
     }
 
     $scope.isValidEmail = function(value) {
-        return !(value === "" || value === null || typeof value === "undefined") && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+        //return !(value === "" || value === null || typeof value === "undefined") && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+        return false;
     }
     $scope.isValidPhone = function(value) {
-        return !(value === "" || value === null || typeof value === "undefined") && /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(value);
+        //return !(value === "" || value === null || typeof value === "undefined") && /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(value);
+        return false;
     }
 
     $scope.massageResults = function (field, data) {
