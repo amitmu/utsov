@@ -62,7 +62,7 @@ function initPujoMap(){
 
     // add information window
     var infowindow = new google.maps.InfoWindow({
-        content: '<div class="info"><address><strong>Utsov 2014 Puja Location</strong><br>380 Cranbury Rd.,<br> East Brunswick, NJ 08816.</address></div>'
+        content: '<div class="info"><address><strong>Utsov 2018 Puja Location</strong><br>200 Rues Lane,<br> East Brunswick, NJ 08816.</address></div>'
     });
 
 }
