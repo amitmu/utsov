@@ -36,16 +36,18 @@ app.controller('carouselCtrl', function ($scope, $http, userInfoService) {
 	];
     
     $scope.messages = [
-		'Welcome to the 2017 Utsov Pujo.',
+		'Welcome to the 2018 Utsov Pujo.',
         'Please remember to donate.',
-		'Join us in efforts.',
         'Every donated dollar helps.',
+        'Join the Prime Guest Program.',
+        'Get Reserved Seating and Free Food.',
+        'Multiple levels available',
+        'Join us in our Philanthrophic effort.',
         'Ask an Utsov team member.',
         'Or visit our website.',
         'Enjoy a special musical performance.',
         'Enjoy tastes and flavours of India.',
         'Snacks available for purchase.',
-        'Register on the website to join us.',
         'Have a safe and happy Pujo.'
 	];
     
