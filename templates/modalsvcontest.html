@@ -2,8 +2,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-camera-retro text-danger"></span> {{ title}}</h4>
     </div>
-<form role="form" name="frmAddContest" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()">
-    <div class="modal-body">
+<form role="form" name="frmAddContest" class="form-horizontal" novalidate data-ng-submit="SubmitFormData()" data-ng-hide="success == 1" >
+    <div class="modal-body" data-ng-hide="success == 1">
 
         <div class="form-group">
             <div class="col-sm-4" data-ng-class="{ 'has-error': frmAddContest.concontest.$invalid }">
@@ -100,7 +100,7 @@
             </div>
             <div class="col-sm-2 col-xs-12">
                 <!-- <button type="reset" class="btn btn-primary pull-right" data-ng-show="success !== 0" data-ng-hide="frmAddContest.$invalid">Reset Info</button> -->
-                <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success !== 0" data-ng-disabled="frmAddContest.$invalid">Save Contest Entry</button>
+                <button type="submit" class="btn btn-primary pull-right" data-ng-hide="success == 1" data-ng-disabled="frmAddContest.$invalid">Save & Donate</button>
             </div>
             <div class="col-sm-1 col-xs-12">
                 <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
@@ -108,3 +108,163 @@
         </div>
     </div>
 </form>
+<div class="modal-body" style="padding: 5px 20px" data-ng-hide="success != 1">
+
+    <div class="col-sm-12 col-xs-12 alert alert-success" >
+        <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your entry was successfully submitted. Please check events section for contest timings. We will contact you as needed.</p>
+    </div>
+
+    <!-- Notification Section -->
+    <div data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }" id="results" style="display: none;">
+        <div class="row">
+            <div class="col-lg-14" id="confirmation" style="display: none; text-align: left; color: green">
+                <div class="col-lg-1">
+                    <h1><span class="icon fa fa-check-circle-o" style="font-size: 80px;"></span></h1>
+                </div>
+                <div class="col-lg-9">
+                    <p class="lead">
+                        <br/>
+
+                        <u><b>Payment ID: <span id="txSuccessPaymentId"></span></b></u>. We have received your payment
+                        of amount <u><b>${{formData.donamount}}</b></u>. We sincerely appreciate your support
+                        and
+                        endorsements. We have sent an email to <u><b><span id="txEmail"></span></b></u> confirming you
+                        donation. Please remember to carry a copy of this email for
+                        verification.
+                    </p>
+                </div>
+                <div class="col-lg-2" style="">
+                    <img class="featurette-image img-responsive" src="img/Utsov_logo.png" alt="You can help">
+                </div>
+            </div>
+            <div class="col-lg-14" id="unableToRegister" style="display: none;color: red;">
+                <div class="col-lg-1">
+                    <h1><span class="icon fa fa-exclamation-circle" style="font-size: 80px;"></span></h1>
+                </div>
+                <div class="col-lg-9">
+                    <p class="lead">
+                        <br/>
+
+                        Payment ID: <u><span id="txFailurePaymentId"></span></u></i>. You paypal transaction went
+                        through but we were unable to update our database. Please email
+                        <a href="mailto:utsov@utsov.org">utsov@utsov.org</a>
+                        with details of the transaction and we will get back to you as soon as possible. We are very
+                        sorry
+                        for
+                        inconvenience."
+                    </p>
+                </div>
+                <div class="col-lg-2" style="">
+                    <img class="featurette-image img-responsive" src="img/Utsov_logo.png" alt="You can help">
+                </div>
+            </div>
+
+        </div>
+        <data class="">
+            <hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;">
+        </data>
+    </div>
+
+    <!-- Prime Guest Options & Donation entry -->
+    <div class="" id="modal-body">
+        <span class="lead">
+            We encourage you to become <i>Prime Guest</i> and spend both days with us.
+
+        </span>
+        <div class="row" style="margin-top: -10px">
+            <div class="col-lg-10">
+                <br />
+                <h5 class="featurette-heading" style="font-size: 16px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 1 - $160.00 or above:</h5>
+                <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Designed for single patrons or couples. Comes with 4 dinner coupons and 4 snack coupons.</span><br/>
+                <h5 class="featurette-heading" style="font-size: 16px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 2 - $225.00 or above:</h5>
+                <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Designed for families with 2 children. Comes with 4 dinner coupons for adults, 4 dinner (pizza) coupons for children, 6 snack coupons. </span><br/>
+                <h5 class="featurette-heading" style="font-size: 16px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Prime Guest Level 3 - $325.00 or above:</h5>
+                <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Designed for families with 2 children and 2 seniors. Comes with 8 dinner coupons for adults, 4 dinner (pizza) coupons for children, 10 snack coupons. </span><br/>
+            </div>
+            <div class="col-lg-2" style="">
+                <img class="featurette-image img-responsive" src="img/Utsov_logo.png" alt="You can help">
+            </div>
+        </div>
+        <div class="row col-lg-14" style="margin-top: 10px;">
+            <span class=""><i>
+                &nbsp;&nbsp;&nbsp;&nbsp;If you planning on participating for one day, please call us directly at
+                <b>313-33-UTSOV</b> or email us at <a href="mailto:utsov@utsov.org">utsov@utsov.org</a>
+            </i></span>
+        </div>
+        <data class="row">
+            <hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;">
+        </data>
+        <form role="form" name="frmRegister" class="form-horizontal" novalidate>
+            <div class="row" data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }">
+                <div class="row">
+                    <div class="text-center">
+                        <div class="col-lg-2" style="margin-top: 10px">
+                            &nbsp;
+                        </div>
+                        <div class="col-lg-2" style="margin-top: 10px">
+                            <label for="donamount">Donation Amount</label>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="number" step="0.01" class="form-control" id="donamount" name="donamount"
+                                       placeholder="Your donation amount for this year"
+                                       data-ng-model="formData.donamount"
+                                       min="30"
+                                       max="1000000" required ng-change="calculatePrimeGuest()">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2" style="width:18%">
+                            <div data-ng-class="{ 'disable-paypal': frmRegister.donamount.$invalid }" id="paypal-button1" style="padding-top: 10px"></div>
+                        </div>
+                        <div class="col-lg-2" style="margin-top: 10px">
+                            &nbsp;
+                        </div>
+
+                    </div>
+                    <div class=" text-center col-lg-12">
+                        <br/>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 30.00</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
+                        <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
+                        <span class="" style="font-size: 10px;"> &nbsp;&nbsp;&nbsp;&nbsp;You will be automatically registered when you donate. Information entered in Paypal transaction (opens new window) will be used in registration. </span>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <data class="">
+            <hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;">
+        </data>
+    </div>
+
+    <div class="col-lg-14 text-center">
+        <address>
+            <i>You can also send your donation check (payable to “Utsov Inc.”) to our mailing address:</i><br>
+            <strong><b>Utsov, Inc.</b></strong><br>
+            31 Richard Road,
+            Edison, NJ 08820<br>
+            <i>Please remember to send us your contact info if you want a reciept.</i></p>
+        </address>
+    </div>
+    <div class="col-lg-14">
+        <p style="color: #dd4814">
+            Utsov is a registered 501 (c)(3) not-for-profit organaization. Your entire donation may be tax-deductible.
+            Please talk to your tax professional for details.
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="col-sm-11 small-padding">
+            &nbsp;
+        </div>
+        <div class="col-sm-1 small-padding">
+            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    <span ng-show="renderCheckoutForDonate()"></span>
+</div>

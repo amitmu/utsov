@@ -12,6 +12,7 @@ utsovPrimeGuestApp.config(['$routeProvider',
     when('/BecomePrimeGuest', {
       templateUrl: 'templates/modalsvdonate.html',
       controller: 'PrimeGuestController',
+      reloadOnSearch: false,
       action: 'BPG'
     });
   }]);
@@ -53,6 +54,7 @@ utsovEventApp.config(['$routeProvider',
       when('/EventRegistration', {
         templateUrl: 'templates/modalsvcontest.html',
         controller: 'EventController',
+        reloadOnSearch: false,
         action: 'CON'
       }).
       when('/ChildrensEssay', {
@@ -208,6 +210,7 @@ utsovEventApp.controller('EventController', function ($scope, $route, $http) {
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
+    renderedFromDonate = false;
 
     $scope.action = $route.current.action;
     switch ($route.current.action)
@@ -229,6 +232,15 @@ utsovEventApp.controller('EventController', function ($scope, $route, $http) {
     console.log("Action:" + $scope.action);
     console.log("Service:" + $scope.service);
     console.log("Title:" + $scope.title);
+
+    $scope.calculatePrimeGuest = function(){
+      return calculatePrimeGuest($scope);
+    };
+    $scope.renderCheckoutForDonate =renderCheckoutForDonate;
+
+    $scope.reset = function(){
+      return reset($scope);
+    };
 
     //The actual add function
     $scope.SubmitFormData = function () {
@@ -272,6 +284,7 @@ angular.element(document).ready(function() {
 });
 
 var rendered = false;
+var renderedFromDonate = false;
 
 function calculatePrimeGuest(scope) {
 
@@ -291,8 +304,7 @@ function calculatePrimeGuest(scope) {
 
 }
 
-function renderCheckout() {
-  if(rendered) return;
+function renderPaypalButton(btnSelector){
   $.post('api/donations.php', JSON.stringify({"action":"getapikey"}), function (json, status) {
     if(status === "success" && json.apiKey && json.paypalEnv){
       paypal.Button.render({
@@ -394,10 +406,23 @@ function renderCheckout() {
           });
         }
 
-      }, '#paypal-button');
+      }, btnSelector);
     }
   }, 'json');
-  rendered= true;
+}
+
+function renderCheckout() {
+  if(!rendered){
+    renderPaypalButton('#paypal-button');
+    rendered= true;
+  }
+}
+
+function renderCheckoutForDonate() {
+  if(!renderedFromDonate){
+    renderPaypalButton('#paypal-button1');
+    renderedFromDonate= true;
+  }
 }
 
 function reset(scope){
