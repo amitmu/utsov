@@ -286,8 +286,8 @@ body{margin-top:50px;}
 #about-utsov{background:url(../img/light-back.jpg) no-repeat center center fixed;display:table;height:100%;position:relative;width:100%;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover}
 #map_canvas{height:500px;width:inherit;overflow:auto}
 .wrapper{width:100%;border:3px solid #ae3910;margin:auto;overflow:hidden;border-radius:3px}
-.marquee{position:relative;overflow:hidden;float:left}
-.marquee span{position:relative;white-space:nowrap;display:inline;left:0;font-family:"Ubuntu",Tahoma,"Helvetica Neue",Helvetica,Arial,sans-serif;-moz-animation:marquee 120s linear 2s infinite alternate;-webkit-animation:marquee 120s linear 2s infinite alternate;-o-animation:marquee 120s linear 2s infinite alternate;animation:marquee 120s linear 2s infinite alternate}
+.marquee{position:relative;overflow:hidden;float:left;width:9000px;}
+.marquee span{position:relative;white-space:nowrap;display:inline;left:0;font-family:"Ubuntu",Tahoma,"Helvetica Neue",Helvetica,Arial,sans-serif;-moz-animation:marquee 60s linear 2s infinite alternate;-webkit-animation:marquee 60s linear 2s infinite alternate;-o-animation:marquee 60s linear 2s infinite alternate;animation:marquee 60s linear 2s infinite alternate}
 .marquee:hover span{-webkit-animation-play-state:paused;-moz-animation-play-state:paused;-o-animation-play-state:paused;animation-play-state:paused}
 .marquee span:after{content:attr(rel);display:inline;color:#fff;padding-left:10px}
 @-webkit-keyframes marquee{0%{left:0} 100%{left:-50%}}@-moz-keyframes marquee{0%{left:0} 100%{left:-50%}}@-o-keyframes marquee{0%{left:0} 100%{left:-50%}}@keyframes marquee{0%{left:0} 100%{left:-50%}}footer[role="contentinfo"]{padding-top:24px;padding-bottom:24px;font-size:12px;background-color:#97310e;color:#fff}footer[role="contentinfo"] a{color:#fff}footer[role="contentinfo"] a:focus,footer[role="contentinfo"] a:hover,footer[role="contentinfo"] a:active{color:#fff}
