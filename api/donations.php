@@ -48,6 +48,7 @@ date_default_timezone_set('America/New_York');
 
     try {
         $db = new PDO("sqlite:" . getDBPath("register"));
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $client_ip = get_client_ip();
         $donation_year = $post->donation_year;
@@ -405,7 +406,6 @@ date_default_timezone_set('America/New_York');
                        <br/>
                        We have successfully received your donation.&nbsp;We sincerely appreciate your support.&nbsp;
                        <br/>
-                       Please remember to carry a copy of this email. We will use this for verification while issuing tickets.
                    </div>
                    <ul>
                        <li>

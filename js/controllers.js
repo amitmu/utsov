@@ -14,6 +14,12 @@ utsovPrimeGuestApp.config(['$routeProvider',
       controller: 'PrimeGuestController',
       reloadOnSearch: false,
       action: 'BPG'
+    }).
+    when('/AddCovidDonation', {
+      templateUrl: 'templates/modalsvcoviddonate.html',
+      controller: 'PrimeGuestController',
+       reloadOnSearch: false,
+      action: 'ACD'
     });
   }]);
 
@@ -80,6 +86,10 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   {
     case 'BPG':
       $scope.title = "Donate with Paypal  - We sincerely appreciate your help!";
+      $scope.service = 'api/donations.php';
+      break;
+    case 'ACD':
+      $scope.title = "Donate for Covid-19 & Cycle Amphan";
       $scope.service = 'api/donations.php';
       break;
   }
@@ -392,6 +402,8 @@ function renderPaypalButton(btnSelector){
 
             $.post('api/donations.php', JSON.stringify(payPalResponse), function (json, status) {
               document.getElementById("results").style.display = "block";
+              console.log(json);
+              console.log(status);
               if(status === "success" && !json.err) {
                 document.getElementById("modal-body").style.display = "none";
                 document.getElementById("confirmation").style.display = "block";
