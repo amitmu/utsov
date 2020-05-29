@@ -12,14 +12,14 @@ utsovPrimeGuestApp.config(['$routeProvider',
     when('/BecomePrimeGuest', {
       templateUrl: 'templates/modalsvdonate.html',
       controller: 'PrimeGuestController',
-      reloadOnSearch: false,
-      action: 'BPG'
+       reloadOnSearch: false,
+        action: 'BPG'
     }).
     when('/AddCovidDonation', {
       templateUrl: 'templates/modalsvcoviddonate.html',
       controller: 'PrimeGuestController',
-       reloadOnSearch: false,
-      action: 'ACD'
+        reloadOnSearch: false,
+        action: 'ACD'
     });
   }]);
 
@@ -44,7 +44,14 @@ utsovContactApp.config(['$routeProvider',
       when('/AddDonation', {
         templateUrl: 'templates/modalsvdonate.html',
         controller: 'ContactController',
+        reloadOnSearch: false,
         action: 'DON'
+      }).
+      when('/AddFooteCovidDonationr', {
+        templateUrl: 'templates/modalsvcoviddonate.html',
+        controller: 'ContactController',
+        reloadOnSearch: false,
+        action: 'CDON'
       });
 }]);
 
@@ -79,6 +86,7 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
   $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
   $scope.success = 0;
+  $scope.paypalbuttonId = "paypal-button-pg"
 
   rendered = false;
   $scope.action = $route.current.action;
@@ -143,6 +151,7 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
+    $scope.paypalbuttonId = "paypal-button-ct"
     rendered = false;
   
     $scope.action = $route.current.action;
@@ -161,6 +170,10 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
             $scope.service = 'api/contests.php';
             break;
          case 'DON':
+            $scope.title = "Donate with Paypal";
+            $scope.service = 'api/donations.php';
+            break;
+        case 'CDON':
             $scope.title = "Donate with Paypal";
             $scope.service = 'api/donations.php';
             break;
@@ -220,7 +233,7 @@ utsovEventApp.controller('EventController', function ($scope, $route, $http) {
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
-    renderedFromDonate = false;
+    rendered = false;
 
     $scope.action = $route.current.action;
     switch ($route.current.action)
@@ -246,7 +259,7 @@ utsovEventApp.controller('EventController', function ($scope, $route, $http) {
     $scope.calculatePrimeGuest = function(){
       return calculatePrimeGuest($scope);
     };
-    $scope.renderCheckoutForDonate =renderCheckoutForDonate;
+    $scope.renderCheckoutForDonate =renderCheckout;
 
     $scope.reset = function(){
       return reset($scope);
@@ -294,7 +307,6 @@ angular.element(document).ready(function() {
 });
 
 var rendered = false;
-var renderedFromDonate = false;
 
 function calculatePrimeGuest(scope) {
 
@@ -423,17 +435,10 @@ function renderPaypalButton(btnSelector){
   }, 'json');
 }
 
-function renderCheckout() {
+function renderCheckout(id) {
   if(!rendered){
-    renderPaypalButton('#paypal-button');
+    renderPaypalButton('#' + id);
     rendered= true;
-  }
-}
-
-function renderCheckoutForDonate() {
-  if(!renderedFromDonate){
-    renderPaypalButton('#paypal-button1');
-    renderedFromDonate= true;
   }
 }
 

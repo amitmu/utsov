@@ -67,17 +67,19 @@
                     Utsov has already taken the first step and started donations to following organizations for recovery efforts:
                 </h5>
 
-                <h5 class="featurette-heading icon" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px;"><span
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px; color: darkred"><span
+                        class="icon fa fa-arrow-right "></span>&nbsp;<b>Nourish NJ</b>  - For COVID-19.</h5>
+
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px; color: darkred"><span
+                        class="icon fa fa-arrow-right"></span>&nbsp;<b>New York City Meals on wheels</b>  - For COVID-19.</h5>
+
+                <h5 class="featurette-heading icon" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px; color: darkgreen"><span
                         class="icon fa fa-arrow-right"></span>&nbsp;<b>Nayantara Memorial Charitable Trust</b> - For COVID-19.</h5>
 
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px;"><span
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px; color: darkgreen"><span
                         class="icon fa fa-arrow-right"></span>&nbsp;<b>Humanity Hospital</b>  - For COVID-19.</h5>
 
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px;"><span
-                        class="icon fa fa-arrow-right"></span>&nbsp;<b>Nourish NJ</b>  - For COVID-19.</h5>
 
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 10px;margin-bottom: 5px;padding-left: 10px;"><span
-                        class="icon fa fa-arrow-right"></span>&nbsp;<b>New York City Meals on wheels</b>  - For COVID-19.</h5>
                 <span class="" style="font-size: 11px;">We are also in the process of adding new organizations which have been recommended by friends of Utsov.</span>
                 <br/>
             </div>
@@ -106,13 +108,14 @@
                                 <input type="number" step="0.01" class="form-control" id="donamount" name="donamount"
                                        placeholder="Your donation amount "
                                        data-ng-model="formData.donamount"
-                                       min="30"
+                                       min="15"
                                        max="1000000" required ng-change="calculatePrimeGuest()">
 
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <div data-ng-class="{ 'disable-paypal': frmRegister.donamount.$invalid }" id="paypal-button" style="padding-top: 10px"></div>
+                            <div data-ng-class="{ 'disable-paypal': frmRegister.donamount.$invalid }" id="{{paypalbuttonId}}" style="padding-top: 10px"></div>
+
                         </div>
                         <div class="col-lg-2" style="margin-top: 10px">
                             &nbsp;
@@ -121,7 +124,7 @@
                     </div>
                     <div class=" text-center col-lg-12">
                         <br/>
-                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 30.00</span>
+                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 15.00</span>
                         <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
                     </div>
 
@@ -156,5 +159,5 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
-    <span ng-show="renderCheckout()"></span>
+    <span ng-show="renderCheckout('{{paypalbuttonId}}')"></span>
 </div>
