@@ -1,0 +1,4 @@
+
+//This will create a docker container called "utsov".
+//Please change your docker host path after -v to point to your local source.
+docker run -d --name utsov -v s:/docker/webroot:/web/html -p 8080:80 nimmis/alpine-apache-php7
