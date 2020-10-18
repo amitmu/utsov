@@ -27,6 +27,10 @@ jQuery(document).ready(function () {
         initPujoMap();
     });
 
+    $('#liveStreamModal').on('shown.bs.modal', function(e) {
+        fitVideo();
+    });
+   
 });
 
 function initPujoMap(){
@@ -65,6 +69,10 @@ function initPujoMap(){
         content: '<div class="info"><address><strong>Utsov 2018 Puja Location</strong><br>200 Rues Lane,<br> East Brunswick, NJ 08816.</address></div>'
     });
 
+}
+
+function fitVideo(){
+    //nothing to do yet
 }
 
 
