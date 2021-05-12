@@ -97,7 +97,7 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
       $scope.service = 'api/donations.php';
       break;
     case 'ACD':
-      $scope.title = "Donate for COVID-19 & Cycle Amphan!";
+      $scope.title = "Donate for COVID-19 crisis in India";
       $scope.service = 'api/donations.php';
       break;
   }
