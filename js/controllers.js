@@ -15,7 +15,7 @@ utsovPrimeGuestApp.config(['$routeProvider',
        reloadOnSearch: false,
         action: 'BPG'
     }).
-    when('/AddCovidDonation', {
+    when('/Covid19', {
       templateUrl: 'templates/modalsvcoviddonate.html',
       controller: 'PrimeGuestController',
         reloadOnSearch: false,

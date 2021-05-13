@@ -15,25 +15,35 @@ jQuery(document).ready(function () {
 
     //Scrolling
     jQuery('#nav-main [href^=#]').click(function (e) {
-      e.preventDefault();
-      var div = jQuery(this).attr('href');
-      jQuery("html, body").animate({
-        scrollTop: $(div).position().top
-      }, "slow");
+        e.preventDefault();
+        var div = jQuery(this).attr('href');
+        jQuery("html, body").animate({
+            scrollTop: $(div).position().top
+        }, "slow");
     });
 
     //resizing map on dialog show
-    $('#mapModal').on('shown.bs.modal', function(e) {
+    $('#mapModal').on('shown.bs.modal', function (e) {
         initPujoMap();
     });
 
-    $('#liveStreamModal').on('shown.bs.modal', function(e) {
+    $('#liveStreamModal').on('shown.bs.modal', function (e) {
         fitVideo();
     });
-   
+
+    openDonateDialog();
 });
 
-function initPujoMap(){
+function openDonateDialog() {
+    const href = window.location.href.toLowerCase();
+    const donateText = "covid19";
+
+    if (href.indexOf(donateText) > -1) {
+        $("#covid19").click();
+    }
+}
+
+function initPujoMap() {
 
     // create a LatLng object containing the coordinate for the center of the map
     //var latlng = new google.maps.LatLng(40.43288, -74.39765);
@@ -71,7 +81,7 @@ function initPujoMap(){
 
 }
 
-function fitVideo(){
+function fitVideo() {
     //nothing to do yet
 }
 
