@@ -51,8 +51,7 @@
             <th>Date</th>
             <th>Tx Id</th>
             <th>Method</th>
-            <th>Status</th>
-            <th>Address</th>
+            <th>Tickets</th>
             <th>Ticket Issued</th>
         </tr>
         <tr data-ng-repeat="donation in resultset.donors|orderBy:orderByField:reverseSort">
@@ -60,13 +59,10 @@
             <td>{{formatFullName(donation)}}</td>
             <td>{{donation.email}}</td>
             <td>{{formatCurrency(donation.payment_amount)}}</td>
-            <td>{{formatDate(donation.txDateTime)}}</td>
+            <td><span style="display:block; white-space: normal;">{{formatDate(donation.txDateTime)}}</span></td>
             <td>{{donation.payment_id}}</td>
             <td>{{donation.payment_method}}</td>
-            <td>{{donation.payment_status}}</td>
-            <td><span>{{formatDonorAddressLines(donation)}}</span> <br/>
-                <span>{{donation.city}}</span> <br/>
-                <span>{{formatStateZip(donation)}}</span> <br/>
+            <td><span style="display:block; white-space: normal;">{{formatTickets(donation)}}</span> 
             </td>
             <td style="text-align: center">
                 <label class="switch">

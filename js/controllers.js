@@ -331,7 +331,7 @@ function calculatePrimeGuest(scope) {
   scope.formData.kid = sanitizeNumber(scope.formData.kid);
   scope.formData.adddon = sanitizeNumber(scope.formData.adddon, true);
   
-   var calcAmt= scope.formData.pgcount*500 + scope.formData.adbothdays*85 + scope.formData.adsat*65 + scope.formData.adsun*45 + scope.formData.kid*30 + scope.formData.adddon;
+   var calcAmt= scope.formData.pgcount*60 + scope.formData.adbothdays*85 + scope.formData.adsat*65 + scope.formData.adsun*45 + scope.formData.kid*35 + scope.formData.adddon;
    scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
 
 }

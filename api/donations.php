@@ -246,7 +246,7 @@ date_default_timezone_set('America/New_York');
 
         $payment_id = $post->formData->payment_id;
         if(!IsNullOrEmptyString($payment_id)){
-            $param_arr[$num++] = "payment_id like '%$payment_id%'";
+            $param_arr[$num++] = "tb_donations.payment_id like '%$payment_id%'";
         }
 
         $email = $post->formData->email;
@@ -270,7 +270,9 @@ date_default_timezone_set('America/New_York');
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("register"));
 
-            $result = $db->query('SELECT * FROM tb_donations where '.$params);
+            $result = $db->query('SELECT A.id, A.first_name, A.last_name, A.email, A.payment_amount, A.txDateTime,
+            A.payment_id, A.payment_method, A.ticket_issued, B.bothdaysadult, B.saturdayadult, B.sundayadult, B.pgcount, B.kidsanyday,B.addtionaldonation
+             FROM tb_donations A left join tb_tickets B on A.patron_id = B.patron_id AND A.payment_id =  B.payment_id  where '.$params);
             $num = 0;
             foreach($result as $row)
             {
@@ -470,9 +472,7 @@ date_default_timezone_set('America/New_York');
 
                        </li>";
         if($usesNewTicketingSystem){
-            $message.= "<li>
-                            Number of Prime Patron tickets: ".$pgcount."
-                        </li>
+            $message.= "
                         <li>
                             Number of adults (18 years+) for both days: ".$adbothdays."
                         </li>
@@ -481,6 +481,9 @@ date_default_timezone_set('America/New_York');
                         </li>
                         <li>
                             Number of adults (18 years+) for Sunday only: ".$adsun."
+                        </li>
+                        <li>
+                            Number of kids (6-18 years) for both days: ".$pgcount."
                         </li>
                         <li>
                             Number of kids (6-18 years) for any one day: ".$kid."
@@ -492,8 +495,10 @@ date_default_timezone_set('America/New_York');
 
         $message.="</ul>
                    <div>
+                   For registation with Donation amount only tickets will NOT be issued and priority will be provided to ticket holders for event access.
+                   <br>
                    Please carry an electronic or physical copy of this email for tickets along with proof of covid-19 vaccination for pujo.<br>
-                       Regards,<br><br>
+                       Regards,<br>
                        UTSOV Team
                    </div>
                    <div style='color: rgb(0, 0, 0);'>

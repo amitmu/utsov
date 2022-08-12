@@ -229,6 +229,18 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
   $scope.formatAddressLines = function(data){
     return data.address1 ? data.address1 + " " + (data.address2 || "") + ",": "";
   };
+  $scope.formatTickets = function(data){
+    return `Adult - Both days : ${data.bothdaysadult}\n
+    Adult - Saturday : ${data.saturdayadult}\n
+    Adult - Sunday: ${data.sundayadult}\n
+    Kids - Both days: ${data.pgcount}\n
+    Kids - Any day: ${data.kidsanyday}\n
+    Donation: ${data.addtionaldonation}\n
+    `
+  };
+  $scope.isDisabled = function(data){
+    return (data.bothdaysadult + data.saturdayadult + data.sundayadult + data.pgcount + data.kidsanyday) ? '' : 'disabled';
+  };
 
   $scope.formatDonorAddressLines = function(data){
     return data.line1 ? data.line1 + " " + (data.line2 || "") + ",": "";

@@ -64,14 +64,13 @@
 
         </h4>
         <div class="row">
-            <div class="col-lg-10">
-                <br />
-                <div class="row">
+            <div class="col-lg-10" >
+                <div class="row" style="display: none;">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;Number of Prime Patron tickets - $500.00 per ticket :</h5>
                 </div>
-                <div class="col-xs-2">
+                <div class="col-xs-2" style="display: none;">
                     <input type="number" step="1" class="form-control" id="pgcount" name="pgcount" style="height: 25px;width:50%"
                     placeholder="0"
                     data-ng-model="formData.pgcount"
@@ -79,8 +78,8 @@
                     max="100" required ng-change="calculatePrimeGuest()">
                 </div>
             </div>
-            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket is designed for a family of 4. Comes with 8 dinner & 10 snack coupons.</span><br/>
-            <data class="">
+            <span class="" style="font-size: 12px;display: none;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket is designed for a family of 4. Comes with 8 dinner & 10 snack coupons.</span><br/>
+            <data class="" style="display: none;">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
             </data>
             <div class="row">
@@ -134,10 +133,27 @@
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
             </data>
+            <div class="row" >
+                <div class="col-lg-8">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) for both days - $60 per person :</h5>
+                </div>
+                <div class="col-xs-2" >
+                    <input type="number" step="1" class="form-control" id="pgcount" name="pgcount" style="height: 25px;width:50%"
+                    placeholder="0"
+                    data-ng-model="formData.pgcount"
+                    min="0"
+                    max="100" required ng-change="calculatePrimeGuest()">
+                </div>
+            </div>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket includes 1 dinner coupon per day for both days.</span><br/>
+            <data class="" >
+                <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
+            </data>
             <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) for any one day - $30.00 per person :</h5>
+                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) for any one day - $35.00 per person :</h5>
                 </div>
                 <div class="col-xs-2">
                     <input type="number" step="1" class="form-control" id="kid" name="kid" style="height: 25px;width:50%"
@@ -147,7 +163,7 @@
                     max="100" required ng-change="calculatePrimeGuest()">
                 </div>
             </div>
-            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Single day ticket only and includes 1 dinner coupon. Please buy 2 tickets per kid for both days.</span><br/>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Single day ticket only and includes 1 dinner coupon.</i></b></span><br/>
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
             </data>
@@ -183,8 +199,12 @@
             </i></span>
         </div-->
         <br/>
-        <span class=" text-center" style="font-size: 12px;margin-top: 5px;"><i>
+        
+        <span class=" text-center" style="font-size: 12px;margin-top: 5px;">
             *** Kids under 6 years of age will be served free pizza with a registered adult. ***
+        </span><br>
+        <span class=" text-center" style="font-size: 12px;margin-top: 5px;"><i>
+            *** For registation with Donation amount only, dinner coupons will NOT be issued and priority will be provided to ticket holders for event access. ***
         </i></span>
         <data class="row">
             <hr class="featurette-divider" style="margin-top:0px;margin-bottom: 5px;">
