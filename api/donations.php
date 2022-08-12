@@ -69,6 +69,17 @@ date_default_timezone_set('America/New_York');
         $payment_id = $post->payment_id;
         $paypal_resp = $post->paypal_resp;
 
+        $usesNewTicketingSystem = $post->usesNewTicketingSystem;
+
+        if($usesNewTicketingSystem){
+            $pgcount = $post->pgcount;
+            $adbothdays = $post->adbothdays;
+            $adsat = $post->adsat;
+            $adsun = $post->adsun;
+            $kid = $post->kid;
+            $adddon = $post->adddon;
+        }
+
         $patrons = findPatron($email);
         $patron_id = 0;
 
@@ -109,6 +120,26 @@ date_default_timezone_set('America/New_York');
         $bindVar = $stmtIns->bindParam(':patron_id', $patron_id);
         $bindVar = $stmtIns->bindParam(':paypal_resp', $paypal_resp);
 
+        if($usesNewTicketingSystem){
+
+            $stmtInsTicket = $db->prepare("INSERT INTO tb_tickets(patron_id, pgcount, bothdaysadult, saturdayadult, sundayadult, kidsanyday, addtionaldonation, txDateTime, totalpayementprocessed, payment_id)
+            VALUES(:patron_id, :pgcount, :adbothdays, :adsat, :adsun, :kid, :adddon, :txDateTime, :payment_amount, :payment_id);");
+
+            $bindVar1 = $stmtInsTicket->bindParam(':txDateTime', $txDateTime);
+            $bindVar1 = $stmtInsTicket->bindParam(':patron_id', $patron_id);
+            $bindVar1 = $stmtInsTicket->bindParam(':payment_amount', $payment_amount);
+            $bindVar1 = $stmtInsTicket->bindParam(':payment_id', $payment_id);
+
+            $bindVar1 = $stmtInsTicket->bindParam(':patron_id', $patron_id);
+            $bindVar1 = $stmtInsTicket->bindParam(':pgcount', $pgcount);
+            $bindVar1 = $stmtInsTicket->bindParam(':adbothdays', $adbothdays);
+            $bindVar1 = $stmtInsTicket->bindParam(':adsat', $adsat);
+            $bindVar1 = $stmtInsTicket->bindParam(':adsun', $adsun);
+            $bindVar1 = $stmtInsTicket->bindParam(':kid', $kid);
+            $bindVar1 = $stmtInsTicket->bindParam(':adddon', $adddon);
+
+        }
+
 
         $exec = $stmtIns->execute();
 
@@ -119,11 +150,20 @@ date_default_timezone_set('America/New_York');
             $r = $result->fetch();
 
             $lastrow = $r['rowid'];
-
             logMessage(">>>>New Patron record:" . $lastrow);
-            $return["msg"] = "PATRON ROW INSERT SUCCESS";
-            $return["data"] = $lastrow;
 
+            if($usesNewTicketingSystem){
+                $execTicketQuery = $stmtInsTicket->execute();
+
+                if($execTicketQuery){
+                    $return["msg"] = "PATRON ROW AND TICKET INFO INSERT SUCCESS";
+                }
+            } else{
+                $return["msg"] = "PATRON ROW INSERT SUCCESS";
+            }
+            
+
+            $return["data"] = $lastrow;
             $return["email_sent"] = sendEmail($post);
 
         }
@@ -395,6 +435,17 @@ date_default_timezone_set('America/New_York');
        $headers .= "Content-type: text/html; charset=UTF-8"."\r\n";
        $headers .= "From: ".$from."\r\n";
        $headers .= "Reply-To: ".$from."\r\n";
+       $usesNewTicketingSystem = $post->usesNewTicketingSystem;
+
+
+       if($usesNewTicketingSystem){
+            $pgcount = $post->pgcount;
+            $adbothdays = $post->adbothdays;
+            $adsat = $post->adsat;
+            $adsun = $post->adsun;
+            $kid = $post->kid;
+            $adddon = $post->adddon;
+        }
 
        $message = "<html>
                   <head>
@@ -404,7 +455,7 @@ date_default_timezone_set('America/New_York');
                    <div>Hi,
                        <br/>
                        <br/>
-                       We have successfully received your donation.&nbsp;We sincerely appreciate your support.&nbsp;
+                       We have successfully received your payment.&nbsp;We sincerely appreciate your support.&nbsp;
                        <br/>
                    </div>
                    <ul>
@@ -412,15 +463,37 @@ date_default_timezone_set('America/New_York');
                            Email: <a href='mailto:".$email."'>".$email."</a>
                        </li>
                        <li>
-                           Amount: $".$payment_amount."
+                           Total amount paid: $".$payment_amount."
                        </li>
                        <li>
                            PaymentID: ".$payment_id."
 
-                       </li>
-                   </ul>
+                       </li>";
+        if($usesNewTicketingSystem){
+            $message.= "<li>
+                            Number of Prime Patron tickets: ".$pgcount."
+                        </li>
+                        <li>
+                            Number of adults (18 years+) for both days: ".$adbothdays."
+                        </li>
+                        <li>
+                            Number of adults (18 years+) for Saturday only: ".$adsat."
+                        </li>
+                        <li>
+                            Number of adults (18 years+) for Sunday only: ".$adsun."
+                        </li>
+                        <li>
+                            Number of kids (6-18 years) for any one day: ".$kid."
+                        </li>
+                        <li>
+                            Donation amount: $ ".$adddon."
+                        </li>" ;
+        }
+
+        $message.="</ul>
                    <div>
-                       Regards,<br>
+                   Please carry an electronic or physical copy of this email for tickets along with proof of covid-19 vaccination for pujo.<br>
+                       Regards,<br><br>
                        UTSOV Team
                    </div>
                    <div style='color: rgb(0, 0, 0);'>
@@ -470,7 +543,7 @@ date_default_timezone_set('America/New_York');
                    </html>";
 
 
-       return mail($to, $subject, $message, $headers);
+        return mail($to, $subject, $message, $headers);
     }
 
 ?>

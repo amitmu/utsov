@@ -310,7 +310,7 @@ var rendered = false;
 
 function calculatePrimeGuest(scope) {
 
-  if(scope.formData.donamount >= 160 && scope.formData.donamount <225){
+  /*if(scope.formData.donamount >= 160 && scope.formData.donamount <225){
     scope.formData.primeGuestLevel = "You are eligible for Prime Guest Level 1.";
     scope.formData.isPrimeGuest = true;
   } else if(scope.formData.donamount >= 225 && scope.formData.donamount <325){
@@ -322,8 +322,25 @@ function calculatePrimeGuest(scope) {
   } else {
     scope.formData.primeGuestLevel = "You will not be eligible for Prime Guest program.";
     scope.formData.isPrimeGuest = false;
-  }
+  }*/
 
+  scope.formData.pgcount = sanitizeNumber(scope.formData.pgcount);
+  scope.formData.adbothdays = sanitizeNumber(scope.formData.adbothdays);
+  scope.formData.adsat = sanitizeNumber(scope.formData.adsat);
+  scope.formData.adsun = sanitizeNumber(scope.formData.adsun);
+  scope.formData.kid = sanitizeNumber(scope.formData.kid);
+  scope.formData.adddon = sanitizeNumber(scope.formData.adddon, true);
+  
+   var calcAmt= scope.formData.pgcount*500 + scope.formData.adbothdays*85 + scope.formData.adsat*65 + scope.formData.adsun*45 + scope.formData.kid*30 + scope.formData.adddon;
+   scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
+
+}
+
+function sanitizeNumber(field, ignoreRound){
+  field = field||0;
+  field = ignoreRound ? field: Math.round(field);
+  field = field<0?0:field;
+  return  parseFloat(field);
 }
 
 function renderPaypalButton(btnSelector){
@@ -332,7 +349,7 @@ function renderPaypalButton(btnSelector){
       paypal.Button.render({
 
         env: json.paypalEnv, // Or 'sandbox'
-
+        
         client: {
           sandbox: json.paypalEnv ==="sandbox" ? json.apiKey : '',
           production: json.paypalEnv ==="production" ? json.apiKey : '',
@@ -355,7 +372,13 @@ function renderPaypalButton(btnSelector){
 
         onAuthorize: function(data, actions) {
           return actions.payment.execute().then(function(payment) {
-            var donamount = document.getElementById("donamount").value;
+            var donamount = document.getElementById("donamount") ? document.getElementById("donamount").value : undefined;
+            var pgcount = document.getElementById("pgcount") ? document.getElementById("pgcount").value : undefined;
+            var adbothdays = document.getElementById("adbothdays") ? document.getElementById("adbothdays").value: undefined;
+            var adsat = document.getElementById("adsat") ? document.getElementById("adsat").value : undefined;
+            var adsun = document.getElementById("adsun")? document.getElementById("adsun").value: undefined;
+            var kid = document.getElementById("kid") ? document.getElementById("kid").value: undefined;
+            var adddon = document.getElementById("adddon") ? document.getElementById("adddon").value: undefined;
 
             var payPalResponse = {
               "action":"savedonation",
@@ -373,8 +396,27 @@ function renderPaypalButton(btnSelector){
               "payment_method": "",
               "payment_status": "",
               "payment_amount": parseFloat(donamount),
-              "payment_id": ""
+              "payment_id": "",
+              "pgcount": parseInt(pgcount),
+              "adbothdays": parseInt(adbothdays),
+              "adsat": parseInt(adsat),
+              "adsun": parseInt(adsun),
+              "kid": parseInt(kid),
+              "adddon": parseFloat(adddon)
             };
+
+            if(pgcount|| adbothdays || adsat || adsun || kid || adddon) {
+              payPalResponse.usesNewTicketingSystem = true;
+              payPalResponse.pgcount= parseInt(pgcount);
+              payPalResponse.adbothdays= parseInt(adbothdays);
+              payPalResponse.adsat= parseInt(adsat);
+              payPalResponse.adsun= parseInt(adsun);
+              payPalResponse.kid= parseInt(kid);
+              payPalResponse.adddon= parseFloat(adddon)||0;
+            }else{
+              payPalResponse.usesNewTicketingSystem = false;
+            }
+
 
             if(payment) {
               payPalResponse.txDateTime = payment.create_time;
@@ -389,11 +431,11 @@ function renderPaypalButton(btnSelector){
                 payPalResponse.payer_id = payment.payer.payer_info.payer_id;
 
                 if (payment.payer.payer_info.shipping_address) {
-                  payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1;
-                  payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2;
-                  payPalResponse.city = payment.payer.payer_info.shipping_address.city;
-                  payPalResponse.state = payment.payer.payer_info.shipping_address.state;
-                  payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code;
+                  payPalResponse.line1 = payment.payer.payer_info.shipping_address.line1 || "";
+                  payPalResponse.line2 = payment.payer.payer_info.shipping_address.line2 || "";
+                  payPalResponse.city = payment.payer.payer_info.shipping_address.city || "";
+                  payPalResponse.state = payment.payer.payer_info.shipping_address.state || "";
+                  payPalResponse.postal_code = payment.payer.payer_info.shipping_address.postal_code || "";
                 }
               }
 
@@ -424,7 +466,10 @@ function renderPaypalButton(btnSelector){
                 document.getElementById("modal-body").style.display = "none";
                 document.getElementById("unableToRegister").style.display = "block";
               }
-            }, 'json');
+            }, 'json').fail(function(response) {
+              document.getElementById("modal-body").style.display = "none";
+              document.getElementById("unableToRegister").style.display = "block";
+          });;
 
 
           });
