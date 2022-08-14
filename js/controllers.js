@@ -489,6 +489,13 @@ function renderCheckout(id) {
 
 function reset(scope){
   scope.formData.donamount = null;
+  scope.formData.pgcount = 0;
+  scope.formData.adbothdays = 0;
+  scope.formData.adsat = 0;
+  scope.formData.adsun = 0;
+  scope.formData.kid = 0;
+  scope.formData.adddon = 0.00;
+
   document.getElementById("modal-body").style.display = "block";
   document.getElementById("confirmation").style.display = "none";
   document.getElementById("unableToRegister").style.display = "none";
