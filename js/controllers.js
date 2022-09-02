@@ -331,13 +331,19 @@ function calculatePrimeGuest(scope) {
   scope.formData.kid = sanitizeNumber(scope.formData.kid);
   scope.formData.adddon = sanitizeNumber(scope.formData.adddon, true);
   
-   var calcAmt= scope.formData.pgcount*60 + scope.formData.adbothdays*85 + scope.formData.adsat*65 + scope.formData.adsun*45 + scope.formData.kid*35 + scope.formData.adddon;
+   var calcAmt= 
+   (scope.formData.pgcount*60 || 0)
+   + (scope.formData.adbothdays*85 || 0)
+   + (scope.formData.adsat*65 || 0)
+   + (scope.formData.adsun*45 || 0)
+   + (scope.formData.kid*35 || 0)
+   + (scope.formData.adddon || 0);
    scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
 
 }
 
 function sanitizeNumber(field, ignoreRound){
-  field = field||0;
+  if(!field) return field;
   field = ignoreRound ? field: Math.round(field);
   field = field<0?0:field;
   return  parseFloat(field);
