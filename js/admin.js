@@ -162,6 +162,8 @@ utsovAdminApp.controller('FrontpageController', function ($scope, $http, $rootSc
         ).success(function(output, status, headers, config) {
             if (output.err == ''){
                 $scope.counts = output.data[0];
+                $scope.counts.total_donation = output.data[1].total_donation;
+                $scope.counts.total_count = output.data[1].total_count;
                 //$scope.counts = $scope.resultset[0];
                 $scope.msgs = "Server: " + output.msg;
                 //console.log($scope.msgs);
