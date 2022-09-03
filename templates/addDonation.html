@@ -1,0 +1,322 @@
+<h1>{{title}}</h1>
+
+<form role="form" name="frmSearch" class="form-horizontal" novalidate data-ng-submit="SearchPatron()">
+    <div  data-ng-show="success == 0" >
+
+            <div class="form-group" style="background:rgba(253,255,191,0.7); padding: 10px;" data-ng-hide="foundPatron">
+            <p>
+                *If you have registered with us before or given us your information in any form, please search for your email address, phone number, or name.  <span class="text-muted">(optional)</span>  
+            </p>
+            <div class="input-group">
+                <input type="text" class="form-control" name="find" placeholder="Your full email or 10 digit phone number, or any part of your name" required data-ng-model="formData.find" data-ng-minlength="3" data-ng-maxlength="100">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-primary" data-ng-disabled="frmSearch.$invalid"><span class="icon fa fa-search"></span> Find Me</button>
+                </div>    
+            </div>
+            <span class="text-danger small">* The information collected here is used by Utsov for the sole purpose of notifying you about our events and philathropic initiatives. We do not share this information with anyone.</span>
+            </div>
+            
+        <div class="panel panel-success"  data-ng-show="showResults">
+            <div class="panel-heading">
+                <span class="fa fa-lg fa-gears" data-ng-show="found == -2"></span>
+                <span class="fa fa-lg fa-exclamation-circle" data-ng-show="found ==-1"></span>
+                <span class="fa fa-lg fa-circle-o" data-ng-show="found == 0"></span>
+                <span class="fa fa-lg fa-check-circle-o" data-ng-show="found > 0"></span>
+                Search Results <button type="button" class="close" data-ng-click="clearData()">&times;</button>
+            </div>
+            <div class="panel-body" style="background:rgba(200,200,200,0.7);" data-ng-show="found == -2">
+                <h6>Please wait while we retrieve your information...</h6>
+            </div>
+            <div class="panel-body"  data-ng-show="found == 0">
+                <h5>Sorry. We did not recognize you. Please try searching with something different or register as a new patron.</h5>
+            </div>
+            <div class="col-sm-12 alert alert-danger" data-ng-show="found ==-1">
+                <h5>There was an error retriving your information. You could try again, or talk to one of our volunteers.</h5>
+            </div>
+            <div class="panel-body" data-ng-show="found > 0">
+                <p>We found {{found}} records matching your search. Please select the correct one to record your registration.</p>
+            </div>
+            <table class="table table-striped table-hover" data-ng-show="found > 0">
+                <tr>
+                    <th>Name</th>
+                    <th>Spouse/Partner</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th align="right">Select</th>
+                </tr>
+                <tr data-ng-repeat="patron in searchResults">
+                    <td>{{massageResults("name",patron.name1)}}</td>
+                    <td>{{massageResults("name",patron.name2)}}</td>
+                    <td>{{massageResults("email",patron.email1)}}</td>
+                    <td>{{massageResults("phone",patron.phone1)}}</td>
+                    <td>{{patron.address1 + ", " + patron.city}}</td>
+                    <td align="right"><a class="btn btn-sm btn-success" href="" role="button" data-ng-click="SelectPatron($index)"><span class="icon fa fa-check"></span> This is me</a></td>
+                </tr>
+            </table>
+            <table class="table">
+                <tr style="background:rgba(230,230,230,0.7);">
+                    <td>
+                        <h5>I cannot find myself. Let me enter my contact information.</h5> 
+                    </td>
+                    <td align="right">
+                        <a class="btn btn-sm btn-default" href="" role="button" data-ng-click="clearData()"><span class="icon fa fa-times"></span> Close Search</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+
+<form role="form" name="frmRegister" class="form-horizontal" novalidate data-ng-submit="SubmitRegistration()">
+    <div  data-ng-show="success == 0" >
+        <div class="well well-sm" data-ng-show="foundPatron && allReqFieldsPresent">
+            <p>** We were able to retrieve the following information from a previous registartion or from information you have provide to us in another form. </p>
+            <p>
+                <table class="table table-responsive table-condensed">
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Primary</th>
+                        <th>Secondary</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="width: 20%"><strong>Full Name</strong></td>
+                        <td style="width: 40%">{{formData.name1}}</td>
+                        <td style="width: 40%">{{formData.name2}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email Address</strong></td>
+                        <td>{{formData.email1}}</td>
+                        <td>{{formData.email2}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phone Number</strong></td>
+                        <td>{{formData.phone1}}</td>
+                        <td>{{formData.phone2}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address</strong></td>
+                        <td colspan="2">
+                            {{formData.address1}};&nbsp;
+                            {{formData.address2}};&nbsp;
+                            {{formData.city}},&nbsp;{{formdata.state}},&nbsp;{{formdata.zip}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Last Visit</strong></td>
+                        <td>{{ registrations[0].year }}</td>
+                        <td>
+                            <span class="icon fa fa-circle" data-ng-show="checkNumber(registrations[0].donation) == 0"></span>
+                            <span class="icon fa fa-star-o" data-ng-show="checkNumber(registrations[0].donation) > 0 && checkNumber(registrations[0].donation) < 25"></span>
+                            <span class="icon fa fa-star-half-o" data-ng-show="checkNumber(registrations[0].donation) >= 25 && checkNumber(registrations[0].donation) < 50"></span>
+                            <span class="icon fa fa-star" data-ng-repeat="star in massageResults('donation', registrations[0].donation) track by $index"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </p>
+            <p>** If any of the above information is incorrect, please talk to one of our volunteers, or leave us a note with your correct contact information below. </p>
+            <p class="text-muted">* The information collected above is used by Utsov for notifications about events and our philathropic initiatives. We do not share this information.</p>
+        </div>
+
+        <div class="form-group" data-ng-hide="showResults || (foundPatron && allReqFieldsPresent)">
+            <label class="col-sm-2" for="name1">Name</label>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.name1.$invalid }">
+                <input type="text" class="form-control" name="name1" placeholder="Your Full Name" required data-ng-model="formData.name1" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && (!formData.updatePatron && isFieldValValid(formData.name1))">
+                <!--<span class="help-block" data-ng-show="frmRegister.name1.$error.required">Required</span>-->
+                <span class="help-block" data-ng-show="frmRegister.name1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block" data-ng-show="frmRegister.name1.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.name2.$invalid }">
+                <input type="text" class="form-control" name="name2" placeholder="Spouse/Partner Full Name" data-ng-model="formData.name2" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron">
+                <span class="help-block" data-ng-show="frmRegister.name2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block" data-ng-show="frmRegister.name2.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
+        </div>
+        <div class="form-group" data-ng-hide="showResults || (foundPatron && allReqFieldsPresent)">
+            <label class="col-sm-2" for="email1">Email</label>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.email1.$invalid }">
+            <input type="email" class="form-control" name="email1" placeholder="Your email address" required data-ng-model="formData.email1" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && (!formData.updatePatron && isValidEmail(formData.email1))">
+                <!--<span class="help-block" data-ng-show="frmRegister.email1.$error.required">Required</span>-->
+                <span class="help-block" data-ng-show="frmRegister.email1.$error.email">Please enter a valid email address.</span>
+            </div>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.email2.$invalid }">
+                <input type="email" class="form-control" name="email2" placeholder="Spouse/Partner email" data-ng-model="formData.email2" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isValidEmail(formData.email2)">
+                <span class="help-block" data-ng-show="frmRegister.email2.$error.email">Please enter a valid email address.</span>
+            </div>
+        </div>
+        <div class="form-group" data-ng-hide="showResults || (foundPatron && allReqFieldsPresent)">
+            <label class="col-sm-2" for="phone1">Phone Number</label>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.phone1.$invalid }">
+                <input type="text" class="form-control" name="phone1" placeholder="Primary Phone" required data-ng-model="formData.phone1" data-ng-pattern="phoneNumPattern" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && (!formData.updatePatron && isValidPhone(formData.phone1))">
+                <!--<span class="help-block" data-ng-show="frmRegister.phone1.$error.required">Required</span>-->
+                <span class="help-block" data-ng-show="frmRegister.phone1.$error.pattern">Please enter a valid 10 digit US phone number.</span>
+            </div>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.phone2.$invalid }">
+                <input type="text" class="form-control" name="phone2" placeholder="Other Phone" data-ng-model="formData.phone2" data-ng-pattern="phoneNumPattern" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isValidPhone(formData.phone2)">
+                <span class="help-block" data-ng-show="frmRegister.phone2.$error.pattern">Please enter a valid 10 digit US phone number.</span>
+            </div>
+        </div>
+        <div class="form-group" data-ng-hide="showResults || (foundPatron && allReqFieldsPresent)">
+            <label class="col-sm-2" for="address1">Mailing Address</label>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.address1.$invalid }">
+                <input type="text" class="form-control" name="address1" placeholder="Street address line 1" data-ng-model="formData.address1" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isFieldValValid(formData.address1)">
+                <span class="help-block text-danger" data-ng-show="frmRegister.address1.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.address1.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
+            <div class="col-sm-5" data-ng-class="{ 'has-error': frmRegister.address2.$invalid }">
+                <input type="text" class="form-control" name="address2" placeholder="Street address line 2" data-ng-model="formData.address2" data-ng-minlength="3" data-ng-maxlength="100" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isFieldValValid(formData.address2)">
+                <span class="help-block text-danger" data-ng-show="frmRegister.address2.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.address2.$error.maxlength">Too long. Please limit to 100 characters.</span>
+            </div>
+        </div>
+        <div class="form-group" data-ng-hide="showResults || (foundPatron && allReqFieldsPresent)">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.city.$invalid }">
+                <label for="city">City</label>
+                <input type="text" class="form-control" name="city" placeholder="Mailing address City" data-ng-model="formData.city" data-ng-minlength="3" data-ng-maxlength="50" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isFieldValValid(formData.city)">
+                <span class="help-block text-danger" data-ng-show="frmRegister.city.$error.minlength">Too Short. Please enter at least 3 characters.</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.city.$error.maxlength">Too long. Please limit to 50 characters.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.state.$invalid }">
+                <label for="state">State</label>
+                <input type="text" class="form-control" name="state" placeholder="Mailing address State" data-ng-model="formData.state" data-ng-minlength="2" data-ng-maxlength="20" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isFieldValValid(formData.state)">
+                <span class="help-block text-danger" data-ng-show="frmRegister.state.$error.minlength">Too Short. Please enter at least 2 character state code.</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.state.$error.maxlength">Too long. Please limit to 20 characters.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.zip.$invalid }">
+                <label for="zip">Zip</label>
+                <input type="text" class="form-control" name="zip" placeholder="Mailing address Zip" data-ng-model="formData.zip" data-ng-pattern="zipCodePattern" data-ng-disabled="((isAdminUser && patronLoaded) || !allReqFieldsPresent) && !formData.updatePatron && isValidZip(formData.zip)">
+                <span class="help-block text-danger" data-ng-show="frmRegister.zip.$error.pattern">Please enter a valid US ZIP code.</span>
+            </div>
+        </div>
+        <hr/>
+         <div class="form-group">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.regyear.$invalid }">
+                <label for="city">Year</label>
+                <input type="number" class="form-control" name="regyear" placeholder="{{ currentYear }}" data-ng-model="formData.regyear" min="2012" max="{{ currentYear }}" required data-ng-disabled="!isAdminUser">
+                <span class="help-block text-danger" data-ng-show="frmRegister.regyear.$error.min">Invalid year. Utsov started in 2012</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.regyear.$error.max">Invalid year. Beyond this year.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.regcount.$invalid }">
+                <label for="state">Head Count</label>
+                <input type="number" class="form-control" name="regcount" placeholder="Count of people in your party" data-ng-model="formData.regcount" min="1" max="10" required>
+                <span class="help-block text-danger" data-ng-show="frmRegister.regcount.$error.min">Invalid count. Count yourself as 1.</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.regcount.$error.max">Invalid count. If you have more than 10 people, please ask a few others to register.</span>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }">
+                <label for="donamount" data-ng-hide="isAdminUser">Your donations make this event possible</label>
+                <label for="donamount" data-ng-show="isAdminUser">Donation Amount</label>
+                <p class="lead" data-ng-hide="isAdminUser">Please Remember to Donate</p>
+                <input type="number" step="0.01" class="form-control" name="donamount" placeholder="Your donation amount for this year" data-ng-model="formData.donamount" min="30" max="1000000" data-ng-show="isAdminUser" required>
+                <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Invalid amount. Please enter at least $ 30.00</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount. That is too much!!!</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.payment_method.$invalid }">
+                <label for="city">Payment Method</label>
+
+                <select class="form-control" name="payment_method" data-ng-model="formData.payment_method " required>
+                    <option selected disabled value="">-- Please Select --</option>
+                    <option  value="CACHE">Cache</option>
+                    <option value="ZELLE" >Zelle</option>
+                    <option value="CREDIT CARD">CREDIT CARD</option>
+                </select>
+            </div>
+            <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.payment_id.$invalid }">
+                <label for="state">Payment ID</label>
+                <input type="text" class="form-control" name="payment_id" placeholder="Payement Id of transaction" data-ng-model="formData.payment_id" data-ng-minlength="6" data-ng-maxlength="20">
+                <span class="help-block text-danger" data-ng-show="frmRegister.payment_id.$error.min">Too Short. Please enter at least 6 characters</span>
+                <span class="help-block text-danger" data-ng-show="frmRegister.payment_id.$error.max">Too Long. Please enter no more than 60 characters</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-12" data-ng-class="{ 'has-error': frmRegister.regmsg.$invalid }" data-ng-hide="isAdminUser">
+                <label for="regmsg">Corrections to your information above or any note for us.</label>
+                <textarea class="form-control" rows="2" name="regmsg" data-ng-model="formData.regmsg" data-ng-maxlength="300"></textarea>
+                <span class="help-block text-danger" data-ng-show="frmRegister.regmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
+            </div>
+            <div class="col-sm-7 col-xs-12" data-ng-class="{ 'has-error': frmRegister.regmsg1.$invalid }" data-ng-show="isAdminUser">
+                <label for="regmsg1">User Message</label>
+                <textarea class="form-control" rows="3" placeholder="Please enter adult, child and student ticket counts with days along with other donation amounts" name="regmsg1" data-ng-model="formData.regmsg" data-ng-maxlength="300"></textarea>
+                <span class="help-block text-danger" data-ng-show="frmRegister.regmsg1.$error.maxlength">Too long. Please limit to 300 characters.</span>
+            </div>
+            <div class="col-sm-5 col-xs-12" data-ng-show="isAdminUser">
+                <div style="height:100%;overflow-y: scroll;">
+                     <table class="table table-condensed table-striped">
+                         <tr>
+                             <td style="text-align:middle">Year</td>
+                             <td style="text-align:middle">Updated</td>
+                             <td style="text-align:right">Amount</td>
+                             <td style="text-align:middle">Select</td>
+                         </tr>
+                         <tr data-ng-repeat="regrecord in registrations">
+                             <td style="text-align:middle">{{regrecord.year}}</td>
+                             <td style="text-align:middle">{{massageResults("date", regrecord.date)}}</td>
+                             <td style="text-align:right">{{regrecord.donation}}</td>
+                             <td style="text-align:middle">
+                                 <a class="btn btn-sm btn-success" href="" role="button" data-ng-click="SelectRegistration($index)"><span class="icon fa fa-pencil-square-o"></span></a>
+                             </td>
+                         </tr>
+                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" data-ng-show="success !== 0">
+        <h2 class="text-danger" data-ng-show="success == 2"><span class="fa fa-lg fa-times"></span> Registration Process Error </h2>
+        <h2 class="text-success" data-ng-show="success == 1"><span class="fa fa-lg fa-check"></span> Registration Process Complete </h2>
+    </div>
+    <div class="modal-footer" data-ng-hide="success !== 0">
+        <div class="form-group">
+            <div class="col-sm-9 text-danger" data-ng-hide="isAdminUser && formData.id">
+                <p data-ng-show="frmRegister.$invalid" class="pull-left"><span class="fa fa fa-exclamation-circle"></span> Save is disabled until all required fields are filled in and all data errors (red) are corrected.</p>
+            </div>
+
+            <div class="col-sm-9" data-ng-show="isAdminUser && formData.id">
+                <label><input type="checkbox" id="updatePatron" data-ng-model="formData.updatePatron" value="Y"> Update Patron</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label><input type="checkbox" id="updateRegistration" data-ng-model="formData.updateRegistration" value="Y"> Update Registration</label>
+            </div>
+
+            <div class="col-sm-2 col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right" data-ng-disabled="frmRegister.$invalid">Register Me</button>
+            </div>
+            <div class="col-sm-1 col-xs-12">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-ng-click="clearData()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer" data-ng-show="success == 1">
+        <div class="col-sm-9 col-xs-12 alert alert-success">
+            <p class="pull-left"><span class="fa fa-lg fa-check-circle-o"></span> Your information was saved successfully. Thanks you for registering.</p>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+            &nbsp;
+        </div>
+        <div class="col-sm-1 col-xs-12">
+            <button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-ng-click="clearData()">Close</button>
+        </div>
+    </div>
+    <div class="modal-footer" data-ng-show="success == 2">
+        <div class="col-sm-9 col-xs-12 alert alert-danger">
+            <p class="pull-left"><span class="fa fa-lg fa-exclamation-circle"></span> There was an error saving your information. You could try again, or talk to one of our volunteers.</p>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+            <button type="button" class="btn btn-primary pull-right" data-ng-click="clearData()">Try Again</button>
+        </div>
+        <div class="col-sm-1 col-xs-12">
+            <button type="button" class="btn btn-default pull-right" data-dismiss="modal" data-ng-click="clearData()">Cancel</button>
+        </div>
+    </div>
+</form>
