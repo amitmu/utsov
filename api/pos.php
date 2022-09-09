@@ -87,6 +87,9 @@ date_default_timezone_set('America/New_York');
 
         try {
             
+            $db = new PDO("sqlite:" . getDBPath("register"));
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             //Common Items
             $ipaddress = get_client_ip();
             $patronid = $post->id;
@@ -105,6 +108,9 @@ date_default_timezone_set('America/New_York');
             $city = $post->city;
             $state = $post->state;
             $zip = $post->zip;
+            $txDateTime = $post->txDateTime;
+
+            
             
             //Registration Items
             $year = $post->regyear;
@@ -159,6 +165,39 @@ date_default_timezone_set('America/New_York');
                     $return = addRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
                 }
 
+                if(empty($donation)){
+                    logMessage(">>No donation amount. Skipping adding to donation table");
+
+                } else {
+                    $payment_method = $post->payment_method;
+                    $payment_id = $post->payment_id;
+
+                    $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name,line1, line2, city, state, postal_code, payment_method, payment_amount, payment_id, patron_id, payment_status)
+                    VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_amount, :payment_id, :patron_id, :payment_status)");
+
+                    $bindVar = $stmtIns->bindParam(':client_ip', $ipaddress);
+                    $bindVar = $stmtIns->bindParam(':donation_year', $year);
+                    $bindVar = $stmtIns->bindParam(':txDateTime', $txDateTime);
+                    $bindVar = $stmtIns->bindParam(':email', $email1);
+                    $bindVar = $stmtIns->bindParam(':first_name', $name1);
+                    $bindVar = $stmtIns->bindParam(':line1', $address1);
+                    $bindVar = $stmtIns->bindParam(':line2', $address2);
+                    $bindVar = $stmtIns->bindParam(':city', $city);
+                    $bindVar = $stmtIns->bindParam(':state', $state);
+                    $bindVar = $stmtIns->bindParam(':postal_code', $zip);
+                    $bindVar = $stmtIns->bindParam(':payment_method', $payment_method);
+                    $bindVar = $stmtIns->bindParam(':payment_amount', $donation);
+                    $bindVar = $stmtIns->bindParam(':payment_id', $payment_id);
+                    $bindVar = $stmtIns->bindParam(':patron_id', $patronid);
+                    $bindVar = $stmtIns->bindParam(':payment_status', $message);
+
+
+                    $execDonationQuery = $stmtIns->execute();
+
+                    if($execDonationQuery){
+                    $return["msg"] = "Donation information added";
+                    }
+                }
                         
             }
             

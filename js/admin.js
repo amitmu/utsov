@@ -72,6 +72,11 @@ utsovAdminApp.config(['$routeProvider',
         controller: 'AddController',
         action: 'SPON'
       }).
+      when('/AddDonation', {
+        templateUrl: 'templates/addDonation.html',
+        controller: 'registerCtrl',
+        action: 'ADDON'
+      }).
       when('/ListVolunteers', {
         templateUrl: 'templates/volunteers.html',
         controller: 'ListController',
@@ -157,6 +162,8 @@ utsovAdminApp.controller('FrontpageController', function ($scope, $http, $rootSc
         ).success(function(output, status, headers, config) {
             if (output.err == ''){
                 $scope.counts = output.data[0];
+                $scope.counts.total_donation = output.data[1].total_donation;
+                $scope.counts.total_count = output.data[1].total_count;
                 //$scope.counts = $scope.resultset[0];
                 $scope.msgs = "Server: " + output.msg;
                 //console.log($scope.msgs);
@@ -230,13 +237,13 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
     return data.address1 ? data.address1 + " " + (data.address2 || "") + ",": "";
   };
   $scope.formatTickets = function(data){
-    return `Adult - Both days : ${data.bothdaysadult}\n
+    return data.payment_method==='paypal' ? `Adult - Both days : ${data.bothdaysadult}\n
     Adult - Saturday : ${data.saturdayadult}\n
     Adult - Sunday: ${data.sundayadult}\n
     Kids - Both days: ${data.pgcount}\n
     Kids - Any day: ${data.kidsanyday}\n
     Donation: ${data.addtionaldonation}\n
-    `
+    ` : data.payment_status;
   };
   $scope.isDisabled = function(data){
     return (data.bothdaysadult + data.saturdayadult + data.sundayadult + data.pgcount + data.kidsanyday) ? '' : 'disabled';
@@ -259,7 +266,7 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
   };
 
   $scope.formatFullName = function(data){
-    return data.first_name  + ' ' + data.last_name;
+    return data.first_name  + ' ' + (data.last_name || '');
   };
 
   $scope.formatCurrency = function(data){
@@ -404,4 +411,292 @@ utsovAdminApp.controller('AddController', function ($scope, $route, $http, $root
             //console.log($scope.errors);
         });
     }
+});
+
+utsovAdminApp.controller('registerCtrl', function ($scope, $route, $http, $rootScope, $location) {
+
+  if(!$rootScope.IsLoggedIn)
+    {
+        console.log("Redirecting based on Login Status check");
+        $location.path("templates/front.html");
+    } else {
+  
+      //initializing....
+      $scope.isAdminUser = true;
+      $scope.errors = '';
+      $scope.msgs = '';
+      $scope.formData = {};
+      $scope.registrations = {};
+      $scope.currentYear = new Date().getFullYear(); 
+      $scope.formData.regyear = $scope.currentYear; //2015;
+      $scope.found = 0;
+      $scope.showResults = false;
+      $scope.foundPatron = false;
+      $scope.patronLoaded = false;
+      $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
+      $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
+      $scope.success = 0;
+      $scope.title = "Register your patronage";
+      $scope.service = 'api/pos.php';
+      $scope.user = {};
+      $scope.user.type = 'GUEST';
+      //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
+      //console.log("Action:" + $scope.action);
+      //console.log("Service:" + $scope.service);
+      //console.log("Title:" + $scope.title);
+      
+      //The find function
+      $scope.SearchPatron = function () {
+          $scope.errors = '';
+          $scope.msgs = '';
+          $scope.success = 0;
+          $scope.formData.action = 'search';
+          //console.log("Running search...");
+          $scope.showResults = true;
+          $scope.found = -2;
+          $http.post($scope.service,  $scope.formData
+          ).success(function(output, status, headers, config) {
+              if (output.err == ''){
+                  $scope.msgs = "Server: " + output.msg;
+                  $scope.searchResults = output.data;
+                  $scope.found = $scope.searchResults.length;
+                  //console.log($scope.msgs);
+              }
+              else{
+                  $scope.errors = "Error: " + output.err;
+                  $scope.msgs = output.msg;
+                  $scope.found = -1;
+                  //console.log($scope.errors);
+                  
+              }
+          }).error(function(output, status){
+              $scope.errors = "Status: " + status;
+              $scope.found = -1;
+              //console.log($scope.errors);
+          });
+      }
+      
+      //select function
+      $scope.SelectPatron = function(patronIndex){
+        
+          //console.log("Selected Index = " +patronIndex);
+          if ($scope.searchResults[patronIndex]) {
+              $scope.errors = '';
+              $scope.msgs = '';
+              $scope.formData = $scope.searchResults[patronIndex];
+              $scope.formData.regyear = $scope.currentYear;//2015;
+              $scope.formData.action = 'details';
+
+              if(!$scope.formData.name1 || !$scope.formData.email1 || !$scope.formData.phone1){
+                  $scope.allReqFieldsPresent = false;
+              } else{
+                  $scope.allReqFieldsPresent = true;
+              }
+
+              //$scope.formData.id = $scope.searchResults[patronIndex].id;
+              
+              //retrieve all registrations for selected patron
+              $http.post($scope.service,  $scope.formData
+              ).success(function(output, status, headers, config) {
+                  if (output.err == ''){
+                      $scope.msgs = "Server: " + output.msg;
+                      $scope.registrations = output.data;
+                      if($scope.registrations == null || $scope.registrations == undefined || $scope.registrations.length == 0){
+                          //$scope.registrations = [{"id":0, "year":"No Data", "donation":0}];
+                          $scope.registrations = {};
+                      }
+
+                      //console.log("Donation Value:" + $scope.registrations[0].donation);
+                      //console.log("Star Count:" + $scope.massageResults('donation', $scope.registrations[0].donation) );
+                  }
+                  else{
+                      $scope.errors = "Error: " + output.err;
+                      $scope.msgs = output.msg;
+                      //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
+                      $scope.registrations = {};
+                      //$scope.found = -1;
+                      console.log($scope.errors);
+                      console.log($scope.msgs);
+                      
+                  }
+              }).error(function(output, status){
+                  $scope.errors = "Status: " + status;
+                  $scope.msgs = output.msg;
+                  //$scope.found = -1;
+                  //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
+                  $scope.registrations = {};
+                  console.log($scope.errors);
+                  console.log($scope.msgs);
+              });
+              
+              
+              
+              $scope.showResults = false;
+              if($scope.isAdminUser){
+                //admin user, allow updates
+                  $scope.foundPatron = false;
+                  $scope.patronLoaded = true;
+              }
+              else{
+                  //non-admin hide update fields
+                  $scope.foundPatron = true;
+              }
+              
+              //console.log("Selected Patron ID = " + $scope.formData.id);
+          } else {
+              $scope.formData = {};
+              $scope.formData.regyear = $scope.currentYear; //2015;
+              $scope.errors = "ERROR: Unable to load selected patron - " + patronIndex;
+              $scope.success = 2;
+          }
+          
+      }
+      
+      $scope.SelectRegistration = function(regIndex){
+          //filling in registration on selection
+          console.log("Selected Registration Index = " +regIndex);
+          if ($scope.registrations[regIndex]) {
+              
+              $scope.formData.regid = parseInt($scope.registrations[regIndex]['id']);
+              $scope.formData.regyear = parseInt($scope.registrations[regIndex]['year']);
+              $scope.formData.donamount = parseFloat($scope.registrations[regIndex]['donation']);
+              $scope.formData.regmsg = $scope.registrations[regIndex]['message'];
+              $scope.formData.regcount = parseInt($scope.registrations[regIndex]['headcount']);
+
+              $scope.formData.updateRegistration = true;
+
+          }
+      }
+      
+      //The actual add function
+      $scope.SubmitRegistration = function () {
+          $scope.errors = '';
+          $scope.msgs = '';
+          $scope.success = 0;
+          $scope.user = {};
+          $scope.user.type = 'GUEST';
+          $scope.formData.action = 'register';
+
+          var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+          var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    
+          $scope.formData.txDateTime = localISOTime;
+          //console.log("Running submit registration...");
+          //console.log("Patron Id:", $scope.formData.id);
+          $http.post($scope.service,  $scope.formData
+          ).success(function(output, status, headers, config) {
+              if (output.err == ''){
+                  $scope.msgs = "Server: " + output.msg;
+                  $scope.clearData();
+                  $scope.success = 1;
+                  console.log($scope.msgs);
+              }
+              else{
+                  $scope.errors = "Error: " + output.err;
+                  $scope.msgs = output.msg;
+                  $scope.success = 2;
+                  console.log($scope.errors);
+                  console.log($scope.msgs);
+              }
+          }).error(function(output, status){
+              $scope.errors = "Status: " + status;
+              $scope.success = 2;
+              console.log($scope.errors);
+              console.log($scope.msgs);
+          });
+      }
+
+      $scope.isFieldValValid = function(value) {
+          //return !(value === "" || value === null || typeof value === "undefined");
+          return false;
+      }
+
+      $scope.isValidZip = function(value) {
+          console.log(value, !(value === "" || value === null || typeof value === "undefined") && /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(value));
+          return !(value === "" || value === null || typeof value === "undefined") && /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(value);
+      }
+
+      $scope.isValidEmail = function(value) {
+          //return !(value === "" || value === null || typeof value === "undefined") && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+          return false;
+      }
+      $scope.isValidPhone = function(value) {
+          //return !(value === "" || value === null || typeof value === "undefined") && /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(value);
+          return false;
+      }
+
+      $scope.massageResults = function (field, data) {
+
+          if(!data) return "";
+          //ignore if admin user by forcing default case
+          if($scope.isAdminUser && field !== "date"){field = "xx"};
+          
+          switch (field)
+          {
+              case 'name':
+                  return data.split(' ')[0] + " ***";
+                  break;
+            /* case 'email':
+                  return "***@" + data.split('@')[1];
+                  break;*/
+              case 'phone':
+                  return data.substr(0, 3) + "***" + data.substr(6, 4);
+                  break;
+              case 'donation':
+                  //console.log("Massaging donation Amount: "  + data );
+                  var don = 0;
+                  if(isNaN(data) || data < 50) {don = 0;}
+                  //else if(data < 50){don = 1;}
+                  //else if(data < 100){don = 2;}
+                  else{ 
+                      don = data - 49; //avoiding divide by zero error 
+                      don = Math.floor(don/25); 
+                      don += 1;
+                  }
+                  
+                  //console.log("Star Count = " + don)
+                  //forcing 5 star max
+                  if(don > 5){don = 5};
+                  return Array.apply(0, Array(+don));
+                  
+                  break;
+              case 'date':
+                  //console.log("Converting Date = " + data);
+                  var retDate = new Date(data.substring(0,4), data.substring(4,6), data.substring(6,8), data.substring(9,11), data.substring(11,13), data.substring(13,15));
+                  //console.log("Returning: " + retDate.toLocaleString());
+                  
+                  return retDate.toLocaleString();
+                          
+                  break;
+              default:
+                  return data;
+                  break;
+          }
+      }
+      
+      $scope.clearData = function () {
+          $scope.formData = {};
+          $scope.formData.regyear =  $scope.currentYear; //2015;
+          $scope.searchResults = {};
+          //$scope.registrations = [{"id":0, "year":"No Data", "donation":0, "date":"20150101:010101", "headcount":0}];
+          $scope.registrations = {};
+          $scope.errors = '';
+          
+          //$scope.msgs = '';
+          $scope.success = 0;
+          $scope.found = 0;
+          $scope.showResults = false;
+          $scope.foundPatron = false;
+          $scope.patronLoaded = false;
+      }
+      
+      $scope.checkNumber= function(data){
+          var retVal = data - 0;
+          if(isNaN(retVal)){retVal = 0;}
+          //console.log("Returning " + retVal);
+          return retVal; 
+      }
+}
+
+  
 });

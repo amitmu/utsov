@@ -38,9 +38,19 @@ require(dirname(__FILE__).'/utils.php');
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("volunteer"));
 
-            $result = $db->query('SELECT  ( SELECT COUNT(*) FROM   tb_volunteers ) AS volcount, ( SELECT COUNT(*) FROM   tb_sponsor ) AS sponcount,  ( SELECT COUNT(*) FROM  tb_competition ) AS comcount,  ( SELECT COUNT(*) FROM   tb_donations ) AS doncount');
+            $result = $db->query('SELECT  ( SELECT COUNT(*) FROM   tb_volunteers ) AS volcount, ( SELECT COUNT(*) FROM   tb_sponsor ) AS sponcount,  ( SELECT COUNT(*) FROM  tb_competition ) AS comcount');
 
             $num = 0;
+            foreach($result as $row)
+            {
+                $arr[$num] = $row;
+                $num++;
+            }
+
+            $db = new PDO("sqlite:" . getDBPath("register"));
+
+            $result = $db->query('SELECT Sum(payment_amount) AS total_donation, COUNT(id) AS total_count FROM   tb_donations where donation_year = strftime("%Y") ');
+
             foreach($result as $row)
             {
                 $arr[$num] = $row;
