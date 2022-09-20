@@ -13,9 +13,8 @@
                     <!-- <option value="ESSAY" disabled>Childrens Essay Competition</option> -->
                     <option value="ART">Childrens Art Competition</option>
                     <option value="TALENT">Childrens Talent Show</option>
-                    <!--<option value="GAYL">Childrens Go As You Like</option>-->
                     <!-- <option value="PHOTO">Open Photography Contest</option> -->
-                    <option value="CONCH">Open Conch Shell Contest</option>
+                    <!-- <option value="CONCH">Open Conch Shell Contest</option> -->
                 </select>
                 <span class="help-block" data-ng-show="frmAddContest.concontest.$error.required">Required</span>
             </div>
@@ -81,7 +80,7 @@
         </div> -->
         <div class="form-group">
             <div class="col-sm-12">
-                <label for="conmsg">Any special note for us</label>
+                <label for="conmsg">Any special note for us or link to demo</label>
                 <textarea class="form-control" rows="3" name="conmsg" data-ng-model="formData.conmsg" data-ng-maxlength="300"></textarea>
                 <span class="help-block text-danger" data-ng-show="frmAddContest.conmsg.$error.maxlength">Too long. Please limit to 300 characters.</span>
             </div>
