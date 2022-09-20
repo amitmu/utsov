@@ -272,7 +272,7 @@ date_default_timezone_set('America/New_York');
 
             $result = $db->query('SELECT A.id, A.first_name, A.last_name, A.email, A.payment_amount, A.txDateTime,
             A.payment_id, A.payment_method, A.ticket_issued, A.payment_status, B.bothdaysadult, B.saturdayadult, B.sundayadult, B.pgcount, B.kidsanyday,B.addtionaldonation
-             FROM tb_donations A left join tb_tickets B on A.patron_id = B.patron_id AND A.payment_id =  B.payment_id  where '.$params);
+             FROM tb_donations A left join tb_tickets B on A.patron_id = B.patron_id AND A.payment_id =  B.payment_id  where '.$params.' ORDER BY A.txDateTime DESC');
             $num = 0;
             foreach($result as $row)
             {
