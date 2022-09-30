@@ -459,6 +459,8 @@ date_default_timezone_set('America/New_York');
                        <br/>
                        We have successfully received your payment.&nbsp;We sincerely appreciate your support.&nbsp;
                        <br/>
+                       <span style = 'color: red;'>This registration includes dinner coupon(s) for alternate menu as we are sold out of regular menu.</span>
+                       <br/>
                    </div>
                    <ul>
                        <li>
@@ -495,6 +497,7 @@ date_default_timezone_set('America/New_York');
 
         $message.="</ul>
                    <div>
+
                    For registation with Donation amount only tickets will NOT be issued and priority will be provided to ticket holders for event access.
                    <br>
                    Please carry an electronic or physical copy of this email for tickets along with proof of covid-19 vaccination for pujo.<br>
