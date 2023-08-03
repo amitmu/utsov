@@ -72,11 +72,18 @@ date_default_timezone_set('America/New_York');
         $usesNewTicketingSystem = $post->usesNewTicketingSystem;
 
         if($usesNewTicketingSystem){
-            $pgcount = $post->pgcount;
             $adbothdays = $post->adbothdays;
             $adsat = $post->adsat;
             $adsun = $post->adsun;
-            $kid = $post->kid;
+
+            $kidbothdays = $post->kidbothdays;
+            $kidsat = $post->kidsat;
+            $kidsun = $post->kidsun;
+
+            $stubothdays = $post->stubothdays;
+            $stusat = $post->stusat;
+            $stusun = $post->stusun;
+            
             $adddon = $post->adddon;
         }
 
@@ -122,8 +129,8 @@ date_default_timezone_set('America/New_York');
 
         if($usesNewTicketingSystem){
 
-            $stmtInsTicket = $db->prepare("INSERT INTO tb_tickets(patron_id, pgcount, bothdaysadult, saturdayadult, sundayadult, kidsanyday, addtionaldonation, txDateTime, totalpayementprocessed, payment_id)
-            VALUES(:patron_id, :pgcount, :adbothdays, :adsat, :adsun, :kid, :adddon, :txDateTime, :payment_amount, :payment_id);");
+            $stmtInsTicket = $db->prepare("INSERT INTO tb_tickets(patron_id, bothdaysadult, saturdayadult, sundayadult, bothdayskid, saturdaykid, sundaykid, bothdaysstudent, saturdaystudent, sundaystudent, addtionaldonation, txDateTime, totalpayementprocessed, payment_id)
+            VALUES(:patron_id, :adbothdays, :adsat, :adsun, :kidbothdays, :kidsat, :kidsun, :stubothdays, :stusat, :stusun, :adddon, :txDateTime, :payment_amount, :payment_id);");
 
             $bindVar1 = $stmtInsTicket->bindParam(':txDateTime', $txDateTime);
             $bindVar1 = $stmtInsTicket->bindParam(':patron_id', $patron_id);
@@ -131,11 +138,19 @@ date_default_timezone_set('America/New_York');
             $bindVar1 = $stmtInsTicket->bindParam(':payment_id', $payment_id);
 
             $bindVar1 = $stmtInsTicket->bindParam(':patron_id', $patron_id);
-            $bindVar1 = $stmtInsTicket->bindParam(':pgcount', $pgcount);
+            
             $bindVar1 = $stmtInsTicket->bindParam(':adbothdays', $adbothdays);
             $bindVar1 = $stmtInsTicket->bindParam(':adsat', $adsat);
             $bindVar1 = $stmtInsTicket->bindParam(':adsun', $adsun);
-            $bindVar1 = $stmtInsTicket->bindParam(':kid', $kid);
+
+            $bindVar1 = $stmtInsTicket->bindParam(':kidbothdays', $kidbothdays);
+            $bindVar1 = $stmtInsTicket->bindParam(':kidsat', $kidsat);
+            $bindVar1 = $stmtInsTicket->bindParam(':kidsun', $kidsun);
+
+            $bindVar1 = $stmtInsTicket->bindParam(':stubothdays', $stubothdays);
+            $bindVar1 = $stmtInsTicket->bindParam(':stusat', $stusat);
+            $bindVar1 = $stmtInsTicket->bindParam(':stusun', $stusun);
+            
             $bindVar1 = $stmtInsTicket->bindParam(':adddon', $adddon);
 
         }
@@ -441,11 +456,19 @@ date_default_timezone_set('America/New_York');
 
 
        if($usesNewTicketingSystem){
-            $pgcount = $post->pgcount;
+            
             $adbothdays = $post->adbothdays;
             $adsat = $post->adsat;
             $adsun = $post->adsun;
-            $kid = $post->kid;
+
+            $kidbothdays = $post->kidbothdays;
+            $kidsat = $post->kidsat;
+            $kidsun = $post->kidsun;
+
+            $stubothdays = $post->stubothdays;
+            $stusat = $post->stusat;
+            $stusun = $post->stusun;
+            
             $adddon = $post->adddon;
         }
 
@@ -484,12 +507,28 @@ date_default_timezone_set('America/New_York');
                         <li>
                             Number of adults (18 years+) for Sunday only: ".$adsun."
                         </li>
+
                         <li>
-                            Number of kids (6-18 years) for both days: ".$pgcount."
+                            Number of adults (18 years+) for both days: ".$kidbothdays."
                         </li>
                         <li>
-                            Number of kids (6-18 years) for any one day: ".$kid."
+                            Number of adults (18 years+) for Saturday only: ".$kidsat."
                         </li>
+                        <li>
+                            Number of adults (18 years+) for Sunday only: ".$kidsun."
+                        </li>
+
+
+                        <li>
+                            Number of adults (18 years+) for both days: ".$stubothdays."
+                        </li>
+                        <li>
+                            Number of adults (18 years+) for Saturday only: ".$stusat."
+                        </li>
+                        <li>
+                            Number of adults (18 years+) for Sunday only: ".$stusun."
+                        </li>
+                        
                         <li>
                             Donation amount: $ ".$adddon."
                         </li>" ;
