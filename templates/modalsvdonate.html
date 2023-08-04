@@ -59,11 +59,16 @@
 
     <!-- Prime Guest Options & Donation entry -->
     <div class="" id="modal-body">
-        <h4 class="">
+        <!--h4 class="featurette-heading">
            <!--  We encourage you to become <i>Prime Patron</i> and spend both days with us. -->
-           <span style = "animation: blinker 3s linear infinite; color: red;">
+           <!--span style = "animation: blinker 3s linear infinite; color: red;">
             This registration will include dinner coupon(s) for alternate menu as we are sold out of regular menu.
-            </span>
+            Dinner coupon will serve the following menu
+            </span-->
+
+            <!--span >
+                Dinner coupon will serve the following menu:
+                </span>
         </h4>
         <div class="row">
             <h5 class="featurette-heading" style="font-size: 12px;margin-top: 5px;margin-bottom: 5px;">
@@ -75,13 +80,13 @@
                 <br/>
                 <br/>
 
-                <span class="icon fa fa-circle-o"></span>&nbsp;
+                <!--span class="icon fa fa-circle-o"></span>&nbsp;
                 Alternate Saturday Dinner Menu: <i> <b>Special Goat (or Veg) Biriyani , Chop, Green Mango Chutney, Rasogolla</b></i>
                 <br/>
                 <span class="icon fa fa-circle-o"></span>&nbsp;
-                Alternate Sunday Dinner Menu: <i> <b>Two Chicken (or Veg) items, Nun, Rice, Tomato Chutney, Langcha</b></i>
-            </h5>
-        </div>
+                Alternate Sunday Dinner Menu: <i> <b>Two Chicken (or Veg) items, Nun, Rice, Tomato Chutney, Langcha</b></i-->
+            <!--/h5>
+        </div-->
         <div class="row">
             <div class="col-lg-10" >
                 <div class="row" style="display: none;">
@@ -104,7 +109,7 @@
             <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Number of adults (18 years+) for both days - $85.00 per person :</h5>
+                        class="icon fa fa-certificate"></span>&nbsp;Number of adults for both days - $105.00 per person :</h5>
                 </div>
                 <div class="col-xs-3">
                     <input type="number" step="1" class="form-control" id="adbothdays" name="adbothdays" style="height: 25px;width:50%; text-align:right;"
@@ -121,7 +126,7 @@
             <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Number of adults (18 years+) for Saturday only - $65.00 per person :</h5>
+                        class="icon fa fa-certificate"></span>&nbsp;Number of adults for Saturday only - $80.00 per person :</h5>
                 </div>
                 <div class="col-xs-3">
                     <input type="number" step="1" class="form-control" id="adsat" name="adsat" style="height: 25px;width:50%; text-align:right;"
@@ -138,7 +143,7 @@
             <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Number of adults (18 years+) for Sunday only - $45.00 per person :</h5>
+                        class="icon fa fa-certificate"></span>&nbsp;Number of adults for Sunday only - $55.00 per person :</h5>
                 </div>
                 <div class="col-xs-3">
                     <input type="number" step="1" class="form-control" id="adsun" name="adsun" style="height: 25px;width:50%; text-align:right;"
@@ -155,12 +160,12 @@
             <div class="row" >
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) or <u>verified</u> students for both days - $60 per person :</h5>
+                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) for both days - $75 per person :</h5>
                 </div>
                 <div class="col-xs-3" >
-                    <input type="number" step="1" class="form-control" id="pgcount" name="pgcount" style="height: 25px;width:50%; text-align:right;"
+                    <input type="number" step="1" class="form-control" id="kidbothdays" name="kidbothdays" style="height: 25px;width:50%; text-align:right;"
                     placeholder="0"
-                    data-ng-model="formData.pgcount"
+                    data-ng-model="formData.kidbothdays"
                     min="0"
                      required ng-change="calculatePrimeGuest()">
                 </div>
@@ -172,20 +177,90 @@
             <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) or <u>verified</u> students for any one day - $35.00 per person :</h5>
+                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) for Saturday only - $40.00 per person :</h5>
                 </div>
                 <div class="col-xs-3">
-                    <input type="number" step="1" class="form-control" id="kid" name="kid" style="height: 25px;width:50%; text-align:right;"
+                    <input type="number" step="1" class="form-control" id="kidsat" name="kidsat" style="height: 25px;width:50%; text-align:right;"
                     placeholder="0"
-                    data-ng-model="formData.kid"
+                    data-ng-model="formData.kidsat"
                     min="0"
                      required ng-change="calculatePrimeGuest()">
                 </div>
             </div>
-            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Single day ticket only and includes 1 dinner coupon.</i></b></span><br/>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket includes 1 dinner coupon.</i></b></span><br/>
+            <data class="" >
+                <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
+            </data>
+            <div class="row">
+                <div class="col-lg-8">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Number of kids (6-18 years) for Sunday only - $40.00 per person :</h5>
+                </div>
+                <div class="col-xs-3">
+                    <input type="number" step="1" class="form-control" id="kidsun" name="kidsun" style="height: 25px;width:50%; text-align:right;"
+                    placeholder="0"
+                    data-ng-model="formData.kidsun"
+                    min="0"
+                     required ng-change="calculatePrimeGuest()">
+                </div>
+            </div>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket includes 1 dinner coupon.</i></b></span><br/>
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
             </data>
+            <div class="row" >
+                <div class="col-lg-8">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Number of <u>verified</u> students for both days - $75 per person :</h5>
+                </div>
+                <div class="col-xs-3" >
+                    <input type="number" step="1" class="form-control" id="stubothdays" name="stubothdays" style="height: 25px;width:50%; text-align:right;"
+                    placeholder="0"
+                    data-ng-model="formData.stubothdays"
+                    min="0"
+                     required ng-change="calculatePrimeGuest()">
+                </div>
+            </div>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket includes 1 dinner coupon per day for both days.</span><br/>
+            <data class="" >
+                <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
+            </data>
+            <div class="row">
+                <div class="col-lg-8">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Number of <u>verified</u> students for Saturday only - $50.00 per person :</h5>
+                </div>
+                <div class="col-xs-3">
+                    <input type="number" step="1" class="form-control" id="stusat" name="stusat" style="height: 25px;width:50%; text-align:right;"
+                    placeholder="0"
+                    data-ng-model="formData.stusat"
+                    min="0"
+                     required ng-change="calculatePrimeGuest()">
+                </div>
+            </div>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket includes 1 dinner coupon.</i></b></span><br/>
+            <data class="" >
+                <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
+            </data>
+            <div class="row">
+                <div class="col-lg-8">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
+                        class="icon fa fa-certificate"></span>&nbsp;Number of <u>verified</u> students for Sunday only - $40.00 per person :</h5>
+                </div>
+                <div class="col-xs-3">
+                    <input type="number" step="1" class="form-control" id="stusun" name="stusun" style="height: 25px;width:50%; text-align:right;"
+                    placeholder="0"
+                    data-ng-model="formData.stusun"
+                    min="0"
+                     required ng-change="calculatePrimeGuest()">
+                </div>
+            </div>
+            <span class="" style="font-size: 12px;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket includes 1 dinner coupon.</i></b></span><br/>
+            <data class="">
+                <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
+            </data>
+
+
             <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span

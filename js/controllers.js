@@ -324,19 +324,35 @@ function calculatePrimeGuest(scope) {
     scope.formData.isPrimeGuest = false;
   }*/
 
-  scope.formData.pgcount = sanitizeNumber(scope.formData.pgcount);
+  
   scope.formData.adbothdays = sanitizeNumber(scope.formData.adbothdays);
   scope.formData.adsat = sanitizeNumber(scope.formData.adsat);
   scope.formData.adsun = sanitizeNumber(scope.formData.adsun);
-  scope.formData.kid = sanitizeNumber(scope.formData.kid);
+
+  scope.formData.kidbothdays = sanitizeNumber(scope.formData.kidbothdays);
+  scope.formData.kidsat = sanitizeNumber(scope.formData.kidsat);
+  scope.formData.kidsun = sanitizeNumber(scope.formData.kidsun);
+
+
+  scope.formData.stubothdays = sanitizeNumber(scope.formData.stubothdays);
+  scope.formData.stusat = sanitizeNumber(scope.formData.stusat);
+  scope.formData.stusun = sanitizeNumber(scope.formData.stusun);
+  
   scope.formData.adddon = sanitizeNumber(scope.formData.adddon, true);
   
    var calcAmt= 
-   (scope.formData.pgcount*60 || 0)
-   + (scope.formData.adbothdays*85 || 0)
-   + (scope.formData.adsat*65 || 0)
-   + (scope.formData.adsun*45 || 0)
-   + (scope.formData.kid*35 || 0)
+   (scope.formData.adbothdays*105 || 0)
+   + (scope.formData.adsat*80 || 0)
+   + (scope.formData.adsun*55 || 0)
+
+   + (scope.formData.kidbothdays*75 || 0)
+   + (scope.formData.kidsat*40 || 0)
+   + (scope.formData.kidsun*40 || 0)
+
+   + (scope.formData.stubothdays*75 || 0)
+   + (scope.formData.stusat*50 || 0)
+   + (scope.formData.stusun*40 || 0)
+
    + (scope.formData.adddon || 0);
    scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
 
@@ -379,11 +395,19 @@ function renderPaypalButton(btnSelector){
         onAuthorize: function(data, actions) {
           return actions.payment.execute().then(function(payment) {
             var donamount = document.getElementById("donamount") ? document.getElementById("donamount").value : undefined;
-            var pgcount = document.getElementById("pgcount") ? document.getElementById("pgcount").value : undefined;
+            
             var adbothdays = document.getElementById("adbothdays") ? document.getElementById("adbothdays").value: undefined;
             var adsat = document.getElementById("adsat") ? document.getElementById("adsat").value : undefined;
             var adsun = document.getElementById("adsun")? document.getElementById("adsun").value: undefined;
-            var kid = document.getElementById("kid") ? document.getElementById("kid").value: undefined;
+
+            var kidbothdays = document.getElementById("kidbothdays") ? document.getElementById("kidbothdays").value: undefined;
+            var kidsat = document.getElementById("kidsat") ? document.getElementById("kidsat").value : undefined;
+            var kidsun = document.getElementById("kidsun")? document.getElementById("kidsun").value: undefined;
+
+            var stubothdays = document.getElementById("stubothdays") ? document.getElementById("stubothdays").value: undefined;
+            var stusat = document.getElementById("adsat") ? document.getElementById("stusat").value : undefined;
+            var stusun = document.getElementById("adsun")? document.getElementById("stusun").value: undefined;
+
             var adddon = document.getElementById("adddon") ? document.getElementById("adddon").value: undefined;
 
             var payPalResponse = {
@@ -403,21 +427,36 @@ function renderPaypalButton(btnSelector){
               "payment_status": "",
               "payment_amount": parseFloat(donamount),
               "payment_id": "",
-              "pgcount": parseInt(pgcount),
+//              "pgcount": parseInt(pgcount),
               "adbothdays": parseInt(adbothdays),
               "adsat": parseInt(adsat),
               "adsun": parseInt(adsun),
-              "kid": parseInt(kid),
+              "kidbothdays": parseInt(kidbothdays),
+              "kidsat": parseInt(kidsat),
+              "kidsun": parseInt(kidsun),
+              "stubothdays": parseInt(stubothdays),
+              "stusat": parseInt(stusat),
+              "stusun": parseInt(stusun), 
+              //"kid": parseInt(kid),
               "adddon": parseFloat(adddon)
             };
 
-            if(pgcount|| adbothdays || adsat || adsun || kid || adddon) {
+            if(adbothdays || adsat || adsun || kidbothdays || kidsat || kidsun || stubothdays || stusat || stusun || adddon) {
               payPalResponse.usesNewTicketingSystem = true;
-              payPalResponse.pgcount= parseInt(pgcount);
+              
               payPalResponse.adbothdays= parseInt(adbothdays);
               payPalResponse.adsat= parseInt(adsat);
               payPalResponse.adsun= parseInt(adsun);
-              payPalResponse.kid= parseInt(kid);
+
+              payPalResponse.kidbothdays= parseInt(kidbothdays);
+              payPalResponse.kidsat= parseInt(kidsat);
+              payPalResponse.kidsun= parseInt(kidsun);
+              
+
+              payPalResponse.stubothdays= parseInt(stubothdays);
+              payPalResponse.stusat= parseInt(stusat);
+              payPalResponse.stusun= parseInt(stusun);
+              
               payPalResponse.adddon= parseFloat(adddon)||0;
             }else{
               payPalResponse.usesNewTicketingSystem = false;
@@ -495,11 +534,18 @@ function renderCheckout(id) {
 
 function reset(scope){
   scope.formData.donamount = null;
-  scope.formData.pgcount = 0;
   scope.formData.adbothdays = 0;
   scope.formData.adsat = 0;
   scope.formData.adsun = 0;
-  scope.formData.kid = 0;
+
+  scope.formData.kidbothdays = 0;
+  scope.formData.kidsat = 0;
+  scope.formData.kidsun = 0;
+
+  scope.formData.stubothdays = 0;
+  scope.formData.stusat = 0;
+  scope.formData.stusun = 0;
+
   scope.formData.adddon = 0.00;
 
   document.getElementById("modal-body").style.display = "block";
