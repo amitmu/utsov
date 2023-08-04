@@ -599,8 +599,17 @@ function reset(scope){
 
   scope.formData.adddon = 0.00;
 
+  scope.formData.satAdults = 0;
+  scope.formData.sunAdults = 0;
+  scope.formData.satKids = 0;
+  scope.formData.sunKids = 0;
+  scope.formData.satStu = 0;
+  scope.formData.sunStu = 0;
+  scope.formData.numTickets = 0;
+
   document.getElementById("modal-body").style.display = "block";
   document.getElementById("confirmation").style.display = "none";
   document.getElementById("unableToRegister").style.display = "none";
   document.getElementById("results").style.display = "none";
+
 };
