@@ -339,6 +339,52 @@ function calculatePrimeGuest(scope) {
   scope.formData.stusun = sanitizeNumber(scope.formData.stusun);
   
   scope.formData.adddon = sanitizeNumber(scope.formData.adddon, true);
+
+  if((scope.formData.kidsat|| 0) >0  && (scope.formData.adsat||0) <=0){
+    scope.frmRegister.donamount.$setValidity("kidError", false);
+  } else if((scope.formData.kidsun|| 0) >0  && (scope.formData.adsun||0) <=0){
+    scope.frmRegister.donamount.$setValidity("kidError", false);
+  } else if((scope.formData.kidbothdays|| 0) >0  && (scope.formData.adbothdays||0) <=0){
+    scope.frmRegister.donamount.$setValidity("kidError", false);
+  }else {
+    scope.frmRegister.donamount.$setValidity("kidError", true);
+  }
+
+  var satAdults = (scope.formData.adbothdays*1 || 0) + (scope.formData.adsat*1 || 0);
+  var sunAdults =  (scope.formData.adbothdays*1 || 0) + (scope.formData.adsun*1 || 0);
+  scope.formData.satAdults = satAdults;
+  scope.formData.sunAdults = sunAdults;
+
+  var satKids =  (scope.formData.kidbothdays*1 || 0) + (scope.formData.kidsat*1 || 0);
+  var sunKids =  (scope.formData.kidbothdays*1 || 0) + (scope.formData.kidsun*1 || 0);
+  scope.formData.satKids = satKids;
+  scope.formData.sunKids = sunKids;
+
+
+  var satStu =  (scope.formData.stubothdays*1 || 0) + (scope.formData.stusat*1 || 0);
+  var sunStu =  (scope.formData.stubothdays*1 || 0) + (scope.formData.stusun*1 || 0);
+  scope.formData.satStu = satStu;
+  scope.formData.sunStu = sunStu;
+
+
+  var numTickets= 
+   (scope.formData.adbothdays*2 || 0)
+   + (scope.formData.adsat*1 || 0)
+   + (scope.formData.adsun*1 || 0)
+
+   + (scope.formData.kidbothdays*2 || 0)
+   + (scope.formData.kidsat*1 || 0)
+   + (scope.formData.kidsun*1 || 0)
+
+   + (scope.formData.stubothdays*2 || 0)
+   + (scope.formData.stusat*1 || 0)
+   + (scope.formData.stusun*1 || 0);
+
+   if(numTickets > 10){
+    scope.frmRegister.donamount.$setValidity("numTicketsErr", false);
+  } else {
+    scope.frmRegister.donamount.$setValidity("numTicketsErr", true);
+  }
   
    var calcAmt= 
    (scope.formData.adbothdays*105 || 0)
@@ -354,7 +400,12 @@ function calculatePrimeGuest(scope) {
    + (scope.formData.stusun*40 || 0)
 
    + (scope.formData.adddon || 0);
+
+   
    scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
+   scope.formData.numTickets = numTickets;
+
+ 
 
 }
 
