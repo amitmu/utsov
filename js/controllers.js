@@ -366,6 +366,10 @@ function calculatePrimeGuest(scope) {
   scope.formData.satStu = satStu;
   scope.formData.sunStu = sunStu;
 
+  scope.formData.numSatTickets= satAdults + satKids + satStu;
+  scope.formData.numSunTickets= sunAdults + sunKids + sunStu;
+   
+
 
   var numTickets= 
    (scope.formData.adbothdays*2 || 0)
@@ -401,7 +405,6 @@ function calculatePrimeGuest(scope) {
 
    + (scope.formData.adddon || 0);
 
-   
    scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
    scope.formData.numTickets = numTickets;
 

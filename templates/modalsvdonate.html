@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title" id="modalHeaderLabel"><span class="icon-fa fa fa-money text-danger"></span> {{ title}}</h4>
 </div>
-<div class="modal-body" style="padding: 5px 20px">
+<div class="modal-body" style="padding: 0px 20px">
     <!-- Notification Section -->
     <div data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }" id="results" style="">
         <div class="row">
@@ -13,13 +13,11 @@
                 <div class="col-lg-9">
                     <p class="lead">
                         <br/>
-
                         <u><b>Payment ID: <span id="txSuccessPaymentId"></span></b></u>. We have received your payment
                         of amount <u><b>${{formData.donamount}}</b></u>. We sincerely appreciate your support
                         and
-                        endorsements. We have sent an email to <u><b><span id="txEmail"></span></b></u> confirming you
-                        donation. Please remember to carry a copy of this email for
-                        verification.
+                        endorsements. We have sent an email to <u><b><span id="txEmail"></span></b></u> confirming your
+                        donation. Please remember to carry a copy of this email for verification.
                     </p>
                 </div>
                 <div class="col-lg-2" style="">
@@ -36,14 +34,9 @@
                 <div class="col-lg-9">
                     <p class="lead">
                         <br/>
-
-                        Payment ID: <u><span id="txFailurePaymentId"></span></u></i>. You paypal transaction went
-                        through but we were unable to update our database. Please email
+                        Payment ID: <u><span id="txFailurePaymentId"></span></u></i>. You paypal transaction went through but we were unable to update our database. Please email
                         <a href="mailto:utsov@utsov.org">utsov@utsov.org</a>
-                        with details of the transaction and we will get back to you as soon as possible. We are very
-                        sorry
-                        for
-                        inconvenience."
+                        with details of the transaction and we will get back to you as soon as possible. We apologise for the inconvenience."
                     </p>
                 </div>
                 <div class="col-lg-2" style="">
@@ -59,83 +52,156 @@
 
     <!-- Prime Guest Options & Donation entry -->
     <div class="" id="modal-body">
-        <!--h4 class="featurette-heading">
-           <!--  We encourage you to become <i>Prime Patron</i> and spend both days with us. -->
-           <!--span style = "animation: blinker 3s linear infinite; color: red;">
-            This registration will include dinner coupon(s) for alternate menu as we are sold out of regular menu.
-            Dinner coupon will serve the following menu
-            </span-->
-
-            <!--span >
-                Dinner coupon will serve the following menu:
-                </span>
+        <h4 class="featurette-heading" -->
+            <!-- We encourage you to become <i>Prime Patron</i> and spend both days with us.  -->
+            <span>
+                The tickets will include dinner coupon(s) for one or both days based on the ticket purchased.
+            </span>
         </h4>
+        <h5>
+            <span>
+                If you wish to become a <i>Prime Patron</i> please contact us directly using one of the methods listed at the bottom of the main page. 
+            </span>
+           
+        </h5>
+        
         <div class="row">
-            <h5 class="featurette-heading" style="font-size: 12px;margin-top: 5px;margin-bottom: 5px;">
-                <span class="icon fa fa-circle-o"></span>&nbsp;
-                Regular Saturday Dinner Menu: <i> <b>Rice, Dal, Papad, Echor Dalna, Kasha Mangso (Goat Meat), Green Mango Chutney, Rasogolla</b></i>
-                <br/>
-                <span class="icon fa fa-circle-o"></span>&nbsp;
-                Regular Sunday Dinner Menu: <i> <b>Polao, Cholar Dal, Papad, Alur Dom, Fish Kalia (Rohu) or Paneer Makhani (Veg Option), Tomato Chutney, Langcha </b></i>
-                <br/>
-                <br/>
+           
+            <div class="col-lg-10">
+                <table class="table-small table-hover">
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Adults - both days: $105.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Adults - both days: $105.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon" >#</span>
+                            <input type="number" step="1" class="form-control" id="adbothdays" name="adbothdays" placeholder="0"
+                            data-ng-model="formData.adbothdays"
+                            min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - both days: $75 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - both days: $75 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="kidbothdays" name="kidbothdays"
+                            placeholder="0" data-ng-model="formData.kidbothdays"
+                            min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Adults - Saturday only: $80.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Adults - Saturday only: $80.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span><input type="number" step="1" class="form-control" id="adsat" name="adsat"
+                            placeholder="0" data-ng-model="formData.adsat" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - Saturday only: $40.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - Saturday only: $40.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="kidsat" name="kidsat" 
+                                placeholder="0"  data-ng-model="formData.kidsat" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Adults - Sunday only: $55.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Adults - Sunday only: $55.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="adsun" name="adsun" 
+                                placeholder="0" data-ng-model="formData.adsun" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - Sunday only: $40.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - Sunday only: $40.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="kidsun" name="kidsun" 
+                                placeholder="0" data-ng-model="formData.kidsun" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - both days: $75 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - both days: $75 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="stubothdays" name="stubothdays" 
+                                placeholder="0" data-ng-model="formData.stubothdays" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - Saturday only: $50.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - Saturday only: $50.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="stusat" name="stusat" 
+                                placeholder="0" data-ng-model="formData.stusat" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - Sunday only: $40.00 per person :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - Sunday only: $40.00 per person :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon">#</span>
+                            <input type="number" step="1" class="form-control" id="stusun" name="stusun" 
+                                placeholder="0" data-ng-model="formData.stusun" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-certificate"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) :</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-certificate"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) :</h5></div>
+                        </td>
+                        <td><div class="input-group"><span class="input-group-addon" >$</span>
+                            <input type="number" step="1.00" class="form-control" id="adddon" name="adddon" style="text-align:right;"
+                                placeholder="0.00" data-ng-model="formData.adddon" min="0" required ng-change="calculatePrimeGuest()"/></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-                <span class="icon fa fa-circle-o"></span>&nbsp;
-                Alternate Saturday Dinner Menu: <i> <b>Special Goat (or Veg) Biriyani , Chop, Green Mango Chutney, Rasogolla</b></i>
-                <br/>
-                <span class="icon fa fa-circle-o"></span>&nbsp;
-                Alternate Sunday Dinner Menu: <i> <b>Two Chicken (or Veg) items, Nun, Rice, Tomato Chutney, Langcha</b></i-->
-            <!--/h5>
-        </div-->
-        <div class="row">
-            <div class="col-lg-10" >
-                <div class="row" style="display: none;">
-                <div class="col-lg-8">
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 5px;margin-bottom: 5px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp; Prime Patron tickets - $500.00 per ticket :</h5>
-                </div>
-                <div class="col-xs-4" style="display: none;">
-                    <input type="number" step="1" class="form-control" id="pgcount" name="pgcount" style="height: 20px;width:65%; text-align:right;"
-                    placeholder="0"
-                    data-ng-model="formData.pgcount"
-                    min="0"
-                     required ng-change="calculatePrimeGuest()">
-                </div>
+            <!-- <div class="col-lg-8 col-md-9 col-xs-9">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;">
+                    <span class="icon fa fa-certificate"></span>&nbsp;Adults - both days: $105.00 per person :
+                </h5>
             </div>
-            <span class="" style="font-size: 12px;display: none;"> &nbsp;&nbsp;&nbsp;&nbsp;Each ticket is designed for a family of 4. Comes with 8 dinner & 10 snack coupons.</span>
-            <data class="" style="display: none;">
+            <div class="col-lg-4 col-md-3 col-xs-3">
+                <input type="number" step="1" class="form-control" id="adbothdays" name="adbothdays" style="height: 20px;width:65%; text-align:right;"
+                placeholder="0"
+                data-ng-model="formData.adbothdays"
+                min="0"
+                    required ng-change="calculatePrimeGuest()">
+            </div> -->
+            <!-- </div> -->
+            <!-- <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row">
-                <div class="col-lg-8">
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Adults - both days: $105.00 per person :</h5>
-                </div>
-                <div class="col-xs-3">
-                    <input type="number" step="1" class="form-control" id="adbothdays" name="adbothdays" style="height: 20px;width:65%; text-align:right;"
-                    placeholder="0"
-                    data-ng-model="formData.adbothdays"
-                    min="0"
-                     required ng-change="calculatePrimeGuest()">
-                </div>
+            </data> -->
+            <!-- <div class="row" > -->
+            <!-- <div class="col-lg-8 col-md-9 col-xs-9">
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;">
+                    <span class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - both days: $75 per person :
+                </h5>
             </div>
-            <data class="">
-                <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row" >
-                <div class="col-lg-8">
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
-                        class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - both days: $75 per person :</h5>
-                </div>
-                <div class="col-xs-3" >
-                    <input type="number" step="1" class="form-control" id="kidbothdays" name="kidbothdays" style="height: 20px;width:65%; text-align:right;"
-                    placeholder="0"
-                    data-ng-model="formData.kidbothdays"
-                    min="0"
-                     required ng-change="calculatePrimeGuest()">
-                </div>
-            </div>
-            <data class="" >
+            <div class="col-lg-4 col-md-3 col-xs-3">
+                <input type="number" step="1" class="form-control" id="kidbothdays" name="kidbothdays" style="height: 20px;width:65%; text-align:right;"
+                placeholder="0" data-ng-model="formData.kidbothdays"
+                min="0" required ng-change="calculatePrimeGuest()">
+            </div> -->
+            <!-- </div> -->
+            <!-- <data class="" >
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
             </data>
             <div class="row">
@@ -153,10 +219,11 @@
             </div>
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row">
+            </data> -->
+            <!-- <div class="row">
                 <div class="col-lg-8">
-                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
+                <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;">
+                    <span
                         class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - Saturday only: $40.00 per person :</h5>
                 </div>
                 <div class="col-xs-3">
@@ -169,8 +236,8 @@
             </div>
             <data class="" >
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row">
+            </data> -->
+            <!-- <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;Adults - Sunday only: $55.00 per person :</h5>
@@ -185,10 +252,10 @@
             </div>
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
+            </data> -->
             
             
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;Kids (6-18 years) - Sunday only: $40.00 per person :</h5>
@@ -203,8 +270,8 @@
             </div>
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row" >
+            </data> -->
+            <!-- <div class="row" >
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - both days: $75 per person :</h5>
@@ -219,8 +286,8 @@
             </div>
             <data class="" >
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row">
+            </data> -->
+            <!-- <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - Saturday only: $50.00 per person :</h5>
@@ -235,8 +302,8 @@
             </div>
             <data class="" >
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
-            <div class="row">
+            </data> -->
+            <!-- <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;<u>Verified</u> students - Sunday only: $40.00 per person :</h5>
@@ -251,10 +318,10 @@
             </div>
             <data class="">
                 <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-            </data>
+            </data> -->
 
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-8">
                 <h5 class="featurette-heading" style="font-size: 14px;margin-top: 2px;margin-bottom: 2px;"><span
                         class="icon fa fa-certificate"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) :</h5>
@@ -271,12 +338,10 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
             
-            
-            </div>
-            <div class="col-lg-2" style="">
-                <img class="featurette-image img-responsive hidden-xs" src="img/Utsov_logo.png" alt="You can help">
+            <div class="col-lg-2 hidden-xs hidden-sm hidden-md">
+                <img class="featurette-image img-responsive" src="img/Utsov_logo.png" alt="You can help">
             </div>
         </div>
         <!--div class="row col-lg-14" style="margin-top: 10px;">
@@ -298,104 +363,97 @@
         <span class=" text-center" style="font-size: 12px;margin-top: 5px;"><i>
             *** For registation with Donation amount only, dinner coupons will NOT be issued and priority will be provided to ticket holders for event access. ***
         </i></span-->
-        <data class="row">
+        <!-- <data class="row">
             <hr class="featurette-divider" style="margin-top:0px;margin-bottom: 5px;">
-        </data>
+        </data> -->
         <form role="form" name="frmRegister" class="form-horizontal" novalidate>
             <div class="row" data-ng-class="{ 'has-error': frmRegister.donamount.$invalid }">
-                <div class="row">
-                    <div class="text-center">
-                        
-                        <div class="col-lg-4" style="margin-top: 10px">
-                            <label for="donamount">Ticket(s) price + Donation Amount</label>
-                        </div>
+                
+                <div class="col-lg-5 col-md-5" style="margin-top: 10px; text-align:right;">
+                    <label for="donamount">Total Ticket prices + Donation Amount :</label>
+                </div>
 
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <span class="input-group-addon">$</span>
-                                <input readonly type="number" step="1.00" class="form-control" id="donamount" name="donamount"
-                                       placeholder="Your  amount for this year"
-                                       data-ng-model="formData.donamount"
-                                       min="30"
-                                       max="1000000" required >
-
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div data-ng-class="{ 'disable-paypal': frmRegister.donamount.$invalid }" id="paypal-button" style="padding-top: 10px"></div>
-                        </div>
-                    
-
-                    </div>
-                    <div class=" text-center col-lg-12">
-                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 30.00</span>
-                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
-                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.kidError">Kids must be accompanied by adults on the same day(s).</span>
-                        <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Maximum number of tickets per transaction is 10 .</span>
-                        <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
-                    </div>
-
-                    <div class=" text-center col-lg-12">
-                        <span  style="font-size: 12px;" data-ng-model="formData.satAdults" id="satAdults" name="satAdults" data-ng-show="formData.satAdults"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Saturday adult tickets: {{formData.satAdults}}.</span>
-                        <span  style="font-size: 12px;" data-ng-model="formData.satKids" id="satKids" name="satKids" data-ng-show="formData.satKids"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Saturday kids tickets: {{formData.satKids}}.</span>
-                        <span  style="font-size: 12px;" data-ng-model="formData.sunAdults" id="sunAdults" name="sunAdults" data-ng-show="formData.sunAdults"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Sunday adult tickets: {{formData.sunAdults}}.</span>
-                        <span  style="font-size: 12px;" data-ng-model="formData.sunKids" id="sunKids" name="sunKids" data-ng-show="formData.sunKids"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Sunday kids tickets: {{formData.sunKids}}.</span>
-                        <span  style="font-size: 12px;" data-ng-model="formData.satStu" id="satStu" name="satStu" data-ng-show="formData.satStu"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Saturday students tickets: {{formData.satStu}}.</span>
-                        <span  style="font-size: 12px;" data-ng-model="formData.sunStu" id="sunStu" name="sunStu" data-ng-show="formData.sunStu"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Sunday students tickets: {{formData.sunStu}}.</span>
+                <div class="col-lg-4 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input readonly type="number" step="1.00" class="form-control" id="donamount" name="donamount"
+                                placeholder="Your  amount for this year"
+                                data-ng-model="formData.donamount"
+                                min="40"
+                                max="1000000" required >
 
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-3">
+                    <div data-ng-class="{ 'disable-paypal': frmRegister.donamount.$invalid }" id="paypal-button" style="padding-top: 10px"></div>
+                </div>
+                
+                <div class=" text-center col-lg-12">
+                    <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Minimum donation amount is $ 40.00</span>
+                    <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
+                    <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.kidError">Kids must be accompanied by adults on the same day(s).</span>
+                    <!--span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Maximum number of tickets per transaction is 10 .</span-->
+                    <span class="help-block text-danger"  data-ng-model="formData.numTickets" id="numTickets" name="numTickets" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Total tickets - {{formData.numTickets}}, (Saturday: {{formData.numSatTickets}}, Sunday: {{formData.numSunTickets}}) exceeds maximum of 10 tickets per transaction. </span>
+                    <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
+                </div>
+
+                <!--div class=" text-center col-lg-6">
+                    <span  style="font-size: 12px;" data-ng-model="formData.satAdults" id="satAdults" name="satAdults" data-ng-show="formData.satAdults"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Saturday adult tickets: {{formData.satAdults}}.</span>
+                    <span  style="font-size: 12px;" data-ng-model="formData.satKids" id="satKids" name="satKids" data-ng-show="formData.satKids"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Saturday kids tickets: {{formData.satKids}}.</span>
+                    <span  style="font-size: 12px;" data-ng-model="formData.sunAdults" id="sunAdults" name="sunAdults" data-ng-show="formData.sunAdults"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Sunday adult tickets: {{formData.sunAdults}}.</span>
+                    <span  style="font-size: 12px;" data-ng-model="formData.sunKids" id="sunKids" name="sunKids" data-ng-show="formData.sunKids"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Sunday kids tickets: {{formData.sunKids}}.</span>
+                    <span  style="font-size: 12px;" data-ng-model="formData.satStu" id="satStu" name="satStu" data-ng-show="formData.satStu"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Saturday students tickets: {{formData.satStu}}.</span>
+                    <span  style="font-size: 12px;" data-ng-model="formData.sunStu" id="sunStu" name="sunStu" data-ng-show="formData.sunStu"> &nbsp;<span class="icon fa fa-chevron-right"></span>  Sunday students tickets: {{formData.sunStu}}.</span>
+
+                </div-->
             </div>
+            <div class="row" style="font-size: 12px;">
+                <div><hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;"></div>
+                <div class="col-lg-6">
+                    <span class="icon fa fa-info-circle"> </span> <span class="" style="font-size: 10px;"><i> You will be automatically registered when you donate.</i></span><br/>    
+                    <span class="icon fa fa-info-circle"> </span><span class="" style="font-size: 10px;"><i>Kids under 6 served free pizza. </i></span><br/>                               
+                    <span class="icon fa fa-info-circle"> </span><span class="" style="font-size: 10px;"><i>Students tickets require student ID check at the venue.</i></span><br/>
+                </div>
+                <div class="col-lg-6">
+                    <address>
+                        <i>You can also send your donation check (payable to <b>“Utsov Inc.”</b>) to our mailing address:</i><br>
+                        31 Richard Road,
+                        Edison, NJ 08820<br>
+                        <i>Please remember to send us your contact info if you want a reciept.</i></p>
+                    </address>
+                </div>
+                </div>
         </form>
-        <data class="">
+        <!-- <data class="">
             <hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;">
-        </data>
+        </data> -->
     </div>
 
-    <div class="col-lg-14 row" style="font-size: 12px;">
-        
-       
-        <div class="  col-lg-7">
-        <address>
-            <i>You can also send your donation check (payable to <b>“Utsov Inc.”</b>) to our mailing address:</i><br>
-            31 Richard Road,
-            Edison, NJ 08820<br>
-            <i>Please remember to send us your contact info if you want a reciept.</i></p>
-        </address>
-    </div>
-    <div class="  col-lg-5">
-        <span class="icon fa fa-info-circle"> </span> <span class="" style="font-size: 10px;">  <i> You will be automatically registered when you donate. </i></span><br/>
-            
-        <span class="icon fa fa-info-circle"> </span><span class="" style="font-size: 10px;">  <i>A ticket includes 1 dinner coupon for selected day(s). </i></span><br/>
-            
-            
-        <span class="icon fa fa-info-circle"> </span><span class="" style="font-size: 10px;">  <i> Kids under 6 served free pizza. </i></span><br/>
-            
-            
-        <span class="icon fa fa-info-circle"> </span><span class="" style="font-size: 10px;">  <i>  Students tickets require student ID check.  </i></span><br/>
-            
-                        
-        
-    </div>
+    
+    <div class="row" style="font-size: 12px;">
 
+        <div class="col-lg-12" style="font-size: 12px;">
+            <p style="color: #dd4814">
+                Utsov is a registered 501 (c)(3) not-for-profit organaization. Your entire donation may be tax-deductible.
+                Please talk to your tax professional for details.
+            </p>
+        </div>
     </div>
+</div>   
+
+<!--     
     <data class="">
         <hr class="featurette-divider" style="margin-top: 2px;margin-bottom: 8px;">
-    </data>
-    <div class="row text-center" style="font-size: 12px;">
-        <p style="color: #dd4814">
-            Utsov is a registered 501 (c)(3) not-for-profit organaization. Your entire donation may be tax-deductible.
-            Please talk to your tax professional for details.
-        </p>
-</div>
+    </data> -->
     
-    <div class="modal-footer">
-        <div class="col-sm-11 small-padding">
-            <button type="submit" class="btn btn-primary pull-right" data-ng-click="reset()">Reset</button>
-        </div>
-        <div class="col-sm-1 small-padding">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+    
+<div class="modal-footer">
+    <div class="col-sm-11 small-padding">
+        <button type="submit" class="btn btn-primary pull-right" data-ng-click="reset()">Reset</button>
     </div>
-    <span ng-show="renderCheckout('paypal-button')"></span>
+    <div class="col-sm-1 small-padding">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
 </div>
+<span ng-show="renderCheckout('paypal-button')"></span>
+
