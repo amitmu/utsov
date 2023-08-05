@@ -237,13 +237,42 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
     return data.address1 ? data.address1 + " " + (data.address2 || "") + ",": "";
   };
   $scope.formatTickets = function(data){
+    if(data.payment_method==='paypal'){
+      let str = "";
+      str = str +  (data.bothdaysadult && parseInt(data.bothdaysadult)  ? `Adult - Both days : ${data.bothdaysadult}\n`:"");
+      str = str +  (data.saturdayadult && parseInt(data.saturdayadult) ? `Adult - Saturday : ${data.saturdayadult}\n`:"");
+      str = str +  (data.sundayadult && parseInt(data.sundayadult) ? `Adult - Sunday : ${data.sundayadult}\n`:"");
+
+      str = str +  (data.bothdayskid && parseInt(data.bothdayskid) ? `Kids - Both days : ${data.bothdayskid}\n`:"");
+      str = str +  (data.saturdaykid && parseInt(data.saturdaykid) ? `Kids - Saturday : ${data.saturdaykid}\n`:"");
+      str = str +  (data.sundaykid && parseInt(data.sundaykid) ? `Kids - Sunday : ${data.sundaykid}\n`:"");
+
+      str = str +  (data.bothdaysstudent && parseInt(data.bothdaysstudent) ? `Student - Both days : ${data.bothdaysstudent}\n`:"");
+      str = str +  (data.saturdaystudent && parseInt(data.saturdaystudent) ? `Student - Saturday : ${data.saturdaystudent}\n`:"");
+      str = str +  (data.sundaystudent && parseInt(data.sundaystudent) ? `Student - Sunday : ${data.sundaystudent}\n`:"");
+
+      str = str +  (parseInt(data.addtionaldonation) ? `Donation : ${data.addtionaldonation}`:"");
+
+      return str;
+
+    } else {
+      data.payment_status;
+    }
+    /*
     return data.payment_method==='paypal' ? `Adult - Both days : ${data.bothdaysadult}\n
     Adult - Saturday : ${data.saturdayadult}\n
     Adult - Sunday: ${data.sundayadult}\n
-    Kids - Both days: ${data.pgcount}\n
-    Kids - Any day: ${data.kidsanyday}\n
+
+    Kids - Both days : ${data.bothdayskid}\n
+    Kids - Saturday : ${data.saturdaykid}\n
+    Kids - Sunday: ${data.sundaykid}\n
+
+    Student - Both days : ${data.bothdaysstudent}\n
+    Student - Saturday : ${data.saturdaystudent}\n
+    Student - Sunday: ${data.sundaystudent}\n
+    
     Donation: ${data.addtionaldonation}\n
-    ` : data.payment_status;
+    ` : data.payment_status;*/
   };
   $scope.isDisabled = function(data){
     return (data.bothdaysadult + data.saturdayadult + data.sundayadult + data.pgcount + data.kidsanyday) ? '' : 'disabled';
