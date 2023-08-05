@@ -168,6 +168,7 @@ th{text-align:left}
 .table>tbody+tbody{border-top:2px solid #ddd}
 .table .table{background-color:#fff}
 .table-condensed>thead>tr>th,.table-condensed>tbody>tr>th,.table-condensed>tfoot>tr>th,.table-condensed>thead>tr>td,.table-condensed>tbody>tr>td,.table-condensed>tfoot>tr>td{padding:5px}
+.table-small>thead>tr>th,.table-small>tbody>tr>th,.table-small>tfoot>tr>th,.table-small>thead>tr>td,.table-small>tbody>tr>td,.table-small>tfoot>tr>td{padding:2px;}
 .table-bordered{border:1px solid #ddd}.table-bordered>thead>tr>th,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>tbody>tr>td,.table-bordered>tfoot>tr>td{border:1px solid #ddd}
 .table-bordered>thead>tr>th,.table-bordered>thead>tr>td{border-bottom-width:2px}
 .table-striped>tbody>tr:nth-child(odd)>td,.table-striped>tbody>tr:nth-child(odd)>th{background-color:#f9f9f9}
