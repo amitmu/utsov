@@ -32,6 +32,18 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2" for="ticket_issued">Tickets Issued</label>
+        <div class="col-sm-3">
+            <select class="form-control col-sm-2" name="ticket_issued" data-ng-model="formData.ticket_issued"
+                    ng-change="fetchData()">
+                    <option default value="1">true</option>
+                    <option  value="" >false</option>
+            </select>
+        </div>
+        
+    </div>
+
+    <div class="form-group">
         <div class="col-sm-9 small-padding">
             <button type="submit" class="btn btn-primary pull-right" data-ng-click="fetchData()">Submit</button>
         </div>
@@ -42,7 +54,9 @@
 </form>
 
 <div>
-    <span class="text-success">{{ msgs}}</span><span class="text-danger">{{ errors}}</span>
+    <span class="text-success">Total Donation Amount: {{resultset.totalDonationAmount}}</span>&nbsp;
+    <span class="text-success">{{ msgs}}</span>
+    <span class="text-danger">{{ errors}}</span>
 </div>
 <div class="table-small">
     <table class="table table-striped table-bordered table-hover">
@@ -71,7 +85,7 @@
                     <span class="slider round"></span>
                 </label>
             </td>
-            <td >{{donation.payment_method}}: {{donation.payment_id}} </td>
+            <td >{{donation.payment_method}}: <br/> {{donation.payment_id}} </td>
         </tr>
     </table>
 </div>

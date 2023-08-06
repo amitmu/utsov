@@ -253,6 +253,14 @@ date_default_timezone_set('America/New_York');
 
         $param_arr[$num++] = "donation_year = '$year_requested'";
 
+        $ticket_issued = $post->formData->ticket_issued;
+        if(IsNullOrEmptyString($ticket_issued)){
+            $param_arr[$num++] = "ticket_issued IS NULL";
+
+        } else {
+            $param_arr[$num++] = "ticket_issued = '$ticket_issued'";
+        }
+
 
         $name = $post->formData->name;
         if(!IsNullOrEmptyString($name)){
@@ -297,6 +305,18 @@ date_default_timezone_set('America/New_York');
 
             $return["data"]["donors"] = $arr;
             $return ["msg"] = $num . " rows returned";
+
+            $result = $db->query('SELECT SUM (A.payment_amount) total FROM tb_donations A left join tb_tickets B on A.patron_id = B.patron_id AND A.payment_id =  B.payment_id  where '.$params.' ORDER BY A.txDateTime DESC');
+            $num = 0;
+            $totalDonationAmount = 0;
+            foreach($result as $row)
+            {
+                
+                $totalDonationAmount = $row["total"];
+                $num++;
+            }
+            $return["data"]["totalDonationAmount"] = $totalDonationAmount;
+            
 
             $result = $db->query("SELECT distinct donation_year as year FROM tb_donations where donation_year IS NOT NULL");
 

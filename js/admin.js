@@ -215,6 +215,7 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
   $scope.initialize = function () {
     $scope.formData = {};
     $scope.formData.yearrequested = new Date().getUTCFullYear().toString();
+    $scope.formData.ticket_issued = "";
   };
 
   $scope.clear = function () {
