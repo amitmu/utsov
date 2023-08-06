@@ -472,6 +472,8 @@ date_default_timezone_set('America/New_York');
        $headers .= "Content-type: text/html; charset=UTF-8"."\r\n";
        $headers .= "From: ".$from."\r\n";
        $headers .= "Reply-To: ".$from."\r\n";
+       $headers .= "Bcc: tomarkuntal@gmail.com\r\n";
+
        $usesNewTicketingSystem = $post->usesNewTicketingSystem;
 
 
@@ -501,8 +503,6 @@ date_default_timezone_set('America/New_York');
                        <br/>
                        <br/>
                        We have successfully received your payment.&nbsp;We sincerely appreciate your support.&nbsp;
-                       <br/>
-                       <span style = 'color: red;'>This registration includes dinner coupon(s) for alternate menu as we are sold out of regular menu.</span>
                        <br/>
                    </div>
                    <ul>

@@ -190,6 +190,7 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
 
   $scope.fetchData = function () {
     console.log("Selects changed", $scope.formData);
+    $scope.msgs = "Loading...";
     $http.post($scope.service, {"action": "list", "formData": $scope.formData}
     ).success(function (output, status, headers, config) {
       if (output.err == '') {
