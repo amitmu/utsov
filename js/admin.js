@@ -258,7 +258,7 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
       return str;
 
     } else {
-      data.payment_status;
+      return data.payment_status;
     }
     /*
     return data.payment_method==='paypal' ? `Adult - Both days : ${data.bothdaysadult}\n
