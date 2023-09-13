@@ -340,9 +340,9 @@ function calculatePrimeGuest(scope) {
   
   scope.formData.adddon = sanitizeNumber(scope.formData.adddon, true);
 
-  if((scope.formData.kidsat|| 0) >0  && (scope.formData.adsat||0) <=0){
+  if((scope.formData.kidsat|| 0) >0  && (scope.formData.adsat||0) <=0  && (scope.formData.adbothdays||0) <=0){
     scope.frmRegister.donamount.$setValidity("kidError", false);
-  } else if((scope.formData.kidsun|| 0) >0  && (scope.formData.adsun||0) <=0){
+  } else if((scope.formData.kidsun|| 0) >0  && (scope.formData.adsun||0) <=0 && (scope.formData.adbothdays||0) <=0){
     scope.frmRegister.donamount.$setValidity("kidError", false);
   } else if((scope.formData.kidbothdays|| 0) >0  && (scope.formData.adbothdays||0) <=0){
     scope.frmRegister.donamount.$setValidity("kidError", false);
