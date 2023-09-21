@@ -529,24 +529,24 @@ date_default_timezone_set('America/New_York');
                         </li>
 
                         <li>
-                            Number of adults (18 years+) for both days: ".$kidbothdays."
+                            Number of kids (18 years+) for both days: ".$kidbothdays."
                         </li>
                         <li>
-                            Number of adults (18 years+) for Saturday only: ".$kidsat."
+                            Number of kids (18 years+) for Saturday only: ".$kidsat."
                         </li>
                         <li>
-                            Number of adults (18 years+) for Sunday only: ".$kidsun."
+                            Number of kids (18 years+) for Sunday only: ".$kidsun."
                         </li>
 
 
                         <li>
-                            Number of adults (18 years+) for both days: ".$stubothdays."
+                            Number of students (18 years+) for both days: ".$stubothdays."
                         </li>
                         <li>
-                            Number of adults (18 years+) for Saturday only: ".$stusat."
+                            Number of students (18 years+) for Saturday only: ".$stusat."
                         </li>
                         <li>
-                            Number of adults (18 years+) for Sunday only: ".$stusun."
+                            Number of students (18 years+) for Sunday only: ".$stusun."
                         </li>
                         
                         <li>
