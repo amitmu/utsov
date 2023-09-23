@@ -316,6 +316,23 @@ date_default_timezone_set('America/New_York');
                 $num++;
             }
             $return["data"]["totalDonationAmount"] = $totalDonationAmount;
+
+            $result = $db->query('SELECT SUM(IFNULL(B.bothdaysadult,0) + IFNULL(B.saturdayadult,0) + IFNULL(B.bothdayskid,0) + IFNULL(B.saturdaykid,0) + 
+            IFNULL(B.bothdaysstudent,0) + IFNULL(B.saturdaystudent,0)) AS saturdayCount, SUM(IFNULL(B.bothdaysadult,0) + IFNULL(B.sundayadult,0) + IFNULL(B.bothdayskid,0) 
+            + IFNULL(B.sundaykid,0) +IFNULL(B.bothdaysstudent,0) + IFNULL(B.sundaystudent,0)) AS sundayCount FROM tb_donations A left join tb_tickets B 
+            on A.patron_id = B.patron_id AND A.payment_id =  B.payment_id  where '.$params);
+            $num = 0;
+            $saturdayCount = 0;
+            $sundayCount = 0;
+            foreach($result as $row)
+            {
+                
+                $saturdayCount = $row["saturdayCount"];
+                $sundayCount = $row["sundayCount"];
+                $num++;
+            }
+            $return["data"]["saturdayCount"] = $saturdayCount;
+            $return["data"]["sundayCount"] = $sundayCount;
             
 
             $result = $db->query("SELECT distinct donation_year as year FROM tb_donations where donation_year IS NOT NULL");
