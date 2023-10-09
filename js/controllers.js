@@ -304,6 +304,10 @@ angular.element(document).ready(function() {
 
       var divPrimeGuest = document.getElementById("primeGuest");
       angular.bootstrap(divPrimeGuest, ["utsovPrimeGuestApp"]);
+      
+      if(document.URL && document.URL.endsWith("registerOnSpot")){
+        document.getElementById("registerBtn").click();
+      }
 });
 
 var rendered = false;
