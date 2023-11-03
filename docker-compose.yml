@@ -1,0 +1,8 @@
+services:
+  app:
+    image: nimmis/alpine-apache-php7 
+    container_name: utsov
+    ports: 
+      - 8080:80
+    volumes:
+      - .:/web/html
