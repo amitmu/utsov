@@ -15,6 +15,12 @@ utsovPrimeGuestApp.config(['$routeProvider',
        reloadOnSearch: false,
         action: 'BPG'
     }).
+    when('/AddDonationSatWalkIn', {
+      templateUrl: 'templates/modalsvdonatesatwalkin.html',
+      controller: 'PrimeGuestController',
+      reloadOnSearch: false,
+      action: 'BPG'
+    }).
     when('/Covid19', {
       templateUrl: 'templates/modalsvcoviddonate.html',
       controller: 'PrimeGuestController',
@@ -108,6 +114,10 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
 
   $scope.calculatePrimeGuest = function(){
     return calculatePrimeGuest($scope);
+  };
+
+  $scope.calculatePrimeGuestOnSpot = function(){
+    return calculatePrimeGuestOnSpot($scope);
   };
   $scope.reset = function(){
       return reset($scope);
@@ -308,11 +318,23 @@ angular.element(document).ready(function() {
       if(document.URL && document.URL.endsWith("registerOnSpot")){
         document.getElementById("registerBtn").click();
       }
+
+      if(document.URL && document.URL.endsWith("satWalkIn")){
+        document.getElementById("registerBtnSat").click();
+      }
+
+      if(document.URL && document.URL.endsWith("sunWalkIn")){
+        document.getElementById("registerBtnSun").click();
+      }
 });
 
 var rendered = false;
 
-function calculatePrimeGuest(scope) {
+function calculatePrimeGuestOnSpot(scope){
+  return calculatePrimeGuest(scope, true);
+}
+
+function calculatePrimeGuest(scope, onSpot) {
 
   /*if(scope.formData.donamount >= 160 && scope.formData.donamount <225){
     scope.formData.primeGuestLevel = "You are eligible for Prime Guest Level 1.";
@@ -394,8 +416,27 @@ function calculatePrimeGuest(scope) {
     scope.frmRegister.donamount.$setValidity("numTicketsErr", true);
   }
   
-   var calcAmt= 
-   (scope.formData.adbothdays*105 || 0)
+   var calcAmt
+   
+   if(onSpot){
+
+    calcAmt= (scope.formData.adbothdays*0 || 0)
+   + (scope.formData.adsat*40 || 0)
+   + (scope.formData.adsun*30 || 0)
+
+   + (scope.formData.kidbothdays*0 || 0)
+   + (scope.formData.kidsat*25 || 0)
+   + (scope.formData.kidsun*20 || 0)
+
+   + (scope.formData.stubothdays*0 || 0)
+   + (scope.formData.stusat*30 || 0)
+   + (scope.formData.stusun*25 || 0)
+
+   + (scope.formData.adddon || 0);
+
+   } else {
+
+    calcAmt= (scope.formData.adbothdays*105 || 0)
    + (scope.formData.adsat*80 || 0)
    + (scope.formData.adsun*55 || 0)
 
@@ -408,6 +449,8 @@ function calculatePrimeGuest(scope) {
    + (scope.formData.stusun*40 || 0)
 
    + (scope.formData.adddon || 0);
+   }
+   
 
    scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
    scope.formData.numTickets = numTickets;
