@@ -255,6 +255,10 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
 
       str = str +  (parseInt(data.addtionaldonation) ? `Donation : ${data.addtionaldonation}`:"");
 
+      str = str +  (data.payment_status ? `Prepaid Food : true`:`Prepaid Food : false`);
+
+
+
       return str;
 
     } else {

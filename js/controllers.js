@@ -92,7 +92,20 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
   $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
   $scope.success = 0;
-  $scope.paypalbuttonId = "paypal-button-pg"
+  $scope.paypalbuttonId = "paypal-button-pg";
+
+  $scope.formData.bothDayAdAmt = 80;
+  $scope.formData.bothDayKidAmt = 60;
+
+  $scope.formData.satAdAmt = 55;
+  $scope.formData.satKidAmt = 35;
+
+  $scope.formData.sunAdAmt = 40;
+  $scope.formData.sunKidAmt = 30;
+
+  $scope.formData.bothDayStuAmt = 75;
+  $scope.formData.satStuAmt = 40;
+  $scope.formData.sunStuAmt = 35;
 
   rendered = false;
   $scope.action = $route.current.action;
@@ -240,10 +253,12 @@ utsovEventApp.controller('EventController', function ($scope, $route, $http) {
     $scope.errors = '';
     $scope.msgs = '';
     $scope.formData = {};
+    
     $scope.phoneNumPattern = /^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/;
     $scope.zipCodePattern = /^\d{5}(?:[-\s]\d{4})?$/;
     $scope.success = 0;
     rendered = false;
+    
 
     $scope.action = $route.current.action;
     switch ($route.current.action)
@@ -350,7 +365,37 @@ function calculatePrimeGuest(scope, onSpot) {
     scope.formData.isPrimeGuest = false;
   }*/
 
-  
+  if(scope.formData.prepayFood){
+
+    scope.formData.bothDayAdAmt = 100;
+    scope.formData.bothDayKidAmt = 75;
+
+    scope.formData.satAdAmt = 70;
+    scope.formData.satKidAmt = 45;
+
+    scope.formData.sunAdAmt = 55;
+    scope.formData.sunKidAmt = 40;
+
+    scope.formData.bothDayStuAmt = 90;
+    scope.formData.satStuAmt = 50;
+    scope.formData.sunStuAmt = 45;
+
+  } else {
+    scope.formData.bothDayAdAmt = 80;
+    scope.formData.bothDayKidAmt = 60;
+
+    scope.formData.satAdAmt = 55;
+    scope.formData.satKidAmt = 35;
+
+    scope.formData.sunAdAmt = 40;
+    scope.formData.sunKidAmt = 30;
+
+    scope.formData.bothDayStuAmt = 75;
+    scope.formData.satStuAmt = 40;
+    scope.formData.sunStuAmt = 35;
+    
+  }
+
   scope.formData.adbothdays = sanitizeNumber(scope.formData.adbothdays);
   scope.formData.adsat = sanitizeNumber(scope.formData.adsat);
   scope.formData.adsun = sanitizeNumber(scope.formData.adsun);
@@ -436,17 +481,17 @@ function calculatePrimeGuest(scope, onSpot) {
 
    } else {
 
-    calcAmt= (scope.formData.adbothdays*105 || 0)
-   + (scope.formData.adsat*80 || 0)
-   + (scope.formData.adsun*55 || 0)
+    calcAmt= (scope.formData.adbothdays*scope.formData.bothDayAdAmt || 0)
+   + (scope.formData.adsat*scope.formData.satAdAmt || 0)
+   + (scope.formData.adsun*scope.formData.sunAdAmt || 0)
 
-   + (scope.formData.kidbothdays*75 || 0)
-   + (scope.formData.kidsat*40 || 0)
-   + (scope.formData.kidsun*40 || 0)
+   + (scope.formData.kidbothdays*scope.formData.bothDayKidAmt || 0)
+   + (scope.formData.kidsat*scope.formData.satKidAmt || 0)
+   + (scope.formData.kidsun* scope.formData.sunKidAmt || 0)
 
-   + (scope.formData.stubothdays*75 || 0)
-   + (scope.formData.stusat*50 || 0)
-   + (scope.formData.stusun*40 || 0)
+   + (scope.formData.stubothdays*scope.formData.bothDayStuAmt || 0)
+   + (scope.formData.stusat*scope.formData.satStuAmt || 0)
+   + (scope.formData.stusun*scope.formData.sunStuAmt || 0)
 
    + (scope.formData.adddon || 0);
    }
@@ -511,6 +556,9 @@ function renderPaypalButton(btnSelector){
 
             var adddon = document.getElementById("adddon") ? document.getElementById("adddon").value: undefined;
 
+            var prepayFood = document.getElementById("prepayFood") ? document.getElementById("prepayFood").checked: undefined;
+
+
             var payPalResponse = {
               "action":"savedonation",
               "donation_year": new Date().getFullYear(),
@@ -539,7 +587,8 @@ function renderPaypalButton(btnSelector){
               "stusat": parseInt(stusat),
               "stusun": parseInt(stusun), 
               //"kid": parseInt(kid),
-              "adddon": parseFloat(adddon)
+              "adddon": parseFloat(adddon),
+              "prepayFood": prepayFood
             };
 
             if(adbothdays || adsat || adsun || kidbothdays || kidsat || kidsun || stubothdays || stusat || stusun || adddon) {

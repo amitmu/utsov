@@ -65,6 +65,7 @@ date_default_timezone_set('America/New_York');
         $postal_code = $post->postal_code;
         $payment_method = $post->payment_method;
         $payment_status = $post->payment_status;
+        $prepayFood = $post->prepayFood;
         $payment_amount = $post->payment_amount;
         $payment_id = $post->payment_id;
         $paypal_resp = $post->paypal_resp;
@@ -105,7 +106,7 @@ date_default_timezone_set('America/New_York');
         addRegistration($patron_id, $donation_year, null, $payment_amount, null, $client_ip);
 
         $stmtIns = $db->prepare("INSERT INTO tb_donations(donation_year, client_ip, txDateTime, email, first_name, middle_name, last_name, payer_id, line1, line2, city, state, postal_code, payment_method, payment_status, payment_amount, payment_id, patron_id, paypal_resp)
-            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :payment_status, :payment_amount, :payment_id, :patron_id, :paypal_resp)");
+            VALUES(:donation_year, :client_ip, :txDateTime, :email, :first_name, :middle_name, :last_name, :payer_id, :line1, :line2, :city, :state, :postal_code, :payment_method, :prepayFood, :payment_amount, :payment_id, :patron_id, :paypal_resp)");
 
         $bindVar = $stmtIns->bindParam(':client_ip', $client_ip);
         $bindVar = $stmtIns->bindParam(':donation_year', $donation_year);
@@ -121,7 +122,7 @@ date_default_timezone_set('America/New_York');
         $bindVar = $stmtIns->bindParam(':state', $state);
         $bindVar = $stmtIns->bindParam(':postal_code', $postal_code);
         $bindVar = $stmtIns->bindParam(':payment_method', $payment_method);
-        $bindVar = $stmtIns->bindParam(':payment_status', $payment_status);
+        $bindVar = $stmtIns->bindParam(':prepayFood', $prepayFood);
         $bindVar = $stmtIns->bindParam(':payment_amount', $payment_amount);
         $bindVar = $stmtIns->bindParam(':payment_id', $payment_id);
         $bindVar = $stmtIns->bindParam(':patron_id', $patron_id);
