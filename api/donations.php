@@ -510,6 +510,8 @@ date_default_timezone_set('America/New_York');
             $stusun = $post->stusun;
             
             $adddon = $post->adddon;
+            $prepayFood = $post->prepayFood;
+
         }
 
        $message = "<html>
@@ -535,6 +537,16 @@ date_default_timezone_set('America/New_York');
 
                        </li>";
         if($usesNewTicketingSystem){
+
+            if($prepayFood){
+                $message.= "<li>
+                                Registration options: Dinner included
+                            </li>";
+            } else{
+                $message.= "<li>
+                                Registration options: Dinner NOT included
+                            </li>";
+            }
             $message.= "
                         <li>
                             Number of adults (18 years+) for both days: ".$adbothdays."
@@ -577,7 +589,7 @@ date_default_timezone_set('America/New_York');
 
                    For registation with Donation amount only tickets will NOT be issued and priority will be provided to ticket holders for event access.
                    <br>
-                   Please carry an electronic or physical copy of this email for tickets along with proof of covid-19 vaccination for pujo.<br>
+                   Please carry an electronic or physical copy of this email for tickets.<br>
                        Regards,<br>
                        UTSOV Team
                    </div>
@@ -628,7 +640,7 @@ date_default_timezone_set('America/New_York');
                    </html>";
 
 
-        return mail($to, $subject, $message, $headers);
+          return mail($to, $subject, $message, $headers);
     }
 
 ?>

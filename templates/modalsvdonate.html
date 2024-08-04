@@ -55,7 +55,7 @@
         <h4 class="featurette-heading">
             <table>
                 <tr>
-                    <td > <span> Pre-purchase Pujo Dinner &nbsp;  &nbsp;  </span></td>
+                    <td > <span> Include Dinner tickets:&nbsp;  &nbsp;  </span></td>
 
                     <td style="text-align: center">
                         <label class="switch">
@@ -65,29 +65,15 @@
                     </td>
                 </tr>
             </table>
-        </h4>
-        
-        <h5>
-            <span class="icon fa fa-check-circle-o"> </span>
-            <span>
-                Standard ticket includes puja entry and cultural program admission including artists from Bollywood / Tollywood.
-            </span>
-            <br>
-            <span class="icon fa fa-check-circle-o"> </span>
-            <span>
-                <i> Dinner options available for purchase at the venue on a <u>first come first serve basis</u>.</i>
-            </span>
-           
-        </h5>
-        
+        </h4> 
         <div class="row">
            
             <div class="col-lg-10">
                 <table class="table-small table-hover">
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;Adults - both days: ${{formData.bothDayAdAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Adults - both days: ${{formData.bothDayAdAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;Adults - both days: ${{formData.bothDayAdAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Adults - both days: ${{formData.bothDayAdAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon" >#</span>
                             <input type="number" step="1" class="form-control" id="adbothdays" name="adbothdays" placeholder="0"
@@ -97,8 +83,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs">&nbsp;&nbsp;&nbsp;<span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - both days: ${{formData.bothDayKidAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - both days: ${{formData.bothDayKidAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs">&nbsp;&nbsp;&nbsp;<span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - both days: ${{formData.bothDayKidAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - both days: ${{formData.bothDayKidAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="kidbothdays" name="kidbothdays"
@@ -108,8 +94,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;Adults - Saturday only: ${{formData.satAdAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Adults - Saturday only: ${{formData.satAdAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;Adults - Saturday only: ${{formData.satAdAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Adults - Saturday only: ${{formData.satAdAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span><input type="number" step="1" class="form-control" id="adsat" name="adsat"
                             placeholder="0" data-ng-model="formData.adsat" min="0" required ng-change="calculatePrimeGuest()"/></div>
@@ -117,8 +103,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs">&nbsp;&nbsp;&nbsp;<span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Saturday only: ${{formData.satKidAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Saturday only: ${{formData.satKidAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs">&nbsp;&nbsp;&nbsp;<span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Saturday only: ${{formData.satKidAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Saturday only: ${{formData.satKidAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="kidsat" name="kidsat" 
@@ -127,8 +113,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;Adults - Sunday only: ${{formData.sunAdAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Adults - Sunday only: ${{formData.sunAdAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;Adults - Sunday only: ${{formData.sunAdAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Adults - Sunday only: ${{formData.sunAdAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="adsun" name="adsun" 
@@ -137,8 +123,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs">&nbsp;&nbsp;&nbsp;<span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Sunday only: ${{formData.sunKidAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Sunday only: ${{formData.sunKidAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs">&nbsp;&nbsp;&nbsp;<span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Sunday only: ${{formData.sunKidAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;Kids (6-18 years) - Sunday only: ${{formData.sunKidAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="kidsun" name="kidsun" 
@@ -147,8 +133,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - both days: ${{formData.bothDayStuAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - both days: ${{formData.bothDayStuAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - both days: ${{formData.bothDayStuAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - both days: ${{formData.bothDayStuAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="stubothdays" name="stubothdays" 
@@ -157,8 +143,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Saturday only: ${{formData.satStuAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Saturday only: ${{formData.satStuAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Saturday only: ${{formData.satStuAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Saturday only: ${{formData.satStuAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="stusat" name="stusat" 
@@ -167,8 +153,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Sunday only: ${{formData.sunStuAmt}} per person :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Sunday only: ${{formData.sunStuAmt}} per person :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Sunday only: ${{formData.sunStuAmt}} per person {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-user"></span>&nbsp;<u>Verified</u> students - Sunday only: ${{formData.sunStuAmt}} per person {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon">#</span>
                             <input type="number" step="1" class="form-control" id="stusun" name="stusun" 
@@ -177,8 +163,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-money"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) :</div>
-                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-money"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) :</h5></div>
+                            <div class="hidden-sm hidden-xs"><span class="icon fa fa-money"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) {{formData.foodOption}}:</div>
+                            <div class="hidden-lg hidden-md"><h5><span class="icon fa fa-money"></span>&nbsp;Additional donation amount (helps with our philanthrophic efforts) {{formData.foodOption}}:</h5></div>
                         </td>
                         <td><div class="input-group"><span class="input-group-addon" >$</span>
                             <input type="number" step="1.00" class="form-control" id="adddon" name="adddon" style="text-align:right;"
@@ -422,7 +408,25 @@
 
                 </div-->
             </div>
-            <div class="row" style="font-size: 12px;">
+            <h5>
+                <span class="icon fa fa-check-circle-o"> </span>
+                <span>
+                    Standard ticket includes puja entry and cultural program admission including artists from Bollywood / Tollywood.
+                </span>
+                <br>
+                <span class="icon fa fa-check-circle-o"> </span>
+                <span>
+                    Dinner can be purchased during registration or available for purchase at the venue on a <u>first come first serve basis</u>.
+                </span>
+                <br>
+                <span class="icon fa fa-check-circle-o"> </span>
+                <span>
+                    Kids 6 years of age and under served free pizza.
+                </span>
+                <br>
+               
+            </h5>
+            <!--div class="row" style="font-size: 12px;">
                 <div><hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;"></div>
                 <div class="col-lg-6">
                     <span class="icon fa fa-info-circle"> </span> <span class="" style="font-size: 10px;"><i> You will be automatically registered when you donate.</i></span><br/>    
@@ -437,7 +441,7 @@
                         <i>Please remember to send us your contact info if you want a reciept.</i></p>
                     </address>
                 </div>
-                </div>
+                </div-->
         </form>
         <!-- <data class="">
             <hr class="featurette-divider" style="margin-top: 10px;margin-bottom: 5px;">

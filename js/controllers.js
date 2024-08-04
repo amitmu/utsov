@@ -83,6 +83,7 @@ utsovEventApp.config(['$routeProvider',
       });
 }]);
 
+
 utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, $http) {
 
   //initializing....
@@ -94,25 +95,15 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   $scope.success = 0;
   $scope.paypalbuttonId = "paypal-button-pg";
 
-  $scope.formData.bothDayAdAmt = 80;
-  $scope.formData.bothDayKidAmt = 60;
-
-  $scope.formData.satAdAmt = 55;
-  $scope.formData.satKidAmt = 35;
-
-  $scope.formData.sunAdAmt = 40;
-  $scope.formData.sunKidAmt = 30;
-
-  $scope.formData.bothDayStuAmt = 75;
-  $scope.formData.satStuAmt = 40;
-  $scope.formData.sunStuAmt = 35;
+  setDefault($scope);
+  
 
   rendered = false;
   $scope.action = $route.current.action;
   switch ($route.current.action)
   {
     case 'BPG':
-      $scope.title = "Donate with Paypal  - We sincerely appreciate your help!";
+      $scope.title = "Register for Pujo!";
       $scope.service = 'api/donations.php';
       break;
     case 'ACD':
@@ -345,6 +336,25 @@ angular.element(document).ready(function() {
 
 var rendered = false;
 
+function setDefault(scope){
+  scope.formData.prepayFood = false;
+
+  scope.formData.bothDayAdAmt = 80;
+  scope.formData.bothDayKidAmt = 60;
+  scope.formData.foodOption = "without dinner";
+
+
+  scope.formData.satAdAmt = 55;
+  scope.formData.satKidAmt = 35;
+
+  scope.formData.sunAdAmt = 40;
+  scope.formData.sunKidAmt = 30;
+
+  scope.formData.bothDayStuAmt = 75;
+  scope.formData.satStuAmt = 40;
+  scope.formData.sunStuAmt = 35;
+}
+
 function calculatePrimeGuestOnSpot(scope){
   return calculatePrimeGuest(scope, true);
 }
@@ -367,6 +377,7 @@ function calculatePrimeGuest(scope, onSpot) {
 
   if(scope.formData.prepayFood){
 
+    scope.formData.foodOption ="with dinner";
     scope.formData.bothDayAdAmt = 100;
     scope.formData.bothDayKidAmt = 75;
 
@@ -381,18 +392,7 @@ function calculatePrimeGuest(scope, onSpot) {
     scope.formData.sunStuAmt = 45;
 
   } else {
-    scope.formData.bothDayAdAmt = 80;
-    scope.formData.bothDayKidAmt = 60;
-
-    scope.formData.satAdAmt = 55;
-    scope.formData.satKidAmt = 35;
-
-    scope.formData.sunAdAmt = 40;
-    scope.formData.sunKidAmt = 30;
-
-    scope.formData.bothDayStuAmt = 75;
-    scope.formData.satStuAmt = 40;
-    scope.formData.sunStuAmt = 35;
+    setDefault(scope);
     
   }
 
@@ -683,6 +683,9 @@ function renderCheckout(id) {
 }
 
 function reset(scope){
+
+  setDefault(scope);
+
   scope.formData.donamount = null;
   scope.formData.adbothdays = 0;
   scope.formData.adsat = 0;
