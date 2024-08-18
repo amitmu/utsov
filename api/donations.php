@@ -270,7 +270,7 @@ date_default_timezone_set('America/New_York');
 
         $payment_id = $post->formData->payment_id;
         if(!IsNullOrEmptyString($payment_id)){
-            $param_arr[$num++] = "tb_donations.payment_id like '%$payment_id%'";
+            $param_arr[$num++] = "B.payment_id like '%$payment_id%'";
         }
 
         $email = $post->formData->email;

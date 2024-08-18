@@ -7,6 +7,29 @@ $(document).ready(function () {
   $('[data-toggle="tooltip"]').tooltip();
 });
 
+function setCookie(name,value,mins) {
+  var expires = "";
+  if (mins) {
+      var date = new Date();
+      date.setTime(date.getTime() + (mins*60*1000));
+      expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+function eraseCookie(name) {   
+  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 var utsovAdminApp = angular.module('utsovAdminApp', ['ngRoute']);
 
 utsovAdminApp.directive('changeOnBlur', function() {
@@ -50,9 +73,11 @@ utsovAdminApp.directive('changeOnBlur', function() {
 
 utsovAdminApp.run(function($rootScope) {
 
-    $rootScope.IsLoggedIn = false;
+    var isLoogedIn = getCookie("utsovAdminCookie");
+    $rootScope.IsLoggedIn = isLoogedIn ? true:  false;
     console.log("Initializing Login Status:" + $rootScope.IsLoggedIn);
-})
+
+});
 
 utsovAdminApp.config(['$routeProvider',
   function($routeProvider) {
@@ -113,6 +138,8 @@ utsovAdminApp.config(['$routeProvider',
       });
 }]);
 
+
+
 utsovAdminApp.controller('FrontpageController', function ($scope, $http, $rootScope) {
 
     $scope.errors = '';
@@ -140,6 +167,7 @@ utsovAdminApp.controller('FrontpageController', function ($scope, $http, $rootSc
                 $scope.success = 1;
                 $scope.user = output.data[0];
                 $rootScope.IsLoggedIn = true;
+                setCookie("utsovAdminCookie", JSON.stringify($scope.user), 60);
                 console.log("Setting Login Status:" + $rootScope.IsLoggedIn);
                 $scope.GetStatus();
                 //console.log($scope.msgs);
@@ -190,6 +218,23 @@ utsovAdminApp.controller('ListController', function ($scope, $route, $http, $roo
 
   $scope.fetchData = function () {
     console.log("Selects changed", $scope.formData);
+
+    const arr = window.location.href.split("?");
+    if(arr.length > 1){
+      const queryString = arr[1];
+      console.log("queryString", queryString);
+      const urlParams = new URLSearchParams(queryString);
+      const entries = urlParams.entries();
+  
+      for(const entry of entries) {
+        console.log("entries", `${entry[0]}: ${entry[1]}`);
+        $scope.formData = $scope.formData || {};
+        $scope.formData[entry[0]] = entry[1];
+      }
+
+    }
+
+
     $scope.msgs = "Loading...";
     $http.post($scope.service, {"action": "list", "formData": $scope.formData}
     ).success(function (output, status, headers, config) {
