@@ -1528,6 +1528,15 @@ Fish Fry, Egg Devil, Patisopta, Gokul Pitha.
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
     <script src="//www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        $("document").ready(function(){
+            $("#registerBtn").ready(function(){
+                if(document.location.href.indexOf("register")> -1){
+                    $("#registerBtn").click();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
