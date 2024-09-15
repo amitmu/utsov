@@ -47,11 +47,12 @@
                     </span>
                 </a>
             </th>
+            <th>Membership request</th>
             <th>Message</th>
             <th>IP</th>
         </tr>
         <tr data-ng-repeat="vol in resultset|orderBy:orderByField:reverseSort">
-            <td>{{formatDate(vol.date)}}</td>
+            <td>{{vol.date}}</td>
             <td>{{vol.name}}</td>
             <td><span>{{formatAddressLines(vol)}}</span> <br/>
                 <span>{{vol.city}}</span> <br/>
@@ -59,8 +60,10 @@
             </td>
             <td>{{formatPhoneNumber(vol.phone)}}</td>
             <td>{{vol.email}}</td>
+            <td>{{vol.memberrequest}}</td>
             <td title = "{{vol.message}}">{{vol.message}}</td>
             <td>{{vol.ipaddress}}</td>
+
         </tr>
     </table>
 </div>

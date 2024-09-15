@@ -42,6 +42,11 @@ utsovContactApp.config(['$routeProvider',
         controller: 'ContactController',
         action: 'VOL'
       }).
+      when('/AddMember', {
+        templateUrl: 'templates/modalsvcontact.html',
+        controller: 'ContactController',
+        action: 'MEM'
+      }).
       when('/AddSubmission', {
         templateUrl: 'templates/modalsvcontest.html',
         controller: 'ContactController',
@@ -175,6 +180,10 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
             $scope.title = "Register To Volunteer";
             $scope.service = 'api/volunteers.php';
             break;
+        case 'MEM':
+          $scope.title = "Become a Member";
+          $scope.service = 'api/volunteers.php';
+          break;
         case 'SPON':
             $scope.title = "Register For Sponsorship";
             $scope.service = 'api/sponsors.php';
@@ -214,6 +223,11 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
         $scope.errors = '';
         $scope.msgs = '';
         $scope.success = 0;
+        if($scope.action==="MEM"){
+          $scope.formData.addMember=true;
+        } else{
+          $scope.formData.addMember=false;
+        }
         $scope.formData.action = 'add';
         $http.post($scope.service,  $scope.formData
         ).success(function(output, status, headers, config) {

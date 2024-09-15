@@ -78,8 +78,8 @@ require(dirname(__FILE__).'/utils.php');
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("volunteer"));
 
-            $stmtIns = $db->prepare("INSERT INTO tb_volunteers(date, name, address1, address2, city, state, zip, phone, email, message, ipaddress)
-                VALUES(:date, :name, :add1, :add2, :city, :state, :zip, :phone, :email, :msg, :ipadd)");
+            $stmtIns = $db->prepare("INSERT INTO tb_volunteers(date, name, address1, address2, city, state, zip, phone, email, message, ipaddress, memberrequest)
+                VALUES(:date, :name, :add1, :add2, :city, :state, :zip, :phone, :email, :msg, :ipadd, :memberrequest)");
 
             $bindVar = $stmtIns->bindParam(':date', $date);
             $bindVar = $stmtIns->bindParam(':name', $name);
@@ -92,6 +92,8 @@ require(dirname(__FILE__).'/utils.php');
             $bindVar = $stmtIns->bindParam(':email', $email);
             $bindVar = $stmtIns->bindParam(':msg', $message);
             $bindVar = $stmtIns->bindParam(':ipadd', $ipaddress);
+            $bindVar = $stmtIns->bindParam(':memberrequest', $memberrequest);
+
 
             // inserting row
             $date = date("Ymd:His");
@@ -105,6 +107,7 @@ require(dirname(__FILE__).'/utils.php');
             $email = $post->volemail;
             $message = $post->volmsg;
             $ipaddress = get_client_ip();
+            $memberrequest = $post->addMember;
 
             if($bindVar)
             {
