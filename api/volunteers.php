@@ -46,7 +46,7 @@ require(dirname(__FILE__).'/utils.php');
             /*** connect to SQLite database ***/
             $db = new PDO("sqlite:" . getDBPath("volunteer"));
 
-            $result = $db->query('SELECT * FROM tb_volunteers');
+            $result = $db->query('SELECT * FROM tb_volunteers where date >  DATE("now") order by date desc');
             $num = 0;
             foreach($result as $row)
             {

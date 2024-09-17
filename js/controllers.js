@@ -181,7 +181,7 @@ utsovContactApp.controller('ContactController', function ($scope, $route, $http)
             $scope.service = 'api/volunteers.php';
             break;
         case 'MEM':
-          $scope.title = "Become a Member";
+          $scope.title = "Request Membership";
           $scope.service = 'api/volunteers.php';
           break;
         case 'SPON':
