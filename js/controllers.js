@@ -514,7 +514,7 @@ function calculatePrimeGuest(scope, onSpot) {
    var ticketPrice= Math.round((calcAmt + Number.EPSILON) * 100) / 100;
 
   if(numTickets >= 10){
-    scope.formData.tenPerDisc =  "You are booking 10 tickets. 10% discount is being applied!";
+    scope.formData.tenPerDisc =  "You are booking 10 or more tickets. 10% discount of $"+ 0.1*ticketPrice + " is being applied!";
   } else if (numTickets > 0) {
     scope.formData.tenPerDisc = (10-numTickets) +' more tickets left to apply 10% discount';
   } else {
