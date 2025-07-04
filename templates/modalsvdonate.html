@@ -64,7 +64,7 @@
 
                             <td style="text-align: center">
                                 <label class="switch">
-                                    <input type="checkbox" data-ng-model="formData.prepayFood"  ng-change="calculatePrimeGuest()" id="prepayFood" disabled>
+                                    <input type="checkbox"  data-ng-model="formData.prepayFood"  ng-change="calculatePrimeGuest()" id="prepayFood" >
                                     <span class="slider round"></span>
                                 </label>
                             </td>
@@ -82,8 +82,8 @@
                             <tr>
                                 
                                 <td>
-                                    <div class="hidden-sm hidden-xs">Adults</div>
-                                    <div class="hidden-lg hidden-md"><h5>Adults</h5></div>
+                                    <div class="hidden-sm hidden-xs">Adultss&nbsp;<span class="icon fa fa-star" style="color: #b94a48; "></span></div>
+                                    <div class="hidden-lg hidden-md"><h5>Adultss&nbsp;<span class="icon fa fa-star" style="color: #b94a48; "></span></h5></div>
                                 </td>
                                 <td><div class="input-group "><span class="input-group-addon" >${{formData.bothDayAdAmt}}</span>
                                     <input type="number" step="1" class="form-control" id="adbothdays" name="adbothdays" placeholder="#"
@@ -126,8 +126,8 @@
                             <tr>
                                 
                                 <td>
-                                    <div class="hidden-sm hidden-xs">Adults</div>
-                                    <div class="hidden-lg hidden-md"><h5>Adults</h5></div>
+                                    <div class="hidden-sm hidden-xs">Adultss&nbsp;<span class="icon fa fa-star" style="color: #b94a48; "></span></div>
+                                    <div class="hidden-lg hidden-md"><h5>Adultss&nbsp;<span class="icon fa fa-star" style="color: #b94a48; "></span></h5></div>
                                 </td>
                                 
                                 <td><div class="input-group"><span class="input-group-addon">${{formData.satAdAmt}}</span><input type="number" step="1" class="form-control" id="adsat" name="adsat"
@@ -168,8 +168,8 @@
                             <tr>
                                 
                                 <td>
-                                    <div class="hidden-sm hidden-xs">Adults</div>
-                                    <div class="hidden-lg hidden-md"><h5>Adults</h5></div>
+                                    <div class="hidden-sm hidden-xs">Adults&nbsp;<span class="icon fa fa-star" style="color: #b94a48; "></span></div>
+                                    <div class="hidden-lg hidden-md"><h5>Adultss&nbsp;<span class="icon fa fa-star" style="color: #b94a48; "></span></h5></div>
                                 </td>
                                 
                                 <td><div class="input-group"><span class="input-group-addon">${{formData.sunAdAmt}}</span>
@@ -262,21 +262,22 @@
                     <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount.That is too much!!!</span>
                     <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.kidError">Kids must be accompanied by adults on the same day(s).</span>
                     <!--span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Maximum number of tickets per transaction is 10 .</span-->
-                    <span class="help-block text-danger"  data-ng-model="formData.numTickets" id="numTickets" name="numTickets" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Total tickets - {{formData.numTickets}}, (Saturday: {{formData.numSatTickets}}, Sunday: {{formData.numSunTickets}}) exceeds maximum of 10 tickets per transaction. </span>
+                    <span class="help-block text-danger"  data-ng-model="formData.numTickets" id="numTickets" name="numTickets" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Total tickets - {{formData.numTickets}}, (Saturday: {{formData.numSatTickets}}, Sunday: {{formData.numSunTickets}}) exceeds maximum of 50 tickets per transaction. </span>
+                    <span class="help-block " style="color: green;"  data-ng-model="formData.tenPerDis" >{{formData.tenPerDisc}}</span>
                     <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
                 </div>
 
                 
             </div>
             <h5>
-                <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>
+                <span class="icon fa fa-star" style="color: #b94a48; "></span>
                 <span >
-                    <i>All tickets includes puja, cultural program admission and bhog prasad. </i>
+                    <i>Early Bird Discounts Applied.</i>
                 </span>
                 <br>
-                <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>
-                <span>
-                    <i>Dinner can also be purchased at the venue subject to availability on a <u>first come first serve basis</u>.</i>
+                <span class="icon fa fa-star" style="color: #b94a48; "></span>
+                <span >
+                    <i>Premium Guarenteed Seating with Early Bird Registration (Limited number - available for early registrants only).</i>
                 </span>
                 <br>
                 <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>

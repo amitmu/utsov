@@ -108,7 +108,7 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   switch ($route.current.action)
   {
     case 'BPG':
-      $scope.title = "Register for Pujo!";
+      $scope.title = "Register Now! Early Bird Registration with Premium Seating option closes on 08/24";
       $scope.service = 'api/donations.php';
       break;
     case 'ACD':
@@ -352,21 +352,22 @@ var rendered = false;
 
 function setDefault(scope){
   scope.formData.prepayFood = false;
+  scope.formData.tenPerDisc = "10% discount applied when selecting 10 or more tickets in a single transaction";
 
-  scope.formData.bothDayAdAmt = 80;
+  scope.formData.bothDayAdAmt = 90;
   scope.formData.bothDayKidAmt = 60;
-  scope.formData.foodOption = "without dinner";
+  scope.formData.foodOption = "- Pujo, Bhog & Concert only";
 
 
-  scope.formData.satAdAmt = 55;
+  scope.formData.satAdAmt = 65;
   scope.formData.satKidAmt = 35;
 
-  scope.formData.sunAdAmt = 40;
-  scope.formData.sunKidAmt = 30;
+  scope.formData.sunAdAmt = 55;
+  scope.formData.sunKidAmt = 35;
 
-  scope.formData.bothDayStuAmt = 75;
-  scope.formData.satStuAmt = 40;
-  scope.formData.sunStuAmt = 35;
+  scope.formData.bothDayStuAmt = 90;
+  scope.formData.satStuAmt = 55;
+  scope.formData.sunStuAmt = 50;
 }
 
 function calculatePrimeGuestOnSpot(scope){
@@ -391,19 +392,19 @@ function calculatePrimeGuest(scope, onSpot) {
 
   if(scope.formData.prepayFood){
 
-    scope.formData.foodOption ="with dinner";
-    scope.formData.bothDayAdAmt = 100;
-    scope.formData.bothDayKidAmt = 75;
+    scope.formData.foodOption ="- Pujo, Bhog, Concert & Dinner";
+    scope.formData.bothDayAdAmt = 110;
+    scope.formData.bothDayKidAmt = 80;
 
-    scope.formData.satAdAmt = 70;
+    scope.formData.satAdAmt = 80;
     scope.formData.satKidAmt = 45;
 
-    scope.formData.sunAdAmt = 55;
-    scope.formData.sunKidAmt = 40;
+    scope.formData.sunAdAmt = 65;
+    scope.formData.sunKidAmt = 45;
 
-    scope.formData.bothDayStuAmt = 90;
-    scope.formData.satStuAmt = 50;
-    scope.formData.sunStuAmt = 45;
+    scope.formData.bothDayStuAmt = 110;
+    scope.formData.satStuAmt = 65;
+    scope.formData.sunStuAmt = 60;
 
   } else {
     setDefault(scope);
@@ -469,7 +470,7 @@ function calculatePrimeGuest(scope, onSpot) {
    + (scope.formData.stusat*1 || 0)
    + (scope.formData.stusun*1 || 0);
 
-   if(numTickets > 10){
+   if(numTickets > 50){
     scope.frmRegister.donamount.$setValidity("numTicketsErr", false);
   } else {
     scope.frmRegister.donamount.$setValidity("numTicketsErr", true);
@@ -510,8 +511,17 @@ function calculatePrimeGuest(scope, onSpot) {
    + (scope.formData.adddon || 0);
    }
    
+   var ticketPrice= Math.round((calcAmt + Number.EPSILON) * 100) / 100;
 
-   scope.formData.donamount = Math.round((calcAmt + Number.EPSILON) * 100) / 100
+  if(numTickets >= 10){
+    scope.formData.tenPerDisc =  "You are booking 10 tickets. 10% discount is being applied!";
+  } else if (numTickets > 0) {
+    scope.formData.tenPerDisc = (10-numTickets) +' more tickets left to apply 10% discount';
+  } else {
+    scope.formData.tenPerDisc = "10% discount applied when selecting 10 or more tickets in a single transaction";
+  }
+
+   scope.formData.donamount = numTickets >= 10 ? 0.9*ticketPrice : ticketPrice;
    scope.formData.numTickets = numTickets;
 
  
