@@ -64,7 +64,7 @@
 
                             <td style="text-align: center">
                                 <label class="switch">
-                                    <input type="checkbox"  data-ng-model="formData.prepayFood"  ng-change="calculatePrimeGuest()" id="prepayFood" >
+                                    <input type="checkbox"   data-ng-model="formData.prepayFood"  ng-change="calculatePrimeGuest()" id="prepayFood" checked="true">
                                     <span class="slider round"></span>
                                 </label>
                             </td>
@@ -263,7 +263,9 @@
                     <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.kidError">Kids must be accompanied by adults on the same day(s).</span>
                     <!--span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Maximum number of tickets per transaction is 10 .</span-->
                     <span class="help-block text-danger"  data-ng-model="formData.numTickets" id="numTickets" name="numTickets" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Total tickets - {{formData.numTickets}}, (Saturday: {{formData.numSatTickets}}, Sunday: {{formData.numSunTickets}}) exceeds maximum of 50 tickets per transaction. </span>
+                    <span class="help-block " style="color: green;"  data-ng-model="formData.withDinner" >{{formData.withDinner}}</span>
                     <span class="help-block " style="color: green;"  data-ng-model="formData.tenPerDis" >{{formData.tenPerDisc}}</span>
+                    
                     <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
                 </div>
 
@@ -277,7 +279,7 @@
                 <br>
                 <span class="icon fa fa-star" style="color: #b94a48; "></span>
                 <span >
-                    <i>Premium Guarenteed Seating with Early Bird Registration (Limited number - available for early registrants only).</i>
+                    <i>Premium Guarenteed Seating with Early Bird Registration for the entire ticket (Limited numbers - available for early registrants only).</i>
                 </span>
                 <br>
                 <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>
