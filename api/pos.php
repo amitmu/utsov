@@ -165,7 +165,7 @@ date_default_timezone_set('America/New_York');
                     $return = addRegistration($patronid, $year, $headcount, $donation, $message, $ipaddress);
                 }
 
-                if(empty($donation)){
+                if(empty($donation) && $donation < 0 ){
                     logMessage(">>No donation amount. Skipping adding to donation table");
 
                 } else {

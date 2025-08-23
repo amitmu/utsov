@@ -215,8 +215,8 @@
                 <label for="donamount" data-ng-hide="isAdminUser">Your donations make this event possible</label>
                 <label for="donamount" data-ng-show="isAdminUser">Donation Amount</label>
                 <p class="lead" data-ng-hide="isAdminUser">Please Remember to Donate</p>
-                <input type="number" step="0.01" class="form-control" name="donamount" placeholder="Your donation amount for this year" data-ng-model="formData.donamount" min="30" max="1000000" data-ng-show="isAdminUser" required>
-                <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Invalid amount. Please enter at least $ 30.00</span>
+                <input type="number" step="0.01" class="form-control" name="donamount" placeholder="Your donation amount for this year" data-ng-model="formData.donamount" min="0" max="1000000" data-ng-show="isAdminUser" required>
+                <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.min">Invalid amount. Please enter at least $ 0.00</span>
                 <span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.max">Invalid amount. That is too much!!!</span>
             </div>
         </div>
@@ -230,6 +230,7 @@
                     <option  value="CACHE">Cache</option>
                     <option value="ZELLE" >Zelle</option>
                     <option value="CREDIT CARD">CREDIT CARD</option>
+                    <option value="OTHER">Other</option>
                 </select>
             </div>
             <div class="col-sm-4" data-ng-class="{ 'has-error': frmRegister.payment_id.$invalid }">
