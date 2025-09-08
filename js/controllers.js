@@ -108,7 +108,7 @@ utsovPrimeGuestApp.controller('PrimeGuestController', function ($scope, $route, 
   switch ($route.current.action)
   {
     case 'BPG':
-      $scope.title = "Register Now! Early Bird Registration with Premium Seating option closes on 08/24 or sooner";
+      $scope.title = "Pujo Registration... Limited seats.. Dont wait!";
       $scope.service = 'api/donations.php';
       break;
     case 'ACD':
@@ -351,23 +351,24 @@ angular.element(document).ready(function() {
 var rendered = false;
 
 function setDefault(scope){
-  scope.formData.prepayFood = true;
+ // scope.formData.prepayFood = true;
   scope.formData.tenPerDisc = "10% discount applied when selecting 10 or more tickets in a single transaction";
-
-  scope.formData.withDinner = "This ticket includes dinner coupons.";
-  scope.formData.foodOption ="- Pujo, Bhog, Concert & Dinner";
   scope.formData.bothDayAdAmt = 110;
-  scope.formData.bothDayKidAmt = 80;
+  scope.formData.bothDayKidAmt = 60;
+  scope.formData.foodOption = "- Pujo, Bhog & Concert only";
+  scope.formData.withDinner = "This ticket does NOT include dinner coupons.";
 
-  scope.formData.satAdAmt = 80;
-  scope.formData.satKidAmt = 45;
 
-  scope.formData.sunAdAmt = 65;
-  scope.formData.sunKidAmt = 45;
+  scope.formData.satAdAmt = 75;
+  scope.formData.satKidAmt = 35;
 
-  scope.formData.bothDayStuAmt = 110;
-  scope.formData.satStuAmt = 65;
-  scope.formData.sunStuAmt = 60;
+  scope.formData.sunAdAmt = 55;
+  scope.formData.sunKidAmt = 35;
+
+  scope.formData.bothDayStuAmt = 90;
+  scope.formData.satStuAmt = 55;
+  scope.formData.sunStuAmt = 50;
+  
 }
 
 function calculatePrimeGuestOnSpot(scope){
@@ -390,23 +391,24 @@ function calculatePrimeGuest(scope, onSpot) {
     scope.formData.isPrimeGuest = false;
   }*/
 
-  if(!scope.formData.prepayFood){
+  if(scope.formData.prepayFood){
 
-  scope.formData.bothDayAdAmt = 90;
-  scope.formData.bothDayKidAmt = 60;
-  scope.formData.foodOption = "- Pujo, Bhog & Concert only";
-  scope.formData.withDinner = "This ticket does NOT include dinner coupons.";
+  scope.formData.withDinner = "This ticket includes dinner coupons.";
+  scope.formData.foodOption ="- Pujo, Bhog, Concert & Dinner";
+  scope.formData.bothDayAdAmt = 130;
+  scope.formData.bothDayKidAmt = 80;
 
+  scope.formData.satAdAmt = 90;
+  scope.formData.satKidAmt = 45;
 
-  scope.formData.satAdAmt = 65;
-  scope.formData.satKidAmt = 35;
+  scope.formData.sunAdAmt = 65;
+  scope.formData.sunKidAmt = 45;
 
-  scope.formData.sunAdAmt = 55;
-  scope.formData.sunKidAmt = 35;
+  scope.formData.bothDayStuAmt = 110;
+  scope.formData.satStuAmt = 65;
+  scope.formData.sunStuAmt = 60;
 
-  scope.formData.bothDayStuAmt = 90;
-  scope.formData.satStuAmt = 55;
-  scope.formData.sunStuAmt = 50;
+  
 
   } else {
     setDefault(scope);
@@ -521,7 +523,8 @@ function calculatePrimeGuest(scope, onSpot) {
     scope.formData.tenPerDisc = "10% discount applied when selecting 10 or more tickets in a single transaction";
   }
 
-   scope.formData.donamount = numTickets >= 10 ? (parseFloat(0.9*ticketPrice.toFixed(2)) +  donationAmt): ticketPrice + donationAmt;
+   //scope.formData.donamount = numTickets >= 10 ? (parseFloat(0.9*ticketPrice.toFixed(2)) +  donationAmt): ticketPrice + donationAmt;
+   scope.formData.donamount = ticketPrice + donationAmt;
    scope.formData.numTickets = numTickets;
 
  

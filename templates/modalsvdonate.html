@@ -264,7 +264,8 @@
                     <!--span class="help-block text-danger" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Maximum number of tickets per transaction is 10 .</span-->
                     <span class="help-block text-danger"  data-ng-model="formData.numTickets" id="numTickets" name="numTickets" data-ng-show="frmRegister.donamount.$error.numTicketsErr">Total tickets - {{formData.numTickets}}, (Saturday: {{formData.numSatTickets}}, Sunday: {{formData.numSunTickets}}) exceeds maximum of 50 tickets per transaction. </span>
                     <span class="help-block " style="color: green;"  data-ng-model="formData.withDinner" >{{formData.withDinner}}</span>
-                    <span class="help-block " style="color: green;"  data-ng-model="formData.tenPerDis" >{{formData.tenPerDisc}}</span>
+                    <!--span class="help-block " style="color: green;"  data-ng-model="formData.tenPerDis" >{{formData.tenPerDisc}}</span-->
+                    <span class="help-block " style="color: green;"  data-ng-model="formData.tenPerDis" >For group (10+ tickets) discounts, please email to us at UTSOV@UTSOV.ORG</span>
                     
                     <span data-ng-hide="frmRegister.donamount.$invalid"><h4><i>{{formData.primeGuestLevel}}</i></h4></span>
                 </div>
@@ -272,7 +273,7 @@
                 
             </div>
             <h5>
-                <span class="icon fa fa-star" style="color: #b94a48; "></span>
+                <!--span class="icon fa fa-star" style="color: #b94a48; "></span>
                 <span >
                     <i>Early Bird Discounts Applied.</i>
                 </span>
@@ -281,10 +282,22 @@
                 <span >
                     <i>Premium Guarenteed Seating with Early Bird Registration for the entire ticket (Limited numbers - available for early registrants only).</i>
                 </span>
+                <br-->
+                <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>
+                <span>
+                    <i>Tickets without dinner option, can purchase dinner coupons either at venue or by contacting utsov@utsov.org subject to availability.</i>
+                </span>
+                
                 <br>
                 <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>
                 <span>
-                    <i>Kids 6 years of age and under served free pizza. Student ID check required at the venue.</i>
+                    <i>Kids 6 years of age and under does not need registration & served free pizza.</i>
+                </span>
+                
+                <br>
+                <span class="icon fa fa-info-circle" style="color: #b94a48"> </span>
+                <span>
+                    <i>Student ID check required at the venue for registered students.</i>
                 </span>
                 <br>
                
