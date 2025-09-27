@@ -351,23 +351,23 @@ angular.element(document).ready(function() {
 var rendered = false;
 
 function setDefault(scope){
- // scope.formData.prepayFood = true;
+  scope.formData.prepayFood = true;
   scope.formData.tenPerDisc = "10% discount applied when selecting 10 or more tickets in a single transaction";
-  scope.formData.bothDayAdAmt = 110;
-  scope.formData.bothDayKidAmt = 60;
-  scope.formData.foodOption = "- Pujo, Bhog & Concert only";
-  scope.formData.withDinner = "This ticket does NOT include dinner coupons.";
+  scope.formData.bothDayAdAmt = 130;
+  scope.formData.bothDayKidAmt = 80;
+  scope.formData.foodOption = "- Pujo, Bhog & Concert & Dinner";
+  scope.formData.withDinner = "This ticket includes dinner coupons.";
 
 
-  scope.formData.satAdAmt = 75;
-  scope.formData.satKidAmt = 35;
+  scope.formData.satAdAmt = 90;
+  scope.formData.satKidAmt = 45;
 
-  scope.formData.sunAdAmt = 55;
-  scope.formData.sunKidAmt = 35;
+  scope.formData.sunAdAmt = 65;
+  scope.formData.sunKidAmt = 45;
 
-  scope.formData.bothDayStuAmt = 90;
-  scope.formData.satStuAmt = 55;
-  scope.formData.sunStuAmt = 50;
+  scope.formData.bothDayStuAmt = 110;
+  scope.formData.satStuAmt = 65;
+  scope.formData.sunStuAmt = 60;
   
 }
 
@@ -391,22 +391,22 @@ function calculatePrimeGuest(scope, onSpot) {
     scope.formData.isPrimeGuest = false;
   }*/
 
-  if(scope.formData.prepayFood){
+  if(!scope.formData.prepayFood){
 
-  scope.formData.withDinner = "This ticket includes dinner coupons.";
-  scope.formData.foodOption ="- Pujo, Bhog, Concert & Dinner";
-  scope.formData.bothDayAdAmt = 130;
-  scope.formData.bothDayKidAmt = 80;
+  scope.formData.withDinner = "This ticket does NOT include dinner coupons.";
+  scope.formData.foodOption ="- Pujo, Bhog, Concert only";
+  scope.formData.bothDayAdAmt = 110;
+  scope.formData.bothDayKidAmt = 60;
 
-  scope.formData.satAdAmt = 90;
-  scope.formData.satKidAmt = 45;
+  scope.formData.satAdAmt = 75;
+  scope.formData.satKidAmt = 35;
 
-  scope.formData.sunAdAmt = 65;
-  scope.formData.sunKidAmt = 45;
+  scope.formData.sunAdAmt = 55;
+  scope.formData.sunKidAmt = 35;
 
-  scope.formData.bothDayStuAmt = 110;
-  scope.formData.satStuAmt = 65;
-  scope.formData.sunStuAmt = 60;
+  scope.formData.bothDayStuAmt = 90;
+  scope.formData.satStuAmt = 55;
+  scope.formData.sunStuAmt = 50;
 
   
 
